@@ -28,7 +28,7 @@ CMS_PYTHON_LOGIN.doit(driver)
 # TECH+ニュース記事の新規作成
 #========================================================================
 print('TECH+ニュース記事新規作成処理をはじめます。')
-driver.get('https://manage.news.mynavi.jp/admin/series/4636/projects/new_techplus')
+driver.get('https://manage.news.mynavi.jp/admin/projects/new_techplus')
 
 # ページ読み込みを待機（2秒では失敗したので、ひとまず5秒に設定）
 time.sleep(5)
