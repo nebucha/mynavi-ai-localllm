@@ -1,0 +1,85 @@
+#!/bin/sh
+
+tmp=/tmp/$$
+PATH=$(dirname $0):$PATH
+
+# 1:URL 2:ディレクトリ名 3:記事タイトル
+[ $# != "3" ]								&& exit 1
+
+# 元記事を取得する
+netcat	"$1"								> $tmp-src
+
+# AppleセキュリティアドバイザリURLのリストを取得
+cat	$tmp-src							|
+grep	-o 'https://support.apple.com/[^"]*'				|
+cat									> $tmp-securls
+
+# セキュリティアドバイザリペースの数
+nosecurls=$(wc -l $tmp-securls | awk '{print $1}')
+
+# Appleセキュリティアドバイザリのそれぞれのページを取得
+for	i in $(seq 1 $nosecurls)
+do
+	url=$(cat $tmp-securls | sed -n "${i}p")
+	netcat	"$url"							> $tmp-secpage$i
+done
+
+# Appleセキュリティアドバイザリのページリストを作成
+for	i in $(seq 1 $nosecurls)
+do
+	cat	$tmp-secpage$i						|
+	grep	-o '<title.*</title>'					|
+	sed	's.<[^>]*>..g'						> $tmp-title
+
+	title=$(cat $tmp-title)
+	url=$(cat $tmp-securls | sed -n "${i}p")
+
+	echo	-n "   <item><p>"					>>$tmp-access
+	echo	-n "<access ref=\"$url\">$title</access>"		>>$tmp-access
+	echo	"</p></item>"						>>$tmp-access
+done
+cat	$tmp-access							|
+sort	-k3,20								> $tmp-tmp
+cat	$tmp-tmp							> $tmp-access
+
+# Appleセキュリティアドバイザリの1つ目のタイトルを取得
+cat	$tmp-secpage1							|
+grep	-o '<title.*</title>'						|
+sed	's.<[^>]*>..g'							> $tmp-title
+imgtle=$(cat $tmp-title)
+
+# セキュリティ脆弱性の影響を受ける製品一覧を作成
+cat	$tmp-secpage*							|
+grep	'Available for:'						|
+sed	's.<[^>]*>..g'							|
+sed	's/Available for: *//'						|
+sort									|
+uniq									|
+# 空白の代わりに&nbsp;が使われていることがあるので除去
+sed	's/&[^;]*;//g'							|
+sed	's/, and/,/g'							|
+sed	's/, /\n/g'							|
+sed	's/nd generation/世代/g'					|
+sed	's/th generation/世代/g'					|
+sed	's/rd generation/世代/g'					|
+sed	's/all models/すべてのモデル/'					|
+sed	's/ and later/およびそれ以降のバージョン/'			|
+sed	's/ or later/またはそれ以降のバージョン/'			|
+sort									|
+uniq									|
+sed	's,^,   <item><p>,'						|
+sed	's,$,</p></item>,'						|
+cat									> $tmp-products
+
+# 記事の原型を作成
+MAKE_TYPESCRIPT 							\
+ 	"$@"								\
+	$tmp-access							\
+	$tmp-products							\
+									|
+sed	"s|IMGTLE|$imgtle|g"						|
+cat									> $tmp-typescript
+
+cat	$tmp-typescript
+
+rm	-f $tmp-*

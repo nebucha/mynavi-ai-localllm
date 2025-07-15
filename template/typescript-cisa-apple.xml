@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <docgroup>
+  <docinfo>
+   <title><p>Appleプロダクトにセキュリティ脆弱性、ただちにアップデートを</p></title>
+   <shorttitle><p></p></shorttitle>
+   <author><p>USER</p></author>
+   <firstedition><p>NOW</p></firstedition>
+   <lastmodified><p>DATE REVISION</p></lastmodified>
+  </docinfo>
+
+  <p>[W:500]</p>
+
+  <p>[LEAD:]</p>
+
+  <p>[TAG:Apple]</p>
+
+  <p>米国土安全保障省サイバーセキュリティ・インフラストラクチャーセキュリティ庁(CISA: Cybersecurity and Infrastructure Security Agency)はHIDUKE、「<access ref="SRCURL">SRCTITLE</access>」において、Appleの複数の製品に複数のセキュリティ脆弱性が存在すると伝えた。これらセキュリティ脆弱性を利用されると、攻撃者によって影響を受けたシステムの制御権が乗っ取られる危険性があるとされている。</p>
+
+  <docgroup>
+   <docinfo>
+    <title><p>セキュリティ脆弱性に関する情報</p></title>
+   </docinfo>
+
+   <p>セキュリティ脆弱性に関する情報は次のページからたどることができる。</p>
+
+   <list>
+EMBEDDED1TH
+   </list>
+
+   <p><import caption="IMGTLE" id="images/001raw.jpg" ref="images/001raw.jpg" type="image/jpeg"/></p>
+  </docgroup> 
+
+  <docgroup>
+   <docinfo>
+    <title><p>影響を受けるとされるプロダクト</p></title>
+   </docinfo>
+
+   <p>影響を受けるとされるプロダクトは次のとおり。</p>
+
+   <list>
+EMBEDDED2TH
+   </list>
+  </docgroup> 
+
+  <docgroup>
+   <docinfo>
+    <title><p>問題が修正されたプロダクトおよびバージョン</p></title>
+   </docinfo>
+
+   <p>問題を受けるとされるプロダクトおよびバージョンは次のとおり。</p>
+
+   <list>
+   </list>
+  </docgroup> 
+
+  <p>米国土安全保障省サイバーセキュリティ・インフラストラクチャーセキュリティ庁はユーザーおよび管理者に対して上記セキュリティアドバイザリーを確認するとともに、必要に応じてアップデートを適用することを推奨している。</p>
+
+  <p>[POST:]</p>
+
+<!--LIST-->
+
+  <p>[SRC:SRCURL]</p>
+
+  <p>[URL:][]</p>
+ </docgroup>
+</document>

@@ -1,0 +1,121 @@
+#!/bin/sh
+
+#=========================================================================
+# タイトルやURL指定を必要としないものを最初に除外
+#=========================================================================
+[ "name=shareosdesktop"      = "$1" ] && { title=" "; url="https://gs.statcounter.com/"; }
+[ "name=shareosmobile"       = "$1" ] && { title=" "; url="https://gs.statcounter.com/"; }
+[ "name=shareostablet"       = "$1" ] && { title=" "; url="https://gs.statcounter.com/"; }
+[ "name=sharesmsdesktop"     = "$1" ] && { title=" "; url="https://gs.statcounter.com/"; }
+[ "name=sharesmsmobile"      = "$1" ] && { title=" "; url="https://gs.statcounter.com/"; }
+[ "name=sharesmstablet"      = "$1" ] && { title=" "; url="https://gs.statcounter.com/"; }
+[ "name=sharebrowserdesktop" = "$1" ] && { title=" "; url="https://gs.statcounter.com/"; }
+[ "name=sharebrowsermobile"  = "$1" ] && { title=" "; url="https://gs.statcounter.com/"; }
+[ "name=sharebrowsertablet"  = "$1" ] && { title=" "; url="https://gs.statcounter.com/"; }
+
+[ "name=cisco-catalog"  = "$1" ] && { title=" "; url="typescript-cisco-catalog.xml"; }
+
+case	"$1" in
+*-shareos*|*-sharebrowser*|*-sharesms*)
+ 	title=" "
+	url="https://gs.statcounter.com/"
+	;;
+esac
+
+[ "name=sharelinux"          = "$1" ] && { title=" "; url="https://w3techs.com/technologies/history_details/os-linux"; }
+[ "name=sharecms"            = "$1" ] && { title=" "; url="https://w3techs.com/technologies/history_overview/content_management/all"; }
+[ "name=sharewebserver"      = "$1" ] && { title=" "; url="https://w3techs.com/technologies/history_overview/web_server"; }
+
+[ "name=sharetld"            = "$1" ] && { title=" "; url=" "; }
+[ "name=sharedb"             = "$1" ] && { title=" "; url=" "; }
+[ "name=rankingmalware"      = "$1" ] && { title=" "; }
+[ "name=tiobelangindex"      = "$1" ] && { title=" "; url="http://www.tiobe.com/index.php/content/paperinfo/tpci/index.html"; }
+[ "name=pypllangindex"       = "$1" ] && { title=" "; url="http://pypl.github.io/PYPL.html"; }
+[ "name=topideindex"         = "$1" ] && { title=" "; url="http://pypl.github.io/IDE.html"; }
+[ "name=topdbindex"          = "$1" ] && { title=" "; url="http://pypl.github.io/DB.html"; }
+[ "name=jpcertccsummary"     = "$1" ] && { title=" "; }
+[ "name=uscertsummary"       = "$1" ] && { title=" "; }
+
+[ "name=cisco"               = "$1" ] && { title=" "; url="https://tools.cisco.com/security/center/publicationListing.x"; }
+
+#=========================================================================
+# titleをインタラクティブに入力を求める
+#=========================================================================
+[ -z "$name"  -a "name="  = "$1" ] && { /bin/echo -n "name="; read name; }
+
+if	[ "daichi" = "$USERNAME" -o "daichi" = "$USER" ]
+then
+	title=
+elif	[ "sasaki" = "$USERNAME" -o "sasaki" = "$USER" ]
+then
+	title=
+elif	[ "mo" = "$USERNAME" -o "mo" = "$USER" ]
+then
+	title=
+else
+	[ -z "$title" -a "title=" = "$3" ] && { /bin/echo -n "title="; read title; }
+fi
+
+#=========================================================================
+# URLの指定がなく、かつ、システムクリップボードにURLが貼り付けられている場合には、
+# ここからURLの指定を持ってくる
+#=========================================================================
+clipboard=
+if	[ -n "$(which pwsh)" ]
+then
+	clipboard=$(pwsh -Command Get-Clipboard | head -1)
+elif	[ -n "$(which powershell)" ]
+then
+	clipboard=$(powershell Get-Clipboard | head -1)
+elif	[ -n "$(which pbpaste)" ]
+then
+	clipboard=$(pbpaste)
+fi
+
+if	[ "url=" = "$2" ]
+then
+	case	"${clipboard}" in
+	https://news.mynavi.jp/*)
+		url=
+		;;
+	http[s]://*/*/*)
+		url="${clipboard}"
+		;;
+	esac
+fi
+
+#=========================================================================
+# urlをインタラクティブに入力を求める
+#=========================================================================
+if	[ -z "$url" -a "url=" = "$2" ]
+then
+	/bin/echo -n "url="; read url;
+fi
+
+#=========================================================================
+# ディレクトリ名、タイトル、URLを変数に格納
+#=========================================================================
+[ "name="  = "$1" ] || eval $1
+[ "title=" = "$3" ] || eval $(echo "$3" | sed 's|&|\\&|g')
+[ "url="   = "$2" ] || eval $(echo "$2" | sed 's|&|\\&|g')
+
+#=========================================================================
+# なにも入力されていない場合にはデフォルト値を設定
+#=========================================================================
+: ${title:=}
+: ${url:=https://news.mynavi.jp/}
+
+#=========================================================================
+# ユーザ入れ替え設定
+#=========================================================================
+if	[ "sasaki" = "$USERNAME" -o "sasaki" = "$USER" ]
+then
+	# 2024-07-09
+	# 佐々木担当は杉山分になることがほとんどなので、
+	# すべて杉山分になるように設定を上書き
+	export ORGUSERNAME=sasaki
+	USERNAME=takasyou
+	USER=takasyou
+fi
+
+make	addhontai name=$name url="$url" title="$title"

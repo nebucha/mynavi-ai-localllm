@@ -1,0 +1,110 @@
+#!/bin/sh -exv
+
+tmp=/tmp/$$
+PATH=$(dirname $0):$PATH
+
+# 1:URL 2:ディレクトリ名 3:記事タイトル
+[ $# != "3" ]								&& exit 1
+
+# 記事データを取得
+netcat	"$1"								> $tmp-report
+
+# 追加された脆弱数を抽出
+cat	$tmp-report							|
+grep	-o '<title>.*</title>'						|
+head	-1								|
+sed	's/<[^>]*>//g'							|
+sed	's/^.*Adds \([^ ]*\) .*$/\1/'					> $tmp-num
+
+num=0
+case	"$(cat $tmp-num)" in
+One)	num=1; ;;
+Two)	num=2; ;;
+Three)	num=3; ;;
+Four)	num=4; ;;
+Five)	num=5; ;;
+Six)	num=6; ;;
+Seven)	num=7; ;;
+Eight)	num=8; ;;
+Nine)	num=9; ;;
+Ten)	num=10; ;;
+Eleven)	num=11; ;;
+Twelve)	num=12; ;;
+[0-9]*)	num="$(cat $tmp-num)"; ;;
+esac
+
+# 脆弱性カタログを取得し、SSVへ変換
+url="https://www.cisa.gov/sites/default/files/csv/known_exploited_vulnerabilities.csv"
+netcat	"$url"								|
+# ヘッダを削除
+tail	+2								|
+csv2ssv									> $tmp-catalog
+
+# 日付のフォーマットが「%m/%d/%Y」になっていることがある。これに該当
+# する場合には「%Y-%m-%d」へ変換する
+case $(cat $tmp-catalog | head -1 | retusel 5) in
+*/*/*)
+	cat	$tmp-catalog						|
+	datefmt	5.%m/%d/%Y.%Y-%m-%d					\
+		8.%m/%d/%Y.%Y-%m-%d					|
+	cat								> $tmp-tmp
+	cat	$tmp-tmp						> $tmp-catalog
+	;;
+esac
+
+# 脆弱性カタログに追加された最新日を取得
+cat	$tmp-catalog							|
+# 区切りの空白が連続している場合、sortはそれを認識することができないので
+# sortコマンドが認識できる形に変更する。
+sed	's/  / _ /g'							|
+sort	-r -k 5,5							|
+head	-1								|
+retusel	5								> $tmp-latestd
+latestd=$(cat $tmp-latestd)
+
+# 追加された最新の脆弱性データを抽出
+cat	$tmp-catalog							|
+gyosel	5="$latestd"							> $tmp-catalog2
+
+# 脆弱性テーブルを作成
+tabledir=$(dirname $0)/../$2/tables
+tablefile=$tabledir/001.tsv
+mkdir 	-p $tabledir
+echo 	"CVE番号	脆弱性内容"					> $tablefile
+cat	$tmp-catalog2							|
+retusel	1 6								|
+ssv2tsv									>>$tablefile
+
+# 脆弱性製品リストを作成
+cat	$tmp-catalog2							|
+retusel	1 1 2 3								|
+# リストデータのアンパサンドをXML向けにエスケープ処理
+sed	's/&/\&amp;/g'							|
+awk	'{
+	gsub("_", " ", $2)
+	gsub("_", " ", $3)
+	gsub("_", " ", $4)
+	printf "   <item><p><access ref=\"https://nvd.nist.gov/vuln/detail/%s\">%s</access> %s - %s</p></item>\n",$1,$2,$3,$4
+}'									|
+# 特定の文言を日本語に変換
+sed	's/Multiple Products/複数の製品/g'				|
+cat									> $tmp-list
+
+# 追加された新しい脆弱性のうちもっともCVE番号がつけられた日が古いものの
+# 年を取得
+cat	$tmp-catalog2							|
+retusel	1								|
+sort									|
+head	-1								|
+cut	-f2 -d-								> $tmp-oldyear
+oldyear=$(cat $tmp-oldyear)
+
+# 記事の原型を作成
+MAKE_TYPESCRIPT								\
+	"$@"								\
+	$tmp-list							|
+sed	"s|NUM|$num|g"							|
+sed	"s|OLDYR|$oldyear|g"
+
+# 作業に使った一時ファイルを削除
+rm	-f $tmp-*

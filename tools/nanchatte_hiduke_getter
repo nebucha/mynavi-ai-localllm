@@ -1,0 +1,371 @@
+#!/bin/sh
+#
+# 指定されたコンテンツ（HTMLを想定）からなんとなく日付を推測して
+# 取り出すコマンド
+
+tmp=/tmp/$$
+PATH=$(dirname $0):$PATH
+
+#################################################################
+# サイトのFQDNからタイムゾーンを判別
+#################################################################
+# サイトのFQDMを取得
+echo $1								|
+grep -E -o '[^/]*[^/]'						|
+conv_ssv2transposedssv						|
+retusel 2							> $tmp-domain
+
+# FQDNからタイムゾーンを判定
+case "$(geoiplookup $(cat $tmp-domain))" in
+*JP*) echo ""				> $tmp-tz ;;
+*US*) echo "(米国時間)"			> $tmp-tz ;;
+*CA*) echo "(カナダ時間)"		> $tmp-tz ;;
+*DE*) echo "(ドイツ時間)"		> $tmp-tz ;;
+*NO*) echo "(ノルウェー時間)"		> $tmp-tz ;;
+*UK*) echo "(英国時間)"			> $tmp-tz ;;
+*GB*) echo "(英国時間)"			> $tmp-tz ;;
+*FR*) echo "(フランス時間)"		> $tmp-tz ;;
+*NL*) echo "(オランダ時間)"		> $tmp-tz ;;
+*AU*) echo "(オーストラリア時間)"	> $tmp-tz ;;
+*) echo "(現地時間)"			> $tmp-tz ;;
+esac
+
+#################################################################
+# 日付を判定（URLに日付が含まれているケース）
+#################################################################
+[ "" != "$(echo $1 | grep -E '/[0-9]{4}/[0-9]{2}/[0-9]{2}/')" ] && {
+	echo $1							|
+	grep -o -E '/[0-9]{4}/[0-9]{2}/[0-9]{2}/'		|
+	tr '/' ' '						|
+	sed 's/^ //'						> $tmp-src
+	retusel 1 $tmp-src						> $tmp-year
+	retusel 2 $tmp-src	| sed 's/^0*//'				> $tmp-month
+	retusel 3 $tmp-src	| sed 's/^0*//'				> $tmp-day
+
+	# 年月日の値が適切に取得できなかった場合、デフォルト値に置き換える。
+	test "@" = "$(cat $tmp-year)"  && echo $defY > $tmp-year
+	test "@" = "$(cat $tmp-month)" && echo $defm > $tmp-month
+	test "@" = "$(cat $tmp-day)"   && echo $defd > $tmp-day
+	test -z "$(cat $tmp-year)"  && echo $defY > $tmp-year
+	test -z "$(cat $tmp-month)" && echo $defm > $tmp-month
+	test -z "$(cat $tmp-day)"   && echo $defd > $tmp-day
+	
+	test "$(cat $tmp-month)" -gt 12 && echo $defm > $tmp-month
+	test "$(cat $tmp-day)"   -gt 31 && echo $defd > $tmp-day
+
+	# ゼロとり
+	cat	$tmp-month	| sed 's/^0//'	> $tmp-month
+	cat	$tmp-day	| sed 's/^0//'	> $tmp-day
+
+	# 出力
+	printf "$(cat $tmp-year)年$(cat $tmp-month)月$(cat $tmp-day)日"
+	printf "$(cat $tmp-tz)"
+
+	rm -f $tmp-*
+	exit
+}
+
+#################################################################
+# 日付を判定（コンテンツから日付を推測するケース）
+#################################################################
+# まず、昨日の日付をデフォルトの値とする
+date -v-1d +%Y							> $tmp-year
+date -v-1d +%m | sed 's/^0*//'					> $tmp-month
+date -v-1d +%d | sed 's/^0*//'					> $tmp-day
+defY=$(cat $tmp-year)
+defm=$(cat $tmp-month)
+defd=$(cat $tmp-day)
+
+# コンテンツ（HTML）から日付の推測を実施する
+cat								> $tmp-report
+cat $tmp-report							|
+# JavaScriptを削除
+gsed -E -e 's,<script,\n<script,g' -e 's,</script,\n</script,g'	|
+sed '/<script.*/,/<\/script.*/d'				|
+# CSSを削除
+gsed -E -e 's,<style,\n<style,g' -e 's,</style,\n</style,g'	|
+sed '/<style.*/,/<\/style.*/d'					|
+# タグを削除
+tr -d '\n' | tr -d '\r'						| # いったん改行をすべて削除してから
+gsed 's/>/>\n/g'						| # タグを改行することでタグを正規化し
+sed 's/<[^>]*>//g'						| # タグを削除
+# 年でデータを取り出す
+grep $(cat $tmp-year)						|
+# 1行のフィールド数が多いものは日付ではなく文章である可能性が
+# 高いので、そういった行は除外する
+awk 'NF<10 {print}'						|
+# 日付データ以外の余分なデータを削除
+sed -E 's/[0-9]{2}:[0-9]{2}:[0-9]{2}//g' 			| # 時刻を削除
+sed -e 's/st//' -e 's/nd//' -e 's/rd//' -e 's/th//'		| # 序数標識を削除
+sed "s/&[^;]*;//g"						| # 特殊文字を削除
+sed -e 's/([0-9][0-9]*)//g' -e 's/([0-9][0-9]*)//g'		| # 紛らわしい数字を削除
+sed -e 's/ on //g' -e 's/ at //g' -e 's/ in //g'		| # ありがちな前置詞を削除
+tr ',' ' ' 							|
+tr '.' ' ' 							|
+tr '-' ' ' 							|
+tr '=' ' ' 							|
+tr '/' ' ' 							|
+tr '(' ' ' 							|
+tr ')' ' '							|
+tr '<' ' ' 							|
+tr '>' ' '							|
+tr '"' ' ' 							|
+tr "'" ' '							|
+sed 's/  */ /g'							|
+# この段階で日にちに相当する数字を含んでいない行は日付ではないので削除		
+gsed "s/$(date +%Y)/＾ｗ＾/g"					|
+grep "[0-9][0-9]*"						|
+gsed "s/＾ｗ＾/$(date +%Y)/g"					|
+# 日付はだいたいコンテンツの最初の方にでてくることが多いので、
+# ここでなんとなく先頭から絞りこみ
+head -50							> $tmp-00
+
+# コンテンツ（HTML以外）から日付を推測する
+[ "" = "$(file $tmp-report | grep HTML)" ] && {
+	# 年でデータを取り出す
+	grep $(cat $tmp-year) $tmp-report				|
+	# 日付データ以外の余分なデータを削除
+	sed -E 's/[0-9]{2}:[0-9]{2}:[0-9]{2}//g' 			| # 時刻を削除
+	sed -e 's/st//' -e 's/nd//' -e 's/rd//' -e 's/th//'		| # 序数標識を削除
+	tr ',' ' ' 							|
+	tr '.' ' ' 							|
+	tr '-' ' ' 							|
+	tr '=' ' ' 							|
+	tr '/' ' ' 							|
+	tr '(' ' ' 							|
+	tr ')' ' '							|
+	tr '<' ' ' 							|
+	tr '>' ' '							|
+	tr '"' ' ' 							|
+	tr "'" ' '							> $tmp-00
+}
+
+# ヘッダに日付情報が含まれているケースがあるため、その場合には
+# ヘッダのデータを日付情報として使用する
+[ "" != "$(grep '<meta name="date"' $tmp-report)" ]		&&
+grep '<meta name="date"' $tmp-report				> $tmp-00
+
+# コメントに日付情報が含まれているケースがあるため、その場合には
+# コメントのデータを日付情報として使用する
+[ "" != "$(grep -E -o 'timestamp [0-9]{8}' $tmp-report)" ]	&&
+grep -E -o 'timestamp [0-9]{8}' $tmp-report 			|
+retusel 2								|
+awk '{print substr($1,1,4)" "substr($1,5,2)" "substr($1,7,2)}'	> $tmp-00
+
+# 日付と特定できるようなキーワードを含んだ行がある場合にはその
+# 行を取り出し、そうでない場合には先頭のデータを日付と見なす
+case "$(cat $tmp-00)" in
+*modified*) 	grep "modified"	$tmp-00 | head -1 		> $tmp-000 ;;
+*created*)	grep "created"	$tmp-00 | head -1 		> $tmp-000 ;;
+*作成日*)	grep "作成日"	$tmp-00 | head -1 		> $tmp-000 ;;
+*最終更新*)	grep "最終更新"	$tmp-00 | head -1 		> $tmp-000 ;;
+*JUN*)		grep "JUN" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*FEB*)		grep "FEB" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*MAR*) 		grep "MAR" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*APR*) 		grep "APR" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*MAY*) 		grep "MAY" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*JUN*) 		grep "JUN" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*JUL*) 		grep "JUL" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*AUG*) 		grep "AUG" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*SEP*) 		grep "SEP" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*OCT*) 		grep "OCT" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*NOV*) 		grep "NOV" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*DEC*) 		grep "DEC" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*Jun*)		grep "Jun" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*Feb*)		grep "Feb" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*Mar*) 		grep "Mar" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*Apr*) 		grep "Apr" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*May*) 		grep "May" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*Jun*) 		grep "Jun" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*Jul*) 		grep "Jul" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*Aug*) 		grep "Aug" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*Sep*) 		grep "Sep" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*Oct*) 		grep "Oct" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*Nov*) 		grep "Nov" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*Dec*) 		grep "Dec" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*1月*)		grep "1月" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*2月*)		grep "2月" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*3月*) 		grep "3月" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*4月*) 		grep "4月" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*5月*) 		grep "5月" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*6月*) 		grep "6月" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*7月*) 		grep "7月" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*8月*) 		grep "8月" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*9月*) 		grep "9月" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*10月*) 	grep "10月" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*11月*) 	grep "11月" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*12月*) 	grep "12月" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*Sun*) 		grep "Sun" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*Mon*) 		grep "Mon" 	$tmp-01 | head -1 		> $tmp-000 ;;
+*Tue*) 		grep "Tue" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*Wed*) 		grep "Wed" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*Thu*) 		grep "Thu" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*Fri*) 		grep "Fri" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*Sat*) 		grep "Sat" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*日*) 		grep "日" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*月*) 		grep "月" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*火*) 		grep "火" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*水*) 		grep "水" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*木*) 		grep "木" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*金*) 		grep "金" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*土*) 		grep "土" 	$tmp-00 | head -1 		> $tmp-000 ;;
+*date*) 	grep "date"	$tmp-00 | head -1 		> $tmp-000 ;;
+*edited*) 	grep "edited"	$tmp-00 | head -1 		> $tmp-000 ;;
+*) 		cat		$tmp-00 | head -1		> $tmp-000 ;;
+esac
+
+# YYYY/MM/DD、MM/DD/YYYY、DD/MM/YYYY、YYYY-MM-DD、MM-DD-YYYY、
+# DD-MM-YYYYなど明らかに日付とわかるものについてはその部分のみを
+# 取り出しておく
+cp	$tmp-000 $tmp-001
+[ "" != "$(grep -E -o "[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}" $tmp-001)" ]	&&
+grep -E -o "[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}" $tmp-001		> $tmp-000
+[ "" != "$(grep -E -o "[0-9]{1,2}-[0-9]{1,2}-[0-9]{4}" $tmp-001)" ]	&&
+grep -E -o "[0-9]{1,2}-[0-9]{1,2}-[0-9]{4}" $tmp-001		> $tmp-000
+[ "" != "$(grep -E -o "[0-9]{4}/[0-9]{1,2}/[0-9]{1,2}" $tmp-001)" ]	&&
+grep -E -o "[0-9]{4}/[0-9]{1,2}/[0-9]{1,2}" $tmp-001		> $tmp-000
+[ "" != "$(grep -E -o "[0-9]{1,2}/[0-9]{1,2}/[0-9]{4}" $tmp-001)" ]	&&
+grep -E -o "[0-9]{1,2}/[0-9]{1,2}/[0-9]{4}" $tmp-001		> $tmp-000
+
+# 曜日などのデータを削除
+sed -e 's/Mon[^ ]*//g' -e 's/Tue[^ ]*//g' -e 's/Web[^ ]*//g' 	\
+    -e 's/Thu[^ ]*//g' -e 's/Fri[^ ]*//g' -e 's/Sat[^ ]*//g'	\
+    -e 's/Sun[^ ]*//g' $tmp-000					|
+gsed -e 's/（/ /g' -e 's/）/ /g'				| # 月曜は月とかぶるので処理を保留
+gsed -e 's/月/月 /g' -e 's/火/ /g' -e 's/水/ /g' -e 's/木/ /g' 	\
+     -e 's/金/ /g' -e 's/土/ /g' -e 's/日/ /g' -e 's/年/ /g'	\
+     -e 's/現在/ /g' -e 's/今日/ /' -e 's/：//g'		> $tmp-src0
+
+# 取り出したデータのフィールド数が3よりも大きかった場合、次のどれかの
+# パターンに一致する部分を抜き出す（MMMは英語表記の日付、MMは数字の日付）
+#	YYYY MM DD
+#	MMM DD YYYY
+#	DD MMM YYYY
+# なお、中途半端なローカライゼーションで月だけ日本語表記に変わっている
+# ページもあるので、それにも対処
+[ $(cat $tmp-src0 | retu) -gt 3 ] || cat $tmp-src0		> $tmp-src
+[ $(cat $tmp-src0 | retu) -gt 3 ]				&& {
+	cat $tmp-src0						|
+	grep -E -o '[0-9]{4} *[0-9]{1,2} *[0-9]{1,2}'		|
+	head -1							> $tmp-src
+	[ "$(cat $tmp-src | retu)" != "3" ]			&&
+	cat $tmp-src0						|
+	grep -E -o ' *[0-9]{1,2} *[a-zA-Z]* *[0-9]{4}'		|
+	head -1							> $tmp-src
+	[ "$(cat $tmp-src | retu)" != "3" ]			&&
+	cat $tmp-src0						|
+	grep -E -o ' *[a-zA-Z]* *[0-9]{1,2} *[0-9]{4}'		|
+	head -1							> $tmp-src
+
+	# ここからは中途半端な日本語月表示への対処。結果はYYYY MM DDへ
+	# 変換して出力
+	[ "$(cat $tmp-src | retu)" != "3" ]			&&
+	cat $tmp-src0						|
+	grep -E -o '[0-9]{4} *[0-9]{1,2}月 *[0-9]{1,2}'		|
+	head -1							|
+	sed 's/月//'						> $tmp-src
+	[ "$(cat $tmp-src | retu)" != "3" ]			&&
+	cat $tmp-src0						|
+	grep -E -o ' *[0-9]{1,2} *[0-9]{1,2}月 *[0-9]{4}'	|
+	head -1							|
+	sed 's/月//'						|
+	retusel 3 2 1						> $tmp-src
+	[ "$(cat $tmp-src | retu)" != "3" ]			&&
+	cat $tmp-src0						|
+	grep -E -o ' *[0-9]{1,2}月 *[0-9]{1,2} *[0-9]{4}'	|
+	head -1							|
+	sed 's/月//'						|
+	retusel 3 1 2						> $tmp-src
+}
+
+# 月が英語表記になっている場合、その値を月として取り出す
+case "$(cat $tmp-src)" in
+*JAN*) echo 1 > $tmp-month ;;
+*FEB*) echo 2 > $tmp-month ;;
+*MAR*) echo 3 > $tmp-month ;;
+*APR*) echo 4 > $tmp-month ;;
+*MAY*) echo 5 > $tmp-month ;;
+*JUN*) echo 6 > $tmp-month ;;
+*JUL*) echo 7 > $tmp-month ;;
+*AUG*) echo 8 > $tmp-month ;;
+*SEP*) echo 9 > $tmp-month ;;
+*OCT*) echo 10 > $tmp-month ;;
+*NOV*) echo 11 > $tmp-month ;;
+*DEC*) echo 12 > $tmp-month ;;
+*Jan*) echo 1 > $tmp-month ;;
+*Feb*) echo 2 > $tmp-month ;;
+*Mar*) echo 3 > $tmp-month ;;
+*Apr*) echo 4 > $tmp-month ;;
+*May*) echo 5 > $tmp-month ;;
+*Jun*) echo 6 > $tmp-month ;;
+*Jul*) echo 7 > $tmp-month ;;
+*Aug*) echo 8 > $tmp-month ;;
+*Sep*) echo 9 > $tmp-month ;;
+*Oct*) echo 10 > $tmp-month ;;
+*Nov*) echo 11 > $tmp-month ;;
+*Dec*) echo 12 > $tmp-month ;;
+esac
+
+# 第1フィールドが年の場合はYYYY MM DDと仮定
+case "$(cat $tmp-src | retusel 1)" in
+[0-9][0-9][0-9][0-9])
+	cat $tmp-src | retusel 3 | sed 's/^0*//'			> $tmp-day ;;
+*)
+# 第1フィールドが年ではない場合はMMM DD YYYYまたはDD MMM YYYYと仮定。
+# さらに月は英語表記であると仮定し、英語表記ではない方を日として扱う
+	case "$(cat $tmp-src | retusel 1)" in
+	*JAN*|*FEB*|*MAR*|*APR*|*MAY*|*JUN*|*JUL*|*AUG*|*SEP*|*OCT*|*NOV*|*DEC*)
+		cat $tmp-src | retusel 2 | sed 's/^0*//'		> $tmp-day ;;
+	*Jan*|*Feb*|*Mar*|*Apr*|*May*|*Jun*|*Jul*|*Aug*|*Sep*|*Oct*|*Nov*|*Dec*)
+		cat $tmp-src | retusel 2 | sed 's/^0*//'		> $tmp-day ;;
+	esac
+	case "$(cat $tmp-src | retusel 2)" in
+	*JAN*|*FEB*|*MAR*|*APR*|*MAY*|*JUN*|*JUL*|*AUG*|*SEP*|*OCT*|*NOV*|*DEC*)
+		cat $tmp-src | retusel 1 | sed 's/^0*//'		> $tmp-day ;;
+	*Jan*|*Feb*|*Mar*|*Apr*|*May*|*Jun*|*Jul*|*Aug*|*Sep*|*Oct*|*Nov*|*Dec*)
+		cat $tmp-src | retusel 1 | sed 's/^0*//'		> $tmp-day ;;
+	esac
+# 月が英語表記ではない場合、MM DD YYYYであると仮定して月および日を取り出す
+	case "$(cat $tmp-src)" in
+	*JAN*|*FEB*|*MAR*|*APR*|*MAY*|*JUN*|*JUL*|*AUG*|*SEP*|*OCT*|*NOV*|*DEC*) ;;
+	*Jan*|*Feb*|*Mar*|*Apr*|*May*|*Jun*|*Jul*|*Aug*|*Sep*|*Oct*|*Nov*|*Dec*) ;;
+	*)
+		cat $tmp-src | retusel 1 | sed 's/^0*//'		> $tmp-month
+		cat $tmp-src | retusel 2 | sed 's/^0*//'		> $tmp-day ;;
+	esac
+	;;
+esac
+
+# 年月日の値が適切に取得できなかった場合、デフォルト値に置き換える。
+test "@" = "$(cat $tmp-year)"  && echo $defY > $tmp-year
+test "@" = "$(cat $tmp-month)" && echo $defm > $tmp-month
+test "@" = "$(cat $tmp-day)"   && echo $defd > $tmp-day
+test -z "$(cat $tmp-year)"  && echo $defY > $tmp-year
+test -z "$(cat $tmp-month)" && echo $defm > $tmp-month
+test -z "$(cat $tmp-day)"   && echo $defd > $tmp-day
+
+test "$(cat $tmp-month)" -gt 12 && echo $defm > $tmp-month
+test "$(cat $tmp-day)"   -gt 31 && echo $defd > $tmp-day
+
+case "$(cat $tmp-year)" in
+[1-9][0-9]*)	;;
+*)		echo $defY > $tmp-year ;;
+esac
+case "$(cat $tmp-month)" in
+[1-9][0-9]*)	;;
+*)		echo $defm > $tmp-month ;;
+esac
+case "$(cat $tmp-day)" in
+[1-9][0-9]*)	;;
+*)		echo $defd > $tmp-day ;;
+esac
+
+# ゼロとり
+cat	$tmp-month	| sed 's/^0//'	> $tmp-month
+cat	$tmp-day	| sed 's/^0//'	> $tmp-day
+
+# 出力
+printf "$(cat $tmp-year)年$(cat $tmp-month)月$(cat $tmp-day)日"
+printf "$(cat $tmp-tz)"
+
+rm -f $tmp-*

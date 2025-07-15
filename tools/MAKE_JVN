@@ -1,0 +1,45 @@
+#!/bin/sh
+
+tmp=/tmp/$$
+PATH=$(dirname $0):$PATH
+
+# 1:URL 2:ディレクトリ名 3:記事タイトル
+[ $# != "3" ]								&& exit 1
+
+# 報告書を取得
+netcat "$1"								> $tmp-report
+
+# 報告書からはめこむリストを作成
+{ echo "  <list>"
+cat $tmp-report								|
+tr -d '\n'								|
+tr -d '\r'								|
+# 対象のリストは<p><ul>というパターンから始まっているのでこれを利用
+gsed 's/<p><ul>/\n<p><ul>/g'						|
+gsed 's|</ul>|</ul>\n|g'						|
+grep '<p><ul>'								|
+grep -E -o '<li>.*</li>'						|
+gsed 's|</li>|</li>\n|g'						|
+sed 's/<[^<>]*>//g'							|
+grep -v '^$'								|
+# 文言の統一
+sed 's/ から /〜/g'							|
+sed 's/以前/よりも前のバージョン/g'					|
+sed 's/より前のバージョン/よりも前のバージョン/g'			|
+# この段階で必要なデータが出てきたのでリストへ加工
+sed 's,^,   <item><p>,'							|
+sed 's,$,</p></item>,'
+echo "  </list>"							;} > $tmp-list
+
+# 記事の原型を作成
+MAKE_TYPESCRIPT "$@"							|
+sed	's/(米国時間)//g'						> $tmp-typescript0
+
+# リストのはめ込みを実施
+cat	$tmp-typescript0						|
+txt1txt	-n								\
+	1.'<!-- LIST -->'.$tmp-list
+
+cat $tmp-typescript
+
+rm -f $tmp-*

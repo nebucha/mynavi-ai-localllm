@@ -1,0 +1,176 @@
+#!/bin/sh
+
+tmp=/tmp/$$
+PATH=$(dirname $0):$PATH
+
+# 1:URL 2:ディレクトリ名 3:記事タイトル
+[ $# != "3" ]								&& exit 1
+
+# 元記事を取得する
+netcat	"$1"								> $tmp-src
+
+# Mozilla Firefoxの修正されたバージョン番号を取得
+cat	$tmp-src							|
+grep	-E -o 'Firefox [0-9.]+'						|
+uniq									|
+head -1									|
+cat									> $tmp-firever
+firever=$(cat $tmp-firever)
+
+# Mozilla Firefox ESRの修正されたバージョン番号を取得
+cat	$tmp-src							|
+grep	-E -o 'Firefox ESR [0-9.]+'					|
+uniq									|
+head -1									|
+cat									> $tmp-esrver
+esrver=$(cat $tmp-esrver)
+
+# Mozilla FirefoxのアナウンスページのURLを取得
+cat	$tmp-src							|
+grep	-o 'https://www.mozilla.org/en-US/security/advisories/[^"]*'	|
+head	-1								|
+cat									> $tmp-fireurl
+fireurl=$(cat $tmp-fireurl)
+
+# Mozilla Firefox ESRのアナウンスページのURLを取得
+cat	$tmp-src							|
+grep	-o 'https://www.mozilla.org/en-US/security/advisories/[^"]*'	|
+tail	-1								|
+cat									> $tmp-esrurl
+esrurl=$(cat $tmp-esrurl)
+
+# Mozilla Firefoxのアナウンスページを取得
+netcat	$fireurl							> $tmp-fire
+
+# Mozilla Firefox ESRのアナウンスページを取得
+netcat	$esrurl								> $tmp-esr
+
+# Mozilla Firefoxアナウンスページのタイトルを取得
+cat	$tmp-fire							|
+tr	-d '\n'								|
+grep	-o '<title>.*</title>'						|
+sed	's/<[^>]*>//g'							> $tmp-firetit
+firetit=$(cat $tmp-firetit)
+
+# Mozilla Firefox ESRアナウンスページのタイトルを取得
+cat	$tmp-esr							|
+tr	-d '\n'								|
+grep	-o '<title>.*</title>'						|
+sed	's/<[^>]*>//g'							> $tmp-esrtit
+esrtit=$(cat $tmp-esrtit)
+
+# Mozilla Firefox セキュリティ脆弱性一覧を作成
+cat	$tmp-fire							|
+# 脆弱性データおよび深刻度を抽出
+grep	-E -o '(CVE-[0-9-]+:[^<]+)|(>critical<)|(>high<)|(>moderate<)|(>low<)' |
+# 最初の深刻度は全体での深刻度なので除外
+tail	+2								|
+# 脆弱性データと深刻度を1行にまとめる
+tr	-d '\n'								|
+sed	's/>/ (/g'							|
+sed 	's/</)\n/g'							|
+# 深刻度を日本語に変換
+sed	's/(critical)/(深刻度 緊急)/'					|
+sed	's/(high)/(深刻度 重要)/'					|
+sed	's/(moderate)/(深刻度 警告)/'					|
+sed	's/(low)/(深刻度 注意)/'					|
+# 深刻度が低いものをリストから除外
+grep	-v '(深刻度 警告)'						|
+grep	-v '(深刻度 注意)'						|
+cat									> $tmp-firevuls
+
+# Mozilla Firefox ESRセキュリティ脆弱性一覧を作成
+cat	$tmp-esr							|
+# 脆弱性データおよび深刻度を抽出
+grep	-E -o '(CVE-[0-9-]+:[^<]+)|(>critical<)|(>high<)|(>moderate<)|(>low<)' |
+# 最初の深刻度は全体での深刻度なので除外
+tail	+2								|
+# 脆弱性データと深刻度を1行にまとめる
+tr	-d '\n'								|
+sed	's/>/ (/g'							|
+sed 	's/</)\n/g'							|
+# 深刻度を日本語に変換
+sed	's/(critical)/(深刻度 緊急)/'					|
+sed	's/(high)/(深刻度 重要)/'					|
+sed	's/(moderate)/(深刻度 警告)/'					|
+sed	's/(low)/(深刻度 注意)/'					|
+# 深刻度が低いものをリストから除外
+grep	-v '(深刻度 警告)'						|
+grep	-v '(深刻度 注意)'						|
+cat									> $tmp-esrvuls
+
+# 脆弱性一覧を日本語訳
+translate $tmp-firevuls							> $tmp-firevuls-ja
+# 連続翻訳はできない。インターバルを挟む必要がある
+sleep 1
+translate $tmp-esrvuls							> $tmp-esrvuls-ja
+
+# 一覧をリストに変換
+cat	$tmp-firevuls							|
+sed	's,\(.*\),   <item><p>\1</p></item>,'				|
+cat									> $tmp-firevuls-list
+cat	$tmp-esrvuls							|
+sed	's,\(.*\),   <item><p>\1</p></item>,'				|
+cat									> $tmp-esrvuls-list
+cat	$tmp-firevuls-ja						|
+sed	's/緊急)/緊急)\n/g'						|
+sed	's/重要)/重要)\n/g'						|
+grep	-v '^$'								|
+sed	's,\(.*\),   <item><p>\1</p></item>,'				|
+cat									> $tmp-firevuls-ja-list
+cat	$tmp-esrvuls-ja							|
+sed	's/緊急)/緊急)\n/g'						|
+sed	's/重要)/重要)\n/g'						|
+grep	-v '^$'								|
+sed	's,\(.*\),   <item><p>\1</p></item>,'				|
+cat									> $tmp-esrvuls-ja-list
+
+# セキュリティ脆弱性 緊急 個数を取得
+numofcri=$(cat $tmp-firevuls $tmp-esrvuls | grep -o '緊急' | wc -l)
+
+# セキュリティ脆弱性 重要 個数を取得
+numofhigh=$(cat $tmp-firevuls $tmp-esrvuls | grep -o '重要' | wc -l)
+
+# セキュリティ脆弱性によってタイトルを変更
+if	[ $numofcri != "0" ]
+then
+	firetle="Firefoxに緊急のセキュリティ脆弱性、ただちにアップデートを"
+elif	[ $numofhigh != "0" ]
+then
+	firetle="Firefoxに重要なセキュリティ脆弱性、アップデートを"
+else
+	firetle="Firefoxにセキュリティ脆弱性、更新を"
+fi
+
+# セキュリティ脆弱性 緊急・重要の文言を作成
+if	[ $numofcri != "0" ]
+then
+	criticalhigh="Firefoxに深刻度が緊急のセキュリティ脆弱性が存在しており注意が必要"
+elif	[ $numofhigh != "0" ]
+then
+	criticalhigh="Firefoxに深刻度が重要のセキュリティ脆弱性が存在しており注意が必要"
+else
+	criticalhigh="Firefoxにセキュリティ脆弱性が存在しており注意が必要"
+fi
+
+# 記事の原型を作成
+MAKE_TYPESCRIPT 							\
+ 	"$@"								\
+	$tmp-firevuls-list						\
+	$tmp-esrvuls-list						\
+	$tmp-firevuls-ja-list						\
+	$tmp-esrvuls-ja-list						\
+									|
+sed	"s|FIRETLE|$firetle|g"						|
+sed	"s|FIREVER|$firever|g"						|
+sed	"s|ESRVER|$esrver|g"						|
+sed	"s|FIREURL|$fireurl|g"						|
+sed	"s|ESRURL|$esrurl|g"						|
+sed	"s|FIRETIT|$firetit|g"						|
+sed	"s|ESRTIT|$esrtit|g"						|
+sed	"s|CRITICALHIGH|$criticalhigh|g"				|
+cat									> $tmp-typescript
+
+cat $tmp-typescript
+
+rm -f $tmp-*

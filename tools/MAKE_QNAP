@@ -1,0 +1,132 @@
+#!/bin/sh -exv
+
+tmp=/tmp/$$
+PATH=$(dirname $0):$PATH
+
+# 1:URL 2:ディレクトリ名 3:記事タイトル
+[ $# != "3" ]								&& exit 1
+
+# 元記事を取得する
+netcat	"$1"								> $tmp-src
+
+# セキュリティ脆弱性が存在する製品の一覧を作成
+cat	$tmp-src							|
+sed	-n '/^<ul>/,/^<\/ul>/p'						|
+sed	's/^\t*//g'							|
+tr	-d '\n'								|
+sed	's,</ul><ul>,\n,'						|
+head	-1								|
+sed	's,</li>,\n,g'							|
+sed	's/<[^>]*>//g'							|
+grep	-v '^$'								|
+sed	's/ and later/およびこれ以降のバージョン/'			|
+awk	'{print "   <item><p>"$0"</p></item>"}'				|
+cat									> $tmp-tgts
+
+# セキュリティ脆弱性が修正された製品の一覧を作成
+cat	$tmp-src							|
+sed	-n '/^<ul>/,/^<\/ul>/p'						|
+sed	's/^\t*//g'							|
+tr	-d '\n'								|
+sed	's,</ul><ul>,\n,'						|
+tail	+2								|
+sed	's,</li>,\n,g'							|
+sed	's/<[^>]*>//g'							|
+grep	-v '^$'								|
+sed	's/ and later/およびこれ以降のバージョン/'			|
+awk	'{print "   <item><p>"$0"</p></item>"}'				|
+cat									> $tmp-fixed
+
+# CVE一覧を作成
+cat	$tmp-src							|
+grep	"CVE identifier:"						|
+sed	's/|/\n/g'							|
+grep	-o 'CVE-[0-9]*-[0-9]*'						|
+#awk	'{printf("<access ref=\"https://nvd.nist.gov/vuln/detail/%s\">%s</access>\n",$1,$1)}'		|
+awk	'{printf("%s\n",$1)}'						|
+awk	'{print "   <item><p>"$0"</p></item>"}'				|
+cat									> $tmp-cves
+
+# CVEの数を取得
+numofcves=$(wc -l $tmp-cves | awk '{print $1}')
+
+# 深刻度およびタイトルを設定
+case "$(grep "Severity:" $tmp-src)" in
+*Critical*)
+	severity="緊急（Critical）"
+	title="QNAPに緊急のセキュリティ脆弱性、ただちにアップデートを"
+	;;
+*High*)
+	severity="重要（High）"
+	title="QNAPに重要なセキュリティ脆弱性、アップデートを"
+	;;
+*Medium*)
+	severity="警告（Medium）"
+	title="QNAPにセキュリティ脆弱性、更新を"
+	;;
+*)
+	severity="注意 (Information)"
+	title="QNAPに脆弱性、注意を"
+	;;
+esac
+
+# 状態を取得
+case "$(grep "Status:" $tmp-src)" in
+*Resolved*)
+	status="すでに対処済み（Resolved）"
+	;;
+*Fixing*)
+	status="現在修正中（Fixing）"
+	;;
+*Investigating*)
+	status="現在調査中（Investigating）"
+	;;
+*Not" "Affected*)
+	status="QNAP製品には影響なし（Not Affected）"
+	;;
+*)
+	status="！！！ステータス不明！！！"
+	;;
+esac
+
+# サマリを抽出
+cat	$tmp-src							|
+sed	-n '/<h3>Summary<\/h3>/,/<\/p>/p'				|
+grep	'^<p>'								|
+sed	's/<[^>]*>//g'							|
+sed	's/&[^;]*;//g'							|
+cat									> $tmp-summary
+
+# サマリの日本語訳を追加
+translate $tmp-summary							> $tmp-summary-ja
+
+# リコメンデーションを抽出
+cat	$tmp-src							|
+sed	-n '/<h3>Recommendation<\/h3>/,/<\/p>/p'			|
+grep	'^<p>'								|
+sed	's/<[^>]*>//g'							|
+sed	's/&[^;]*;//g'							|
+cat									> $tmp-recomm
+
+# リコメンデーションの日本語訳を追加
+translate $tmp-recomm							> $tmp-recomm-ja
+        	
+# 記事の原型を作成
+MAKE_TYPESCRIPT 							\
+ 	"$@"								\
+	$tmp-tgts							\
+	$tmp-fixed							\
+	$tmp-cves							\
+	$tmp-summary							\
+	$tmp-summary-ja							\
+	$tmp-recomm							\
+	$tmp-recomm-ja							|
+sed	"s|QNAPTLE|$title|g"						|
+sed	"s|STATUS|$status|g"						|
+sed	"s|NUMOFCVES|$numofcves|g"					|
+sed	"s|SEVERITY|$severity|g"					|
+cat									> $tmp-typescript
+
+cat $tmp-typescript
+
+rm -f $tmp-*

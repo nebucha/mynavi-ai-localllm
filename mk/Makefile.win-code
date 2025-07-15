@@ -1,0 +1,24 @@
+# Copyright (c) 2021-2024 ONGS Inc.
+# All rights reserved.
+#
+# This software may be used, modified, copied, and distributed, in
+# both source and binary form provided that the above copyright and
+# these terms are retained. Under no circumstances is the author
+# responsible for the proper functioning of this software, nor does
+# the author assume any responsibility for damages incurred with its
+# use.
+
+# author: Daichi GOTO (daichi@ongs.co.jp)
+
+#=========================================================================
+# 新規記事作成
+#=========================================================================
+addhontai2: 
+	@cd	$(name)	;						 \
+		$(MAKE)	edit
+
+#=========================================================================
+# 操作系ターゲット
+#=========================================================================
+post:
+	# VSC拡張機能側で実装

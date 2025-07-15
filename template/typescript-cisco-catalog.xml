@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <docgroup>
+  <docinfo>
+   <title><p>CISCOTLE</p></title>
+   <shorttitle><p></p></shorttitle>
+   <author><p>USER</p></author>
+   <firstedition><p>NOW</p></firstedition>
+   <lastmodified><p>DATE REVISION</p></lastmodified>
+  </docinfo>
+
+  <p>[W:500]</p>
+
+  <p>[LEAD:]</p>
+
+  <p>[TAG:Cisco]</p>
+
+  <p>Cisco Systemsから複数のセキュリティアドバイザリーが発行された。セキュリティ脆弱性に関する情報は次のページからたどることができる。</p>
+
+  <list>
+   <item><p><access ref="https://tools.cisco.com/security/center/publicationListing.x">Security Advisories</access></p></item>
+  </list>
+
+  <p><import caption="Security Advisories" id="images/001raw.jpg" ref="images/001raw.jpg" type="image/jpeg"/></p>
+
+  <docgroup>
+   <docinfo>
+    <title><p>シスコ製品が抱えている脆弱性の概要</p></title>
+   </docinfo>
+  
+   <p>Cisco Systemsからは短期間に比較的多くのセキュリティアドバイザリーが発行される傾向が続いている。この1週間で発行または更新されたセキュリティ脆弱性は次のとおり。</p>
+
+   <list>
+EMBEDDED1TH
+   </list>
+
+   <p>すでに公開されているセキュリティアドバイザリーがアップデートされたり、同じ製品であっても短い間隔で別のセキュリティアドバイザリーが発行されることがある。Cisco Systemsの製品を使っている場合、掲載されているリストを日付などで整理しながら漏れなくチェックすることが望まれる。</p>
+  </docgroup> 
+
+  <docgroup>
+   <docinfo>
+    <title><p>深刻度の高いセキュリティ脆弱性</p></title>
+   </docinfo>
+  
+   <p>この1週間で発行されたセキュリティ脆弱性のうち、次の製品はセキュリティ脆弱性が緊急(Critical)と評価されていることから特に注意が必要。</p>
+   
+   <list>
+    <item><p></p></item>
+    <item><p></p></item>
+    <item><p></p></item>
+    <item><p></p></item>
+    <item><p></p></item>
+   </list>
+
+   <p>セキュリティ脆弱性が修正された製品およびバージョンは次のとおり。</p>
+
+   <list>
+    <item><p></p></item>
+    <item><p></p></item>
+    <item><p></p></item>
+    <item><p></p></item>
+    <item><p></p></item>
+   </list>
+
+   <p>該当する製品を使用している場合には上記セキュリティアドバイザリーから内容の確認を実施しておきたい。</p>
+  </docgroup> 
+
+  <docgroup>
+   <docinfo>
+    <title><p>再度の確認を</p></title>
+   </docinfo>
+  
+   <p>この1週間で発行または更新されたセキュリティアドバイザリーはNUMOFSCAS個で、CRITICALHIGH注意が必要。米国土安全保障省サイバーセキュリティ・インフラストラクチャーセキュリティ庁は、ユーザーおよび管理者に対して上記セキュリティ情報をチェックするとともに、必要に応じてアップデートを適用することを推奨している。</p>
+  </docgroup> 
+
+  <p>[POST:]</p>
+
+<!--LIST-->
+
+  <p>[SRC:SRCURL]</p>
+
+  <p>[URL:][]</p>
+ </docgroup>
+</document>

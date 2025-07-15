@@ -1,0 +1,446 @@
+#!/bin/sh -evx
+
+tmp=/tmp/$$
+PATH=$(dirname $0):$PATH
+
+# 1:URL 2:ディレクトリ名 3:記事タイトル
+[ $# != "3" ]								&& exit 1
+
+# 元記事を取得する
+netcat	"$1"								> $tmp-src
+
+# Mozilla FirefoxアナウンスページのURLを取得 (1つ想定)
+cat	$tmp-src							|
+grep	-o 'https://www.mozilla.org/en-US/security/advisories/[^<]*'	|
+grep	"Firefox [0-9]"							|
+grep	-o 'https://www.mozilla.org/en-US/security/advisories/.*/'	|
+cat									> $tmp-fireurl
+fireurl=$(cat $tmp-fireurl)
+
+# Mozilla Firefox ESRのアナウンスページのURLを取得 (最大2つ想定)
+cat	$tmp-src							|
+grep	-o 'https://www.mozilla.org/en-US/security/advisories/[^<]*'	|
+grep	"Firefox ESR [0-9]"						|
+grep	-o 'https://www.mozilla.org/en-US/security/advisories/.*/'	|
+cat									> $tmp-esrurls
+esrurl1=$(cat $tmp-esrurls | head -1)
+esrurl2=$(cat $tmp-esrurls | tail +2 | head -1)
+
+# Mozilla ThunderbirdのアナウンスページのURLを取得 (最大2つ想定)
+cat	$tmp-src							|
+grep	-o 'https://www.mozilla.org/en-US/security/advisories/[^<]*'	|
+grep	"Thunderbird [0-9]"						|
+grep	-o 'https://www.mozilla.org/en-US/security/advisories/.*/'	|
+cat									> $tmp-thuurls
+thuurl1=$(cat $tmp-thuurls | head -1)
+thuurl2=$(cat $tmp-thuurls | tail +2 | head -1)
+
+# Mozilla Firefoxのアナウンスページを取得 (1つ想定)
+netcat	$fireurl							> $tmp-fire
+
+# Mozilla Firefox ESRのアナウンスページを取得 (最大2つ想定)
+netcat	${esrurl1}							> $tmp-esr1
+netcat	${esrurl2}							> $tmp-esr2
+
+# Mozilla Thunderbirdのアナウンスページを取得 (最大2つ想定)
+netcat	${thuurl1}							> $tmp-thu1
+netcat	${thuurl2}							> $tmp-thu2
+
+# Mozilla Firefoxの修正されたバージョン番号を取得 (1つ想定)
+cat	$tmp-fire							|
+grep	-E -o 'Firefox [0-9.]+'						|
+head	-1								|
+sed	's/Firefox //'							|
+cat									> $tmp-firever
+firever=$(cat $tmp-firever)
+
+# Mozilla Firefox ESRの修正されたバージョン番号を取得 (最大2つ想定)
+cat	$tmp-esr1							|
+grep	-E -o 'Firefox ESR [0-9.]+'					|
+head	-1								|
+sed	's/Firefox ESR //'						|
+cat									> $tmp-esrver1
+esrver1=$(cat $tmp-esrver1)
+
+cat	$tmp-esr2							|
+grep	-E -o 'Firefox ESR [0-9.]+'					|
+head	-1								|
+sed	's/Firefox ESR //'						|
+cat									> $tmp-esrver2
+esrver2=$(cat $tmp-esrver2)
+
+# Mozilla Thunderbirdの修正されたバージョン番号を取得 (最大2つ想定)
+cat	$tmp-thu1							|
+grep	-E -o 'Thunderbird [0-9.]+'					|
+head	-1								|
+sed	's/Thunderbird //'						|
+cat									> $tmp-thuver1
+thuver1=$(cat $tmp-thuver1)
+
+cat	$tmp-thu2							|
+grep	-E -o 'Thunderbird [0-9.]+'					|
+head	-1								|
+sed	's/Thunderbird //'						|
+cat									> $tmp-thuver2
+thuver2=$(cat $tmp-thuver2)
+
+# Mozilla Firefoxのアナウンスページのスクリーンショットを取得
+getss	-w 1200								\
+	-h 800								\
+	-f $tmp-ss.png							\
+	$fireurl
+gm	convert								\
+	-resize 1200x800						\
+	$tmp-ss.png							\
+	$2/images/001raw.jpg
+
+# Mozilla Firefoxアナウンスページのタイトルを取得
+cat	$tmp-fire							|
+tr	-d '\n'								|
+grep	-o '<title>.*</title>'						|
+sed	's/<[^>]*>//g'							> $tmp-firetit
+firetit=$(cat $tmp-firetit)
+
+# Mozilla Firefox ESRアナウンスページのタイトルを取得
+cat	$tmp-esr1							|
+tr	-d '\n'								|
+grep	-o '<title>.*</title>'						|
+sed	's/<[^>]*>//g'							> $tmp-esrtit1
+esrtit1=$(cat $tmp-esrtit1)
+
+cat	$tmp-esr2							|
+tr	-d '\n'								|
+grep	-o '<title>.*</title>'						|
+sed	's/<[^>]*>//g'							> $tmp-esrtit2
+esrtit2=$(cat $tmp-esrtit2)
+
+# Mozilla Thunderbirdアナウンスページのタイトルを取得
+cat	$tmp-thu1							|
+tr	-d '\n'								|
+grep	-o '<title>.*</title>'						|
+sed	's/<[^>]*>//g'							> $tmp-thutit1
+thutit1=$(cat $tmp-thutit1)
+
+cat	$tmp-thu2							|
+tr	-d '\n'								|
+grep	-o '<title>.*</title>'						|
+sed	's/<[^>]*>//g'							> $tmp-thutit2
+thutit2=$(cat $tmp-thutit2)
+
+# 深刻度に関する情報を日本語に変換
+transseverity() {
+	# 深刻度を日本語に変換
+	cat								|
+	sed	's/(critical)/【緊急】/'				|
+	sed	's/(high)/［重要］/'					|
+	sed	's/(moderate)/(警告)/'					|
+	sed	's/(low)/(注意)/'					|
+	# 深刻度が低いものをリストから除外
+	grep	-v '(警告)'						|
+	grep	-v '(注意)'						|
+	# 深刻度を行頭に表示
+	sed	's/^\(.*\)【緊急】$/【緊急】\1/'			|
+	sed	's/^\(.*\)［重要］$/［重要］\1/'			|
+	cat
+}
+
+# Mozilla Firefox セキュリティ脆弱性一覧を作成
+cat	$tmp-fire							|
+# 脆弱性データおよび深刻度を抽出
+grep	-E -o '(CVE-[0-9-]+:[^<]+)|(>critical<)|(>high<)|(>moderate<)|(>low<)' |
+# 最初の深刻度は全体での深刻度なので除外
+tail	+2								|
+# 脆弱性データと深刻度を1行にまとめる
+tr	-d '\n'								|
+sed	's/>/ (/g'							|
+sed 	's/</)\n/g'							|
+# 深刻度を日本語に変換
+transseverity								|
+cat									> $tmp-firevuls
+
+# Mozilla Firefox ESRセキュリティ脆弱性一覧を作成
+cat	$tmp-esr1							|
+# 脆弱性データおよび深刻度を抽出
+grep	-E -o '(CVE-[0-9-]+:[^<]+)|(>critical<)|(>high<)|(>moderate<)|(>low<)' |
+# 最初の深刻度は全体での深刻度なので除外
+tail	+2								|
+# 脆弱性データと深刻度を1行にまとめる
+tr	-d '\n'								|
+sed	's/>/ (/g'							|
+sed 	's/</)\n/g'							|
+# 深刻度を日本語に変換
+transseverity								|
+cat									> $tmp-esrvuls1
+
+cat	$tmp-esr2							|
+# 脆弱性データおよび深刻度を抽出
+grep	-E -o '(CVE-[0-9-]+:[^<]+)|(>critical<)|(>high<)|(>moderate<)|(>low<)' |
+# 最初の深刻度は全体での深刻度なので除外
+tail	+2								|
+# 脆弱性データと深刻度を1行にまとめる
+tr	-d '\n'								|
+sed	's/>/ (/g'							|
+sed 	's/</)\n/g'							|
+# 深刻度を日本語に変換
+transseverity								|
+cat									> $tmp-esrvuls2
+
+# Mozilla Thunderbirdセキュリティ脆弱性一覧を作成
+cat	$tmp-thu1							|
+# 脆弱性データおよび深刻度を抽出
+grep	-E -o '(CVE-[0-9-]+:[^<]+)|(>critical<)|(>high<)|(>moderate<)|(>low<)' |
+# 最初の深刻度は全体での深刻度なので除外
+tail	+2								|
+# 脆弱性データと深刻度を1行にまとめる
+tr	-d '\n'								|
+sed	's/>/ (/g'							|
+sed 	's/</)\n/g'							|
+# 深刻度を日本語に変換
+transseverity								|
+cat									> $tmp-thuvuls1
+
+cat	$tmp-thu2							|
+# 脆弱性データおよび深刻度を抽出
+grep	-E -o '(CVE-[0-9-]+:[^<]+)|(>critical<)|(>high<)|(>moderate<)|(>low<)' |
+# 最初の深刻度は全体での深刻度なので除外
+tail	+2								|
+# 脆弱性データと深刻度を1行にまとめる
+tr	-d '\n'								|
+sed	's/>/ (/g'							|
+sed 	's/</)\n/g'							|
+# 深刻度を日本語に変換
+transseverity								|
+cat									> $tmp-thuvuls2
+
+# Firefox脆弱性一覧を日本語訳
+cat	$tmp-firevuls							|
+# 翻訳されやすいように句点と改行を挿入
+sed	's/[ ]*$/. Thank you.\n/'					|
+sed	's/:/./'							|
+sed	's/: /:/g'							|
+# 翻訳を実施
+translate 								|
+cat									> $tmp-firevuls-ja
+
+# 連続翻訳はできない。インターバルを挟む必要がある
+sleep 2
+
+# Firefox ESR 1脆弱性一覧を日本語訳
+cat	$tmp-esrvuls1							|
+# 翻訳されやすいように句点と改行を挿入
+sed	's/[ ]*$/. Thank you.\n/'					|
+sed	's/:/./'							|
+sed	's/: /:/g'							|
+# 翻訳を実施
+translate								|
+cat									> $tmp-esrvuls-ja1
+
+# 連続翻訳はできない。インターバルを挟む必要がある
+sleep 3
+
+# Firefox ESR 2脆弱性一覧を日本語訳
+cat	$tmp-esrvuls2							|
+# 翻訳されやすいように句点と改行を挿入
+sed	's/[ ]*$/. Thank you.\n/'					|
+sed	's/:/./'							|
+sed	's/: /:/g'							|
+# 翻訳を実施
+translate								|
+cat									> $tmp-esrvuls-ja2
+
+# 連続翻訳はできない。インターバルを挟む必要がある
+sleep 4 
+
+# Thunderbird 1脆弱性一覧を日本語訳
+cat	$tmp-thuvuls1							|
+# 翻訳されやすいように句点と改行を挿入
+sed	's/[ ]*$/. Thank you.\n/'					|
+sed	's/:/./'							|
+sed	's/: /:/g'							|
+# 翻訳を実施
+translate 								|
+cat									> $tmp-thuvuls-ja1
+
+# 連続翻訳はできない。インターバルを挟む必要がある
+sleep 5 
+
+# Thunderbird 2脆弱性一覧を日本語訳
+cat	$tmp-thuvuls2							|
+# 翻訳されやすいように句点と改行を挿入
+sed	's/[ ]*$/. Thank you.\n/'					|
+sed	's/:/./'							|
+sed	's/: /:/g'							|
+# 翻訳を実施
+translate 								|
+cat									> $tmp-thuvuls-ja2
+
+# 一覧をリストに変換
+cat	$tmp-firevuls							|
+sed	's,\(.*\),   <item><p>\1</p></item>,'				|
+cat									> $tmp-firevuls-list
+
+cat	$tmp-esrvuls1							|
+sed	's,\(.*\),   <item><p>\1</p></item>,'				|
+cat									> $tmp-esrvuls-list1
+
+cat	$tmp-esrvuls2							|
+sed	's,\(.*\),   <item><p>\1</p></item>,'				|
+cat									> $tmp-esrvuls-list2
+
+cat	$tmp-thuvuls1							|
+sed	's,\(.*\),   <item><p>\1</p></item>,'				|
+cat									> $tmp-thuvuls-list1
+
+cat	$tmp-thuvuls2							|
+sed	's,\(.*\),   <item><p>\1</p></item>,'				|
+cat									> $tmp-thuvuls-list2
+
+cat	$tmp-firevuls-ja						|
+# 翻訳による記号のブレを補正
+sed	's/［重要】/［重要］/g'						|
+sed	's/【重要】/［重要］/g'						|
+sed	's/ 重要］/［重要］/g'						|
+sed	's/ 重要】/［重要］/g'						|
+# リストにするために改行を挿入
+sed	's/ありがとうございます。/\n/g'					|
+sed	's/ありがとうございました。/\n/g'				|
+sed	's/【緊急】/\n【緊急】/g'					|
+sed	's/［重要］/\n［重要］/g'					|
+# CVEの区切りを:に戻す
+sed	's/. /: /'							|
+grep	-v '^$'								|
+sed	's,\(.*\),   <item><p>\1</p></item>,'				|
+cat									> $tmp-firevuls-ja-list
+
+cat	$tmp-esrvuls-ja1						|
+# 翻訳による記号のブレを補正
+sed	's/［重要】/［重要］/g'						|
+sed	's/【重要】/［重要］/g'						|
+sed	's/ 重要］/［重要］/g'						|
+sed	's/ 重要】/［重要］/g'						|
+# リストにするために改行を挿入
+sed	's/ありがとうございます。/\n/g'					|
+sed	's/ありがとうございました。/\n/g'				|
+sed	's/【緊急】/\n【緊急】/g'					|
+sed	's/［重要］/\n［重要］/g'					|
+# CVEの区切りを:に戻す
+sed	's/. /: /'							|
+grep	-v '^$'								|
+sed	's,\(.*\),   <item><p>\1</p></item>,'				|
+cat									> $tmp-esrvuls-ja-list1
+
+cat	$tmp-esrvuls-ja2						|
+# 翻訳による記号のブレを補正
+sed	's/［重要】/［重要］/g'						|
+sed	's/【重要】/［重要］/g'						|
+sed	's/ 重要］/［重要］/g'						|
+sed	's/ 重要】/［重要］/g'						|
+# リストにするために改行を挿入
+sed	's/ありがとうございます。/\n/g'					|
+sed	's/ありがとうございました。/\n/g'				|
+sed	's/【緊急】/\n【緊急】/g'					|
+sed	's/［重要］/\n［重要］/g'					|
+# CVEの区切りを:に戻す
+sed	's/. /: /'							|
+grep	-v '^$'								|
+sed	's,\(.*\),   <item><p>\1</p></item>,'				|
+cat									> $tmp-esrvuls-ja-list2
+
+cat	$tmp-thuvuls-ja1						|
+# 翻訳による記号のブレを補正
+sed	's/［重要】/［重要］/g'						|
+sed	's/【重要】/［重要］/g'						|
+sed	's/ 重要］/［重要］/g'						|
+sed	's/ 重要】/［重要］/g'						|
+# リストにするために改行を挿入
+sed	's/ありがとうございます。/\n/g'					|
+sed	's/ありがとうございました。/\n/g'				|
+sed	's/【緊急】/\n【緊急】/g'					|
+sed	's/［重要］/\n［重要］/g'					|
+# CVEの区切りを:に戻す
+sed	's/. /: /'							|
+grep	-v '^$'								|
+sed	's,\(.*\),   <item><p>\1</p></item>,'				|
+cat									> $tmp-thuvuls-ja-list1
+
+cat	$tmp-thuvuls-ja2						|
+# 翻訳による記号のブレを補正
+sed	's/［重要】/［重要］/g'						|
+sed	's/【重要】/［重要］/g'						|
+sed	's/ 重要］/［重要］/g'						|
+sed	's/ 重要】/［重要］/g'						|
+# リストにするために改行を挿入
+sed	's/ありがとうございます。/\n/g'					|
+sed	's/ありがとうございました。/\n/g'				|
+sed	's/【緊急】/\n【緊急】/g'					|
+sed	's/［重要］/\n［重要］/g'					|
+# CVEの区切りを:に戻す
+sed	's/. /: /'							|
+grep	-v '^$'								|
+sed	's,\(.*\),   <item><p>\1</p></item>,'				|
+cat									> $tmp-thuvuls-ja-list2
+
+# セキュリティ脆弱性 緊急 個数を取得
+numofcri=$(cat $tmp-firevuls $tmp-esrvuls | grep -o '緊急' | wc -l)
+
+# セキュリティ脆弱性 重要 個数を取得
+numofhigh=$(cat $tmp-firevuls $tmp-esrvuls | grep -o '重要' | wc -l)
+
+# セキュリティ脆弱性によってタイトルを変更
+if	[ $numofcri != "0" ]
+then
+	firetle="FirefoxとThunderbirdに緊急のセキュリティ脆弱性、ただちにアップデートを"
+elif	[ $numofhigh != "0" ]
+then
+	firetle="FirefoxとThunderbirdに重要なセキュリティ脆弱性、アップデートを"
+else
+	firetle="FirefoxとThunderbirdにセキュリティ脆弱性、更新を"
+fi
+
+# セキュリティ脆弱性 緊急・重要の文言を作成
+if	[ $numofcri != "0" ]
+then
+	criticalhigh="FirefoxとThunderbirdに深刻度が緊急のセキュリティ脆弱性が存在しており注意が必要"
+elif	[ $numofhigh != "0" ]
+then
+	criticalhigh="FirefoxとThunderbirdに深刻度が重要のセキュリティ脆弱性が存在しており注意が必要"
+else
+	criticalhigh="FirefoxとThunderbirdにセキュリティ脆弱性が存在しており注意が必要"
+fi
+
+# 記事の原型を作成
+MAKE_TYPESCRIPT 							\
+ 	"$@"								\
+	$tmp-firevuls-list						\
+	$tmp-firevuls-ja-list						\
+	$tmp-esrvuls-list1						\
+	$tmp-esrvuls-ja-list1						\
+	$tmp-esrvuls-list2						\
+	$tmp-esrvuls-ja-list2						\
+	$tmp-thuvuls-list1						\
+	$tmp-thuvuls-ja-list1						\
+	$tmp-thuvuls-list2						\
+	$tmp-thuvuls-ja-list2						\
+									|
+sed	"s|FIRETLE|$firetle|g"						|
+sed	"s|FIREVER|$firever|g"						|
+sed	"s|ESRVER1|${esrver1}|g"					|
+sed	"s|ESRVER2|${esrver2}|g"					|
+sed	"s|THUVER1|${thuver1}|g"					|
+sed	"s|THUVER2|${thuver2}|g"					|
+sed	"s|FIREURL|$fireurl|g"						|
+sed	"s|ESRURL1|${esrurl1}|g"					|
+sed	"s|ESRURL2|${esrurl2}|g"					|
+sed	"s|THUURL1|${thuurl1}|g"					|
+sed	"s|THUURL2|${thuurl2}|g"					|
+sed	"s|FIRETIT|$firetit|g"						|
+sed	"s|ESRTIT1|${esrtit1}|g"					|
+sed	"s|ESRTIT2|${esrtit2}|g"					|
+sed	"s|THUTIT1|${thutit1}|g"					|
+sed	"s|THUTIT2|${thutit2}|g"					|
+sed	"s|CRITICALHIGH|$criticalhigh|g"				|
+cat									> $tmp-typescript
+
+cat	$tmp-typescript
+
+rm	-f $tmp-*

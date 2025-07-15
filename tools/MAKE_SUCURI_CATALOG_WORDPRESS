@@ -1,0 +1,114 @@
+#!/bin/sh -evx
+
+tmp=/tmp/$$
+PATH=$(dirname $0):$PATH
+
+# 1:URL 2:ディレクトリ名 3:記事タイトル
+[ $# != "3" ]								&& exit 1
+
+# 記事データを取得
+netcat	"$1"								> $tmp-report
+
+# セキュリティ脆弱性の数
+numofvuls=$(grep 'Security Risk' $tmp-report | wc -l)
+numofcri=$(grep 'Security Risk' $tmp-report | grep -E ' Critical$' | wc -l)
+numofhigh=$(grep 'Security Risk' $tmp-report | grep -E ' High$' | wc -l)
+numofmed=$(grep 'Security Risk' $tmp-report | grep -E ' Medium$' | wc -l)
+numoflow=$(grep 'Security Risk' $tmp-report | grep -E ' Low$' | wc -l)
+
+# セキュリティ脆弱性リストの作成
+cat	$tmp-report							|
+# 改行データを削除し1行のデータへ加工
+tr	-d '\n'								|
+tr	-d '\r'								|
+# セキュリティ脆弱性に関する情報のみを抽出
+sed	's/<h2/\n<h2/g'							|
+sed	's.</pre>.</pre>\n\n\n\n.g'					|
+grep	'^<h2'								|
+grep	'Exploitation Level'						> $tmp-vulsrc
+
+cat	$tmp-vulsrc							|
+while	read line
+do
+	echo "$line"							> $tmp-vul
+	
+	severity=$(cat $tmp-vul | sed 's,</b>,,g' | sed 's|.*Security Risk:[ ]*\([A-Za-z]*\).*|\1|g')
+	product=$(cat $tmp-vul | sed 's,</b>,,g' | sed 's|.*Affected Software:[ ]*\([^&]*\).*|\1|g')
+
+	case	"$line" in
+	*CVE-*)
+		cve=$(cat $tmp-vul | sed 's|.*\(CVE-[0-9]*-[0-9]*\).*|\1|g')
+		;;
+	*)
+		cve=""
+		;;
+	esac
+
+	case	"$line" in
+	*Vulnerability:*)
+		explain=$(cat $tmp-vul | sed 's,</b>,,g' | sed 's|.*Vulnerability:[ ]*\(.*\)|\1|' | sed 's|<b>\(.*\)||' | sed 's|<[^>]*>||g' | nanchatte_vuls_translator)
+		;;
+	*)
+		explain=""
+		;;
+	esac
+
+
+	case "${severity}" in
+	Critical)
+		severity="1 [緊急(Critical)]"
+		;;
+	CriticalHigh)
+		severity="2 [CriticalHigh]"
+		;;
+	High)
+		severity="3 [重要(High)]"
+		;;
+	Medium)
+		severity="4 [警告(Medium)]"
+		;;
+	LowMedium)
+		severity="5 [LowMedium]"
+		;;
+	Low)
+		severity="6 [注意(Low)]"
+		;;
+	esac
+
+	if	[ -z "$cve" ]
+	then
+		if	[ -z "$explain" ]
+		then
+			echo	"${severity} ${product}"
+		else
+			echo	"${severity} ${product} - ${explain}"
+		fi
+	else
+		if	[ -z "$explain" ]
+		then
+			echo	"${severity} <access ref=\"https://cve.mitre.org/cgi-bin/cvename.cgi?name=${cve}\">${cve}</access> ${product}"
+		else
+			echo	"${severity} <access ref=\"https://cve.mitre.org/cgi-bin/cvename.cgi?name=${cve}\">${cve}</access> ${product} - ${explain}"
+		fi
+	fi
+done									|
+sort									|
+sed	's/[1-9] //'							|
+sed	's|^|   <item><p>|'						|
+sed	's|$|</p></item>|'						|
+cat									> $tmp-vulslist
+
+# 記事の原型を作成
+MAKE_TYPESCRIPT 							\
+ 	"$@"								\
+	$tmp-vulslist							|
+sed	"s|NUMOFVULS|$numofvuls|g"					|
+sed	"s|NUMOFCRI|$numofcri|g"					|
+sed	"s|NUMOFHIGH|$numofhigh|g"					|
+sed	"s|NUMOFMED|$numofmed|g"					|
+sed	"s|NUMOFLOW|$numoflow|g"					|
+cat									> $tmp-typescript
+
+cat	$tmp-typescript
+
+rm	-f $tmp-*

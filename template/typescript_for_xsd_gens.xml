@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <docgroup>
+  <docinfo>
+   <title><p>XML Schemaファイル生成のためのテンプレートファイル</p></title>
+   <shorttitle><p>短いタイトル</p></shorttitle>
+   <author><p>後藤大地</p></author>
+   <firstedition><p>Wed Feb 15 10:45:06 JST 2023</p></firstedition>
+   <lastmodified><p>$Date$ $Revision$</p></lastmodified>
+  </docinfo>
+
+  <p>[W:記事の規定文字数]</p>
+
+  <p>[LEAD:リード文章]</p>
+
+  <p>[TAG:タグ1,タグ1,タグ1]</p>
+
+  <p>文章、「<access ref="https://www.example.org/1">リンク先1</access>」文章、「<access ref="https://www.example.org/2">リンク先2</access>」文章。</p>
+
+  <p><import caption="キャプション" id="images/001raw.jpg" ref="images/001raw.jpg" type="image/jpeg" /></p>
+
+  <p>文章。</p>
+
+  <list>
+   <item><p><access ref="https://www.example.org/">リンク先1</access> 文章1</p></item>
+   <item><p><access ref="https://www.example.org/">リンク先2</access> 文章2</p></item>
+   <item><p><access ref="https://www.example.org/">リンク先3</access> 文章3</p></item>
+  </list>
+
+  <p>文章。</p>
+
+  <list type="order">
+   <item><p><access ref="https://www.example.org/">リンク先1</access> 文章1</p></item>
+   <item><p><access ref="https://www.example.org/">リンク先2</access> 文章2</p></item>
+   <item><p><access ref="https://www.example.org/">リンク先3</access> 文章3</p></item>
+  </list>
+
+  <p>文章。</p>
+
+  <p><import caption="" id="tables/001.tsv" ref="tables/001.tsv" type="text/tsv" encoding="UTF-8" /></p>
+
+  <quote ref="https://www.example.org/">
+   <p>文章</p>
+   <p>文章</p>
+  </quote>
+
+  <p>文章。</p>
+
+  <note>
+   <p>文章</p>
+   <p>文章</p>
+  </note>
+
+  <p>文章。</p>
+
+  <docgroup>
+   <docinfo>
+    <title><p>タイトル</p></title>
+   </docinfo>
+
+   <p>文章、「<access ref="https://www.example.org/">リンク先1</access>」文章、「<access ref="https://www.example.org/">リンク先2</access>」文章。</p>
+
+   <p><import caption="キャプション" id="images/001raw.jpg" ref="images/001raw.jpg" type="image/jpeg"/></p>
+
+   <p>文章。</p>
+
+   <p>文章。</p>
+
+   <list>
+    <item><p><access ref="https://www.example.org/">リンク先1</access> 文章1</p></item>
+    <item><p><access ref="https://www.example.org/">リンク先2</access> 文章2</p></item>
+    <item><p><access ref="https://www.example.org/">リンク先3</access> 文章3</p></item>
+   </list>
+
+   <p>文章。</p>
+
+   <list type="order">
+    <item><p><access ref="https://www.example.org/">リンク先1</access> 文章1</p></item>
+    <item><p><access ref="https://www.example.org/">リンク先2</access> 文章2</p></item>
+    <item><p><access ref="https://www.example.org/">リンク先3</access> 文章3</p></item>
+   </list>
+
+   <p>文章。</p>
+
+   <p><import caption="" id="tables/001.tsv" ref="tables/001.tsv" type="text/tsv" encoding="UTF-8" /></p>
+
+   <p><import caption="" id="tables/001.tsv" ref="tables/001.tsv" type="text/tsv" encoding="UTF-8" /></p>
+
+   <quote ref="https://www.example.org/">
+    <p>文章</p>
+    <p>文章</p>
+   </quote>
+
+   <p>文章。</p>
+
+   <note>
+    <p>文章</p>
+    <p>文章</p>
+   </note>
+
+   <p>文章。</p>
+  </docgroup>  
+
+  <p>[POST:]</p>
+
+  <p>[MJ:]</p>
+
+  <p>[MJ:]</p>
+
+  <p>[MJ:]</p>
+
+  <p>[SRC:https://www.example.org/]</p>
+
+  <p>[URL:https://www.example.org/][サイト名]</p>
+ </docgroup>
+</document>

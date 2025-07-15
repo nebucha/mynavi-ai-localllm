@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <docgroup>
+  <docinfo>
+   <title><p>、MONTH月Webサーバー調査結果</p></title>
+   <shorttitle><p>TITLE</p></shorttitle>
+   <author><p>USER</p></author>
+   <firstedition><p>NOW</p></firstedition>
+   <lastmodified><p>DATE REVISION</p></lastmodified>
+  </docinfo>
+
+  <p>[W:500]</p>
+
+  <p>[LEAD:]</p>
+
+  <p>[TAG:Netcraft]</p>
+
+  <p>HIDUKE、Netcraftに掲載された記事「<access ref="SRCURL">SRCTITLE</access>」が、YEAR年MONTH月におけるWebサーバー調査結果を伝えた。YEAR年MONTH月はNUMOFUNIQDOMAINSユニークドメインおよびNUMOFWEBCOMPUTERS台のWeb対応コンピューターから合計NUMOFTOTALSITESのサイトレスポンスが得られており、NUMOFSITES万のサイト増加減少、NUMOFDOMAINSのドメイン増加減少、NUMOFCOMPUTERS台のWeb対応コンピューター増加減少が報告されている。</p>
+
+  <docgroup>
+   <docinfo>
+    <title><p>ホスト名ベースWebサイト数推移</p></title>
+   </docinfo>
+
+   <p><import type="image/jpeg" id="001raw.jpg" ref="images/001raw.jpg" caption="ホスト名ベースWebサイト数推移グラフ 1995年8月〜YEAR年MONTH月 - 資料: インターネットサービス企業Netcraft提供" /></p>
+  </docgroup> 
+
+  <docgroup>
+   <docinfo>
+    <title><p>Webサーバーシェア推移</p></title>
+   </docinfo>
+
+   <p><import type="image/jpeg" id="002raw.jpg" ref="images/002raw.jpg" caption="Webサーバーシェア推移グラフ 1995年8月〜YEAR年MONTH月 - 資料: インターネットサービス企業Netcraft提供" /></p>
+  </docgroup> 
+
+  <docgroup>
+   <docinfo>
+    <title><p>Webサーバーアクティブサイトシェア推移</p></title>
+   </docinfo>
+
+   <p><import type="image/jpeg" id="003raw.jpg" ref="images/003raw.jpg" caption="Webサーバーアクティブサイトシェア推移グラフ 2000年6月〜YEAR年MONTH月 - 資料: インターネットサービス企業Netcraft提供" /></p>
+  </docgroup> 
+
+  <docgroup>
+   <docinfo>
+    <title><p>トップ100万ビジーサイトWebサーバーシェア推移</p></title>
+   </docinfo>
+
+   <p><import type="image/jpeg" id="004raw.jpg" ref="images/004raw.jpg" caption="トップ100万ビジーサイトWebサーバーシェア推移グラフ 2008年9月〜YEAR年MONTH月 - 資料: インターネットサービス企業Netcraft提供" /></p>
+  </docgroup> 
+
+  <docgroup>
+   <docinfo>
+    <title><p>コンピューター別Webサーバーシェア推移</p></title>
+   </docinfo>
+
+   <p><import type="image/jpeg" id="005raw.jpg" ref="images/005raw.jpg" caption="コンピューター別Webサーバーシェア推移グラフ 2007年9月〜YEAR年MONTH月 - 資料: インターネットサービス企業Netcraft提供" /></p>
+  </docgroup> 
+
+  <docgroup>
+   <docinfo>
+    <title><p>ドメイン別Webサーバーシェア推移</p></title>
+   </docinfo>
+
+   <p><import type="image/jpeg" id="006raw.jpg" ref="images/006raw.jpg" caption="ドメイン別Webサーバーシェア推移グラフ 2009年6月〜YEAR年MONTH月 - 資料: インターネットサービス企業Netcraft提供" /></p>
+  </docgroup> 
+
+  <docgroup>
+   <docinfo>
+    <title><p>YEAR年MONTH月 Webサーバー動向</p></title>
+   </docinfo>
+
+   <p></p>
+
+   <p></p>
+
+   <p></p>
+  </docgroup> 
+
+  <p>[POST:]</p>
+
+<!--LIST-->
+
+  <p>[SRC:SRCURL]</p>
+
+  <p>[URL:][]</p>
+ </docgroup>
+</document>

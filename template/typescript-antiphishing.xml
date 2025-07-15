@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <docgroup>
+  <docinfo>
+   <title><p>WHOを騙るフィッシングを確認、注意を</p></title>
+   <shorttitle><p></p></shorttitle>
+   <author><p>USER</p></author>
+   <firstedition><p>NOW</p></firstedition>
+   <lastmodified><p>DATE REVISION</p></lastmodified>
+  </docinfo>
+
+  <p>[W:500]</p>
+
+  <p>[LEAD:フィッシング対策協議会(Council of Anti-Phishing Japan)はSCAMD、「SRCTITLE」において、WHOを騙るフィッシングの報告を受けていると伝えた。メールの件名としては次の文字列が使われているとされているほか、詐欺サイトは巧妙に製作されており注意が必要。]</p>
+
+  <p>[TAG:]</p>
+
+  <p>フィッシング対策協議会(Council of Anti-Phishing Japan)はSCAMD、「<access ref="SRCURL">SRCTITLE</access>」において、WHOを騙るフィッシングの報告を受けていると伝えた。</p>
+
+  <docgroup>
+   <docinfo>
+    <title><p>フィッシングメールの件名</p></title>
+   </docinfo>
+
+   <p>メールの件名として、以下が確認されており注意が必要(下記以外の件名が使われている可能性もある)。</p>
+
+   <list>
+EMBEDDED1TH
+   </list>
+  </docgroup> 
+
+  <docgroup>
+   <docinfo>
+    <title><p>フィッシングサイトのURL</p></title>
+   </docinfo>
+  
+   <p>確認されている偽サイトとしては、次のURLが挙げられている(下記以外のURLが使われている可能性もある)。</p>
+
+   <list>
+EMBEDDED2TH
+   </list>
+  </docgroup> 
+
+  <docgroup>
+   <docinfo>
+    <title><p>フィッシング対策協議会に報告されている内容</p></title>
+   </docinfo>
+
+   <p>報告されている詳細内容は次のとおり。</p>
+
+   <list>
+    <item><p></p></item>
+    <item><p>SCAMDの段階でフィッシングサイトは稼働している。</p></item>
+   </list>
+
+   <p><import caption="SRCTITLE" id="images/001raw.jpg" ref="images/001raw.jpg" type="image/jpeg"/></p>
+
+   <p>フィッシング詐欺に使われているWebサイトは一見しただけで判別することが難しい。真偽の確認を行うには、メールやメッセージに含まれているリンクから辿るのではなく、公式アプリやWebブラウザーに登録したブックマークなどからアクセスするなどの操作を行い、確認を行うことが望まれる。</p>
+
+   <p>フィッシング対策協議会は、フィッシングサイトやフィッシングメールを発見した際には同協議会まで報告して欲しいと呼びかけている（参考「<access ref="https://www.antiphishing.jp/registration.html">フィッシング対策協議会　Council of Anti-Phishing Japan | 報告</access>」）。</p>
+  </docgroup> 
+
+  <p>[POST:]</p>
+
+<!--LIST-->
+
+  <p>[SRC:SRCURL]</p>
+
+  <p>[URL:][]</p>
+ </docgroup>
+</document>

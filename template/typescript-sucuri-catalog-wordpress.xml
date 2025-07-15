@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <docgroup>
+  <docinfo>
+   <title><p>MONTH月のWordPressプラグイン脆弱性まとめ、確認と対応を</p></title>
+   <shorttitle><p></p></shorttitle>
+   <author><p>USER</p></author>
+   <firstedition><p>NOW</p></firstedition>
+   <lastmodified><p>DATE REVISION</p></lastmodified>
+  </docinfo>
+
+  <p>[W:500]</p>
+
+  <p>[LEAD:]</p>
+
+  <p>[TAG:Cisco]</p>
+
+  <p>SucuriはHIDUKE、「<access ref="SRCURL">SRCTITLE</access>」において、SENGETU_YEAR年SENGETU月に明らかになったWordPressの脆弱性およびセキュリティパッチの情報について伝えた。SucuriはWebサイト所有者に対して新たな脅威を把握して対処してもらえるよう1か月間のWordPressエコシステムの重要なセキュリティアップデートと脆弱性パッチの一覧をまとめて公表している。</p>
+
+  <p><import caption="SRCTITLE" id="images/001raw.jpg" ref="images/001raw.jpg" type="image/jpeg"/></p>
+  
+  <p>今月はNUMOFVULS個の脆弱性とその緩和策が紹介されている。セキュリティリスクが「緊急(Critical)」がNUMOFCRI、「重要(High)」がNUMOFHIGH、「警告(Medium)」がNUMOFMED、「低(Low)」がNUMOFLOWとなっている。</p>
+
+  <docgroup>
+   <docinfo>
+    <title><p>SENGETU月WordPressプラグインの主な脆弱性</p></title>
+   </docinfo>
+
+   <p>今月の主な脆弱性は次のとおり。</p>
+
+   <list>
+EMBEDDED1TH
+   </list>
+  </docgroup> 
+
+  <p>WordPressの脆弱性はサイバーセキュリティ犯罪者に悪用されやすい。Webサイトを運営しているユーザーは、Sucuriのセキュリティ情報の内容を確認するとともに、適切に緩和策の適用やアップデートの適用を実施することが望まれる。</p>
+
+  <p>[POST:]</p>
+
+<!--LIST-->
+
+  <p>[SRC:SRCURL]</p>
+
+  <p>[URL:][]</p>
+ </docgroup>
+</document>

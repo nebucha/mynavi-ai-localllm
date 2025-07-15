@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <docgroup>
+  <docinfo>
+   <title><p>に緊急のセキュリティ脆弱性、ただちにアップデートを / に重要なセキュリティ脆弱性、ただちにアップデートを</p></title>
+   <shorttitle><p>TITLE</p></shorttitle>
+   <author><p>USER</p></author>
+   <firstedition><p>NOW</p></firstedition>
+   <lastmodified><p>DATE REVISION</p></lastmodified>
+  </docinfo>
+
+  <p>[W:500]</p>
+
+  <p>[LEAD:]</p>
+
+  <p>[TAG:]</p>
+
+  <p>米国土安全保障省サイバーセキュリティ・インフラストラクチャーセキュリティ庁(CISA: Cybersecurity and Infrastructure Security Agency)はHIDUKE、産業用制御システム向けのセキュリティアドバイザリー「<access ref="SRCURL">SRCTITLE</access>」において、に複数のセキュリティ脆弱性が存在すると伝えた。これらセキュリティ脆弱性を利用されると、攻撃者によって影響を受けたシステムの制御権が乗っ取られる危険性があるとされている。</p>
+
+  <p><import caption="SRCTITLE" id="images/001raw.jpg" ref="images/001raw.jpg" type="image/jpeg"/></p>
+
+  <docgroup>
+   <docinfo>
+    <title><p>セキュリティ脆弱性に関する情報</p></title>
+   </docinfo>
+
+   <p>セキュリティ脆弱性の詳細は次のページにまとまっている。</p>
+
+   <list>
+    <item><p></p></item>
+   </list>
+  </docgroup> 
+
+  <docgroup>
+   <docinfo>
+    <title><p>セキュリティ脆弱性が存在するとされるプロダクト</p></title>
+   </docinfo>
+
+   <p>セキュリティ脆弱性が存在するとされるプロダクトは次のとおり。</p>
+
+   <list>
+   </list>
+  </docgroup> 
+
+  <docgroup>
+   <docinfo>
+    <title><p>セキュリティ脆弱性が修正されたプロダクトおよびバージョン</p></title>
+   </docinfo>
+
+   <p>セキュリティ脆弱性が修正されたプロダクトおよびバージョンは次のとおり。</p>
+
+   <list>
+   </list>
+  </docgroup> 
+
+  <p>セキュリティ脆弱性のいくつかは深刻度が緊急（Critical）に分類されており注意が必要。米国土安全保障省サイバーセキュリティ・インフラストラクチャーセキュリティ庁は、ユーザーおよび管理者に対して上記セキュリティ情報をチェックするとともに、必要に応じてアップデートを適用することを推奨している。</p>
+
+  <p>産業用制御システムはいったん運用がはじまるとセキュリティアップデートが適用されないまま運用が続けられることがある。こういったシステムはサイバー犯罪者にとって格好の標的となることがわかっている。該当する製品を使用している場合には迅速にアップデートや回避策、対策の適用などを取ることが望まれる。</p>
+
+  <p>[POST:]</p>
+
+<!--LIST-->
+
+  <p>[SRC:SRCURL]</p>
+
+  <p>[URL:][]</p>
+ </docgroup>
+</document>

@@ -1,0 +1,133 @@
+#!/bin/sh -evx
+
+tmp=/tmp/$$
+PATH=$(dirname $0):$PATH
+
+# 1:URL 2:ディレクトリ名 3:記事タイトル
+[ $# != "3" ]								&& exit 1
+
+# Ciscoセキュリティアドバイザリのページスクリーンショットを取得
+#ssurl="https://tools.cisco.com/security/center/publicationListing.x"
+ssurl="https://sec.cloudapps.cisco.com/security/center/publicationListing.x"
+
+getss   -w 1200                                                         \
+        -h 800                                                          \
+        -f $tmp-ss.png                                                  \
+        $ssurl
+gm      convert                                                         \
+        -resize 1200x800                                                \
+        $tmp-ss.png                                                     \
+        $2/images/001raw.jpg
+
+# Ciscoセキュリティアドバイザリデータを取得
+#saurl="https://tools.cisco.com/security/center/publicationService.x?criteria=exact&cves=&keyword=&last_published_date=&limit=50&offset=0&publicationTypeIDs=1,3&securityImpactRatings=&sort=-day_sir&title="
+saurl="https://sec.cloudapps.cisco.com/security/center/publicationService.x?criteria=exact&cves=&keyword=&last_published_date=&limit=50&offset=0&publicationTypeIDs=1,3&securityImpactRatings=&sort=-day_sir&title="
+
+netcat	"$saurl"							|
+# Webブラウザ経由でデータを取得した場合に、JSONデータの前後にHTMLタグが
+# 挿入されることがあるため、これを除去する。
+sed	's|<html><head></head><body>||'					|
+sed	's|</body></html>||'						|
+cat									> $tmp-json
+
+# 取得したデータのセキュリティ脆弱性の数
+numofvuls=$(jq '.|length' $tmp-json)
+
+# 1週間前の日時を作成
+oneweekago=$(date '+%Y%m%d' -d '1 week ago')
+
+# 1週間分のセキュリティアドバイザリ一覧を作成
+for	i in $(seq 0 $((50 - 1)))
+do
+	date=$(jq -r ".[$i]|.lastPublished" $tmp-json)
+	date=$(echo $date | awk '{print substr($1,1,10)}' | tr -d '-')
+
+	if [ "$oneweekago" -gt "$date" ]
+	then
+		break
+	fi
+
+	severity=$(jq -r ".[$i]|.severity" $tmp-json)
+	cve=$(jq -r ".[$i]|.cve" $tmp-json)
+	url=$(jq -r ".[$i]|.url" $tmp-json)
+	title=$(jq -r ".[$i]|.title" $tmp-json)
+
+	echo	"$date	$url	$cve	$title	$severity"		|
+	awk	-F "	"						\
+	'{
+		printf("   <item><p>")
+
+		if ("Critical" == $5) {
+			printf("0 【緊急】")
+		}
+		else if ("High" == $5) {
+			printf("1 ［重要］")
+		}
+		else if ("Medium" == $5) {
+			printf("2 警告")
+		}
+		else {
+			printf("3 注意")
+		}
+		printf(" ")
+
+		printf("%s年",substr($1,1,4))
+		printf("%s月",substr($1,5,2))
+		printf("%s日 ",substr($1,7,2))
+		printf("<access ref=\"%s\">%s</access> ",$2,$3)
+		printf("%s ",$4)
+		printf("</p></item>")
+		printf("\n")
+	}'
+done									|
+sort	-k1,1								|
+sed	's/[0123] //'							|
+cat									> $tmp-vulslist
+
+# 掲載するセキュリティアドバイザリの個数を取得
+numofscas=$(wc -l $tmp-vulslist | awk '{print $1}')
+
+# 掲載するセキュリティアドバイザリ 緊急 個数を取得
+numofcri=$(cat $tmp-vulslist | grep '緊急' | wc -l | awk '{print $1}')
+# 掲載するセキュリティアドバイザリ 重要 個数を取得
+numofhigh=$(cat $tmp-vulslist | grep '重要' | wc -l | awk '{print $1}')
+
+# セキュリティアドバイザリ 緊急・重要の文言を作成
+if	[ $numofcri != "0" -a $numofhigh != "0" ]
+then
+	criticalhigh="このうち$numofcri個は深刻度が緊急(Critical)、$numofhigh個は深刻度が重要(High)に分類されており"
+elif	[ $numofcri != "0" -a $numofhigh = "0" ]
+then
+	criticalhigh="このうち$numofcri個は深刻度が緊急(Critical)に分類されており"
+elif	[ $numofcri = "0" -a $numofhigh != "0" ]
+then
+	criticalhigh="このうち$numofhigh個は深刻度が重要(High)に分類されており"
+else
+	criticalhigh="緊急(Critical)や重要(High)に分類された脆弱性はないもののリクスは存在しており"
+fi
+
+# タイトルを選択
+if	[ $numofcri != "0" ]
+then
+	title="Ciscoに緊急のセキュリティ脆弱性、ただちにアップデートを"
+elif	[ $numofhigh != "0" ]
+then
+	title="Ciscoに重要なセキュリティ脆弱性、アップデートを"
+else
+	title="Ciscoにセキュリティ脆弱性、更新を"
+fi
+
+# 記事の原型を作成
+MAKE_TYPESCRIPT 							\
+	"$ssurl"							\
+	"$2"								\
+	"$3"								\
+	$tmp-vulslist							|
+sed	"s|CISCOTLE|$title|g"						|
+sed	"s|NUMOFSCAS|$numofscas|g"					|
+sed	"s|CRITICALHIGH|$criticalhigh|g"				|
+cat									> $tmp-typescript
+
+cat	$tmp-typescript
+
+rm	-f $tmp-*

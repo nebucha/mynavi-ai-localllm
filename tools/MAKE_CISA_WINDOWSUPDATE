@@ -1,0 +1,103 @@
+#!/bin/sh -exv
+
+tmp=/tmp/$$
+PATH=$(dirname $0):$PATH
+
+# 1:URL 2:ディレクトリ名 3:記事タイトル
+[ $# != "3" ]								&& exit 1
+
+#=========================================================================
+# 元記事を取得する
+#=========================================================================
+netcat	"$1"								|
+# SVGデータが挿入されていることがあり、これが解析の邪魔をするので
+# 除去する。
+sed	's.<svg.\n<svg.g'						|
+sed	's.</svg>.</svg>\n.g'						|
+grep	-v '^<svg.*</svg>$'						|
+# 「Security Update」という文字列が<br />で分断されていることがるため、
+# これを除去する。
+tr	-d '\n'								|
+# ASCIIの空白ではなくUTF-8の改行なしスペース「C2A0」が使われている
+# ことがあるので、これをASCIIの空白へ変換しておく。
+sed	's/ / /g'							|
+sed	's.<br />..g'							|
+sed	's.<p>.\n<p>.g'							|
+cat									> $tmp-src
+
+#=========================================================================
+# Security Updateページ取得
+#=========================================================================
+# Security UpdateのURLを取得
+cat	$tmp-src							|
+grep	-o 'https://msrc.microsoft.com/update-guide/release[^"]*'	|
+head	-1								|
+cat									> $tmp-url
+url=$(cat $tmp-url)
+
+# Security Updateページを取得
+netcat	$url								|
+cat									> $tmp-sec
+
+# Security Updateのタイトルを取得
+cat	$tmp-sec							|
+grep	-o '<title>[^<]*</title>'					|
+sed	's,<[^>]*>,,g'							|
+cat									> $tmp-title
+title=$(cat $tmp-title)
+
+# Security Updateをaccessに加工
+echo 	'<access ref="'${url}'">'${title}'</access>'			|
+cat									> $tmp-access
+access=$(cat $tmp-access)
+
+#=========================================================================
+# セキュリティ脆弱性を抱える製品リストを作成
+#=========================================================================
+# Security Updateページを取得
+# ページ表示後に読み込まれる製品一覧が必要になるため、netcat (Microsoft
+# Edgeのヘッドレスモード)で読み込む必要がある。
+netcat	$url								|
+cat									> $tmp-sec
+
+# 製品リスト情報が掲載されている周辺のテキストを抽出
+start=$(cat -n $tmp-sec | grep -- '<tbody>' | awk 'NR==2{print $1}')
+stop=$(cat -n $tmp-sec | grep -- '<\/tbody>' | awk 'NR==1{print $1}')
+cat	$tmp-sec							|
+sed	-n ${start},${stop}p						|
+# 製品名のみを抽出
+tr	-d '\n'								|
+sed	's,<tr><td>\([^<]*\),\nXXX:\1\n,g'				|
+grep	^XXX								|
+sed	's/^XXX://'							|
+sort									|
+uniq									|
+# リストへ加工
+awk	'{print "   <item><p>"$0"</p></item>"}'				|
+cat									> $tmp-products
+
+#=========================================================================
+# Security Update Guideページのスクリーンショットを取得
+#=========================================================================
+getss   -w 1200                                                         \
+        -h 800                                                          \
+        -f $tmp-ss.png                                                  \
+        https://msrc.microsoft.com/update-guide/en-us
+gm      convert                                                         \
+        -resize 1200x800                                                \
+        $tmp-ss.png                                                     \
+        $2/images/001raw.jpg
+
+#=========================================================================
+# 記事の原型を作成
+#=========================================================================
+MAKE_TYPESCRIPT 							\
+ 	"$@"								\
+	$tmp-products							|
+sed	"s|SECURITYUPDATESUMMARY|$access|g"				|
+sed	"s|SECURITYUPDATETIT|$title|g"					|
+cat									> $tmp-typescript
+
+cat	$tmp-typescript
+
+rm	-f $tmp-*

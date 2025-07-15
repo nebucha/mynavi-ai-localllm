@@ -1,0 +1,41 @@
+#!/bin/sh
+
+tmp=/tmp/$$
+PATH=$(dirname $0):$PATH
+
+# 1:URL 2:ディレクトリ名 3:記事タイトル
+[ $# != "3" ]								&& exit 1
+
+# Oracleクリティカルパッチアップデートページを取得
+netcat	"$1"								> $tmp-ora
+
+# 脆弱性製品一覧を取得
+cat	$tmp-ora							|
+sed	-n '/Affected Products and Versions/,/<\/table>/p'		|
+grep	'<a href="#'							|
+tr	-d '\t'								|
+sed	's,<[^>]*>,,g'							|
+sed	's/ and prior/およびこれよりも前のバージョン/g'			|
+sed	's|[, ]*versions prior to \([0-9.]*\)| \1より前のバージョン|'	|
+sed	's|prior to \([0-9.]*\)|\1より前のバージョン|'			|
+sed	's/[,]* version[s ]*/ バージョン/ '				|
+sed	's/, /、/g'							|
+sort									|
+uniq									|
+cat									> $tmp-vuls
+
+# 脆弱性製品リストを作成
+cat	$tmp-vuls							|
+awk	'{
+	printf "   <item><p>%s</p></item>\n",$0
+}'									|
+cat									> $tmp-list
+
+# 記事の原型を作成
+MAKE_TYPESCRIPT								\
+	"$@"								\
+	$tmp-list							|
+cat	
+
+# 作業に使った一時ファイルを削除
+rm	-f $tmp-*

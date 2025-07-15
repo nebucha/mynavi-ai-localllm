@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <docgroup>
+  <docinfo>
+   <title><p>△△△、QUARTERハードディスク故障率データ</p></title>
+   <shorttitle><p>TITLE</p></shorttitle>
+   <author><p>USER</p></author>
+   <firstedition><p>NOW</p></firstedition>
+   <lastmodified><p>DATE REVISION</p></lastmodified>
+  </docinfo>
+
+  <p>[W:500]</p>
+
+  <p>[LEAD:オンラインバックアップサービス企業BackblazeはHIDUKE、「SRCTITLE」において、QUARTERのハードディスク故障率データを公開した。BackblazeはQUARTERにALLDRIVES台のハードディスクおよびSSDを使用（起動ディスクBOOTDRIVES台、データディスクDATADRIVES台）。統計データとして使用できるディスクとしてTARGETDRIVES台のデータディスクに関する故障率分析データを公開した。]</p>
+
+  <p>[TAG:Backblaze]</p>
+
+  <p>オンラインバックアップサービス企業BackblazeはHIDUKE、「<access ref="SRCURL">SRCTITLE</access>」において、QUARTERのハードディスク故障率データを公開した。BackblazeはQUARTERにALLDRIVES台のハードディスクおよびSSDを使用（起動ディスクBOOTDRIVES台、データディスクDATADRIVES台）。統計データとして使用できるディスクとしてTARGETDRIVES台のデータディスクに関する故障率分析データを公開した。</p>
+
+  <p><import caption="SRCTITLE" id="images/001raw.jpg" ref="images/001raw.jpg" type="image/jpeg"/></p>
+
+  <docgroup>
+   <docinfo>
+    <title><p></p></title>
+   </docinfo>
+
+   <p>QUARTERにおける主な注目ポイントは次のとおり。</p>
+
+   <list>
+EMBEDDED1TH
+   </list>
+
+    <p>(参考翻訳)</p>
+
+   <list>
+EMBEDDED2TH
+   </list>
+
+   <p></p>
+
+   <p>Backblazeは四半期および年ごとに同社で使用しているストレージドライブの故障率データを公表している。実際にデータセンターで長期にわたって使用されたディスクの故障率統計データとして参考になる。</p>
+  </docgroup> 
+
+  <p>[POST:]</p>
+
+<!--LIST-->
+
+  <p>[SRC:SRCURL]</p>
+
+  <p>[URL:][]</p>
+ </docgroup>
+</document>

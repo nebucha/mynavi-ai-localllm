@@ -1,0 +1,79 @@
+#!/bin/sh
+
+tmp=/tmp/$$
+PATH=$(dirname $0):$PATH
+
+# 1:URL 2:ディレクトリ名 3:記事タイトル
+[ $# != "3" ]								&& exit 1
+
+# 元記事を取得する
+netcat	"$1"								> $tmp-src
+
+# 記事に追加するメール件名データを作成する
+cat	$tmp-src							|
+# 件名が記載されている部分を抜き出す
+sed	-n '/メールの件名/,/上記以外の件名/p'				|
+# HTMLタグを消去する
+sed	's/<.[^>]*>//g'							|
+# 不要な行を削除する
+grep	-v '^[ ]*$'							|
+grep	-v 'メールの件名'						|
+grep	-v '上記以外の件名'						|
+# 必要なHTMLタグを追加する
+sed 's,^\(.*\)$,   <item><p>\1</p></item>,'				|
+cat									> $tmp-subjects
+
+# 記事に追加するURLデータを作成する
+cat	$tmp-src							|
+# URLが記載されている部分を抜き出す
+sed	-n '/サイトのURL/,/上記以外のドメイン/p'			|
+# HTMLタグを消去する
+sed	's/<.[^>]*>//g'							|
+# 不要な行を削除する
+grep	-v '^[ ]*$'							|
+grep	-v 'サイトのURL'						|
+grep	-v '上記以外のドメイン'						|
+# 必要なHTMLタグを追加する
+sed	's,^\(.*\)$,   <item><p>\1</p></item>,'				|
+cat									> $tmp-url
+
+# かたっている対象を取得
+cat	$tmp-src							|
+# 該当するデータが掲載されている行を取り出す
+grep	'をかたる'							|
+sed	's/<[^>]*>//g'							|
+# 該当するデータは複数行存在するため、その中から使いやすい行を選定
+grep	-v '^ '								|
+grep	-v '&ensp;'							|
+grep	-v '&gt;'							|
+head	-1								|
+# 対象のみを取り出し
+grep	-o '.*をかたる'							|
+sed	's/ *をかたる//'						> $tmp-who
+who=$(cat $tmp-who)
+
+# 詐欺の稼働確認が取れている日付を取得
+cat	$tmp-src							|
+grep	'時点では'							|
+grep	-E -o '[0-9]{4}/[0-9]{,2}/[0-9]{,2}'				|
+sed	's,/,年,'							|
+sed	's,/,月,'							|
+sed	's,$,日,'							|
+# ゼロ取り
+sed	's/年0/年/'							|
+sed	's/月0/月/'							|
+cat									> $tmp-scamd
+scamd=$(cat $tmp-scamd)
+
+# 記事の原型を作成
+MAKE_TYPESCRIPT 							\
+ 	"$@"								\
+	$tmp-subjects							\
+	$tmp-url							|
+sed	's/(米国時間)//g'						|
+sed	"s|WHO|$who|g"							|
+sed	"s|SCAMD|$scamd|g"						> $tmp-typescript
+
+cat	$tmp-typescript
+
+rm	-f $tmp-*

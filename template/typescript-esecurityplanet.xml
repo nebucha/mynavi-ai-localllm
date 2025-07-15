@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <docgroup>
+  <docinfo>
+   <title><p>TITLE</p></title>
+   <shorttitle><p>TITLE</p></shorttitle>
+   <author><p>USER</p></author>
+   <firstedition><p>NOW</p></firstedition>
+   <lastmodified><p>DATE REVISION</p></lastmodified>
+  </docinfo>
+
+  <p>[W:500]</p>
+
+  <p>[LEAD:]</p>
+
+  <p>[TAG:]</p>
+
+  <p>eSecurity PlanetにHIDUKEに掲載された記事「<access ref="SRCURL">SRCTITLE</access>」が、ことを伝えた。</p>
+
+  <p><import type="image/jpeg" id="001raw.jpg" ref="images/001raw.jpg" caption="SRCTITLE" /></p>
+
+  <docgroup>
+   <docinfo>
+    <title><p></p></title>
+   </docinfo>
+
+   <p></p>
+
+   <p></p>
+
+   <p></p>
+  </docgroup> 
+
+  <docgroup>
+   <docinfo>
+    <title><p></p></title>
+   </docinfo>
+
+   <p></p>
+
+   <p></p>
+
+   <p></p>
+  </docgroup> 
+
+  <p>[POST:]</p>
+
+<!--LIST-->
+
+  <p>[SRC:SRCURL]</p>
+
+  <p>[URL:][]</p>
+ </docgroup>
+</document>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <docgroup>
+  <docinfo>
+   <title><p></p></title>
+   <shorttitle><p></p></shorttitle>
+   <author><p>USER</p></author>
+   <firstedition><p>NOW</p></firstedition>
+   <lastmodified><p>DATE REVISION</p></lastmodified>
+  </docinfo>
+
+  <p>[W:500]</p>
+
+  <p>[LEAD:]</p>
+
+  <p>[TAG:]</p>
+
+  <p>米国土安全保障省サイバーセキュリティ・インフラストラクチャーセキュリティ庁(CISA: Cybersecurity and Infrastructure Security Agency)はHIDUKE、「<access ref="SRCURL">SRCTITLE</access>」において、Mozilla FirefoxおよびThunderbirdに複数のセキュリティ脆弱性が存在すると伝えた。これらセキュリティ脆弱性を利用されると、攻撃者によって影響を受けたシステムの制御権が乗っ取られる危険性があるとされている。</p>
+
+  <docgroup>
+   <docinfo>
+    <title><p>セキュリティ脆弱性に関する情報</p></title>
+   </docinfo>
+
+   <p>セキュリティ脆弱性に関する情報は次のページにまとまっている。</p>
+
+   <list>
+    <item><p><access ref="FIREURL">FIRETIT</access></p></item>
+    <item><p><access ref="ESRURL1">ESRTIT1</access></p></item>
+    <item><p><access ref="ESRURL2">ESRTIT2</access></p></item>
+    <item><p><access ref="THUURL1">THUTIT1</access></p></item>
+    <item><p><access ref="THUURL2">THUTIT2</access></p></item>
+   </list>
+
+   <p><import caption="FIRETIT" id="images/001raw.jpg" ref="images/001raw.jpg" type="image/jpeg"/></p>
+  </docgroup> 
+
+  <docgroup>
+   <docinfo>
+    <title><p>セキュリティ脆弱性が存在するとされるプロダクトおよびバージョン</p></title>
+   </docinfo>
+
+   <p>セキュリティ脆弱性が存在するとされるプロダクトおよびバージョンは次のとおり。</p>
+
+   <list>
+    <item><p>Mozilla Firefox version FIREVERよりも前のバージョン</p></item>
+    <item><p>Mozilla Firefox ESR version ESRVER1よりも前のバージョン</p></item>
+    <item><p>Mozilla Firefox ESR version ESRVER2よりも前のバージョン</p></item>
+    <item><p>Mozilla Thunderbird version THUVER1よりも前のバージョン</p></item>
+    <item><p>Mozilla Thunderbird version THUVER2よりも前のバージョン</p></item>
+   </list>
+  </docgroup> 
+
+  <docgroup>
+   <docinfo>
+    <title><p>セキュリティ脆弱性が修正されたプロダクトおよびバージョン</p></title>
+   </docinfo>
+
+   <p>セキュリティ脆弱性が修正されたプロダクトおよびバージョンは次のとおり。</p>
+
+   <list>
+    <item><p>Mozilla Firefox version FIREVER</p></item>
+    <item><p>Mozilla Firefox ESR version ESRVER1</p></item>
+    <item><p>Mozilla Firefox ESR version ESRVER2</p></item>
+    <item><p>Mozilla Thunderbird version THUVER1</p></item>
+    <item><p>Mozilla Thunderbird version THUVER2</p></item>
+   </list>
+  </docgroup> 
+
+  <docgroup>
+   <docinfo>
+    <title><p>深刻度が高いセキュリティ脆弱性</p></title>
+   </docinfo>
+
+   <p>修正対象となったセキュリティ脆弱性で特に深刻度が高いものは次のとおり。</p>
+
+   <p>【Mozilla Firefox version FIREVER】</p>
+
+   <list>
+EMBEDDED2TH
+   </list>
+
+   <p>(原文)</p>
+
+   <list>
+EMBEDDED1TH
+   </list>
+
+   <p>【Mozilla Firefox ESR version ESRVER1】</p>
+
+   <list>
+EMBEDDED4TH
+   </list>
+
+   <p>(原文)</p>
+
+   <list>
+EMBEDDED3TH
+   </list>
+
+   <p>【Mozilla Firefox ESR version ESRVER2】</p>
+
+   <list>
+EMBEDDED6TH
+   </list>
+
+   <p>(原文)</p>
+
+   <list>
+EMBEDDED5TH
+   </list>
+
+   <p>【Mozilla Thunderbird version THUVER1】</p>
+
+   <list>
+EMBEDDED8TH
+   </list>
+
+   <p>(原文)</p>
+
+   <list>
+EMBEDDED7TH
+   </list>
+
+   <p>【Mozilla Thunderbird version THUVER2】</p>
+
+   <list>
+EMBEDDED10TH
+   </list>
+
+   <p>(原文)</p>
+
+   <list>
+EMBEDDED9TH
+   </list>
+
+   <p>CRITICALHIGH。米国土安全保障省サイバーセキュリティ・インフラストラクチャーセキュリティ庁は、ユーザーおよび管理者に対して上記セキュリティ情報をチェックするとともに、必要に応じてアップデートを適用することを推奨している。</p>
+  </docgroup> 
+
+  <p>Firefoxはメニューから「Firefox について」を選択することでバージョンを確認することができる。アップデート可能なバージョンが存在する場合はその旨が表示されるので、指示に従ってFirefoxを再起動することでバージョンアップが適用される。</p>
+
+  <p>Thunderbirdはメニューから「About Thunderbird」を選択することでバージョンを確認することができる。アップデート可能なバージョンが存在する場合はその旨が表示されるので、指示に従ってThunderbirdを再起動することでバージョンアップが適用される。</p>
+
+  <p>[POST:]</p>
+
+<!--LIST-->
+
+  <p>[SRC:SRCURL]</p>
+
+  <p>[URL:][]</p>
+ </docgroup>
+</document>

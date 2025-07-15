@@ -1,0 +1,114 @@
+#!/bin/sh
+
+tmp=/tmp/$$
+PATH=$(dirname $0):$PATH
+
+# 1:URL 2:ディレクトリ名 3:記事タイトル
+[ $# != "3" ]								&& exit 1
+
+# 元記事を取得する
+netcat	"$1"								> $tmp-src
+
+# 四半期を取得
+cat	$tmp-src							|
+grep	-E -o 'Q[1234] [0-9]{4}'					|
+uniq									|
+head	-1								|
+awk	'{print $2,$1}'							|
+sed	's/ /年/'							|
+sed	's/Q/第/'							|
+sed	's/$/四半期/'							> $tmp-quarter
+quarter=$(cat $tmp-quarter)
+
+# 総ドライブ数
+cat	$tmp-src							|
+grep	-E -o 'monitoring [0-9,]+ hard drives'				|
+sort	-r								|
+uniq									|
+head	-1								|
+grep	-E -o '[0-9,]+'							|
+cat									> $tmp-alldrives
+alldrives=$(cat $tmp-alldrives)
+
+# ブートドライブ数
+cat	$tmp-src							|
+grep	-E -o '[0-9,]+ boot drives'					|
+sort	-r								|
+uniq									|
+head	-1								|
+grep	-E -o '[0-9,]+'							|
+cat									> $tmp-bootdrives
+bootdrives=$(cat $tmp-bootdrives)
+
+# データドライブ数
+cat	$tmp-src							|
+grep	-E -o '[0-9,]+ data drives'					|
+sort	-r								|
+uniq									|
+head	-1								|
+grep	-E -o '[0-9,]+'							|
+cat									> $tmp-datadrives
+datadrives=$(cat $tmp-datadrives)
+
+# 分析対象データドライブ数
+cat	$tmp-src							|
+grep	-E -o '[0-9,]+ hard drives to analyze'				|
+sort	-r								|
+uniq									|
+head	-1								|
+grep	-E -o '[0-9,]+'							|
+cat									> $tmp-targetdrives
+targetdrives=$(cat $tmp-targetdrives)
+
+# ハイライト文章を取得
+cat	$tmp-src							|
+# 最初に出てくる連続したul要素をハイライトとして抽出する
+awk	'
+BEGIN {
+	firstul="no"
+}
+/^<ul><li>/ {
+	firstul="yes"
+	print
+}
+!/^<ul><li>/ {
+	if (firstul=="yes") {
+		exit
+	}
+}
+'									|
+# タグを削除
+sed -E 's,<[^>]+>,,g'							|
+cat									> $tmp-gists
+
+# ハイライトを翻訳
+cat	$tmp-gists							|
+sed	's/$/\n/'							|
+translate								|
+cat									> $tmp-gists-ja
+
+# ハイライトのリストを作成
+cat	$tmp-gists							|
+awk	'{print "   <item><p>"$0"</p></item>"}'				|
+cat									> $tmp-gists-list
+cat	$tmp-gists-ja							|
+awk	'{print "   <item><p>"$0"</p></item>"}'				|
+cat									> $tmp-gists-ja-list
+
+# 記事の原型を作成
+MAKE_TYPESCRIPT 							\
+ 	"$@"								\
+	$tmp-gists-list							\
+	$tmp-gists-ja-list						\
+									|
+sed	"s|QUARTER|$quarter|g"						|
+sed	"s|ALLDRIVES|$alldrives|g"					|
+sed	"s|BOOTDRIVES|$bootdrives|g"					|
+sed	"s|DATADRIVES|$datadrives|g"					|
+sed	"s|TARGETDRIVES|$targetdrives|g"				|
+sed	"s|現地時間|米国時間|g"						|
+cat									> $tmp-typescript
+
+cat	$tmp-typescript
+
+rm	-f $tmp-*

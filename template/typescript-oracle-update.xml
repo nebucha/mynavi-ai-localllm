@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <docgroup>
+  <docinfo>
+   <title><p>緊急の脆弱性含むOracleパッチアップデートMONTH月、確認とアップデートを</p></title>
+   <shorttitle><p>TITLE</p></shorttitle>
+   <author><p>USER</p></author>
+   <firstedition><p>NOW</p></firstedition>
+   <lastmodified><p>DATE REVISION</p></lastmodified>
+  </docinfo>
+
+  <p>[W:500]</p>
+
+  <p>[LEAD:]</p>
+
+  <p>[TAG:Oracle]</p>
+
+  <p>OracleからYEAR年MONTH月のクリティカルパッチアップデートアドバイザリー「<access ref="SRCURL">SRCTITLE</access>」が公開された。多くのプロダクトにおいて複数のセキュリティ脆弱性が修正されている。修正対象となっているセキュリティ脆弱性には深刻度が緊急（Critical）と評価されているものもあることから注意が必要。該当する製品を使っているかどうか確認するともとに、該当する場合には迅速に対応することが望まれる。</p>
+
+  <p><import caption="SRCTITLE" id="images/001raw.jpg" ref="images/001raw.jpg" type="image/jpeg"/></p>
+
+  <docgroup>
+   <docinfo>
+    <title><p>影響を受ける主な製品やサービス</p></title>
+   </docinfo>
+
+   <p>影響を受ける主な製品やサービスは次のとおり。</p>
+
+   <list>
+EMBEDDED1TH
+   </list>
+  </docgroup> 
+
+  <p>詳細が公開されたセキュリティ脆弱性はサイバー犯罪者によって悪用される傾向が見られる。また、一度明らかになったセキュリティ脆弱性は長期にわたってサイバー攻撃に利用される傾向もあることから、該当する製品を使用している場合には漏れなくアップデートを適用し最新バージョンを維持することが望まれる。すでにセキュリティサポートが終了した製品を使っている場合には、セキュリティサポートが提供されているほかの製品へ移行することが望まれる。</p>
+
+  <p>[POST:]</p>
+
+<!--LIST-->
+
+  <p>[SRC:SRCURL]</p>
+
+  <p>[URL:][]</p>
+ </docgroup>
+</document>

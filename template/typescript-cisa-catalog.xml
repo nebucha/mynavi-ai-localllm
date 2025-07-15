@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <docgroup>
+  <docinfo>
+   <title><p>TITLE△△などの活発な悪用を確認、確認と更新を</p></title>
+   <shorttitle><p>TITLE</p></shorttitle>
+   <author><p>USER</p></author>
+   <firstedition><p>NOW</p></firstedition>
+   <lastmodified><p>DATE REVISION</p></lastmodified>
+  </docinfo>
+
+  <p>[W:500]</p>
+
+  <p>[LEAD:]</p>
+
+  <p>[TAG:]</p>
+
+  <p>米国土安全保障省サイバーセキュリティ・インフラストラクチャーセキュリティ庁(CISA: Cybersecurity and Infrastructure Security Agency)はHIDUKE、「<access ref="SRCURL">SRCTITLE</access>」において、「<access ref="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">Known Exploited Vulnerabilities Catalog</access>」に新しくNUM個のセキュリティ脆弱性を追加したと伝えた。これらセキュリティ脆弱性はサイバー犯罪者によって積極的に悪用されていることが確認されており注意が必要。</p>
+
+  <p><import caption="SRCTITLE" id="images/001raw.jpg" ref="images/001raw.jpg" type="image/jpeg"/></p>
+
+  <docgroup>
+   <docinfo>
+    <title><p>影響を受ける主な製品やサービス</p></title>
+   </docinfo>
+
+   <p>影響を受ける主な製品やサービスは次のとおり。</p>
+
+   <list>
+EMBEDDED1TH
+   </list>
+  </docgroup> 
+
+  <docgroup>
+   <docinfo>
+    <title><p>セキュリティ脆弱性の主な内容</p></title>
+   </docinfo>
+
+   <p>セキュリティ脆弱性の主な内容は次のとおり。</p>
+
+   <p><import caption="" id="tables/001.tsv" ref="tables/001.tsv" type="text/tsv" encoding="UTF-8" /></p>
+  </docgroup> 
+
+  <p>カタログに追加されたセキュリティ脆弱性はすでに積極的に悪用が確認されている点に注意が必要。該当する製品を使っている場合には提供されているCVE情報やベンダーの提供する情報を確認するとともに、迅速にアップデートを適用することが望まれる。</p>
+  
+  <p>今回カタログに追加されたセキュリティ脆弱性は、もっとも古いものでOLDYR年に発行されたものが含まれている。カタログにはアクティブに悪用されているセキュリティ脆弱性が追加される仕組みになっており、セキュリティ脆弱性自体は古いものが含まれることも多い。長期に渡って使っている製品がこうしたセキュリティ脆弱性を抱えたままになっていることもあるため、カタログに追加された製品に関しては再度情報を確認するとともに、必要に応じてアップデートを適用することが望まれる。</p>
+
+  <p>今回カタログに追加されたセキュリティ脆弱性は比較的最近公表されたものが多い。詳細が明らかになったセキュリティ脆弱性はサイバー犯罪者によって悪用されやすい。セキュリティ脆弱性は発表されるとともに直ちに内容を確認するとともに、適切に緩和策の適用やアップデートの適用を実施することが望まれる。</p>
+
+  <p>[POST:]</p>
+
+<!--LIST-->
+
+  <p>[SRC:SRCURL]</p>
+
+  <p>[URL:][]</p>
+ </docgroup>
+</document>

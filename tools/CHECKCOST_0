@@ -1,0 +1,579 @@
+#!/bin/sh
+
+tmp=/tmp/CHECKCOST_$$; mkdir $tmp
+trap	"rm -rf \"$tmp\"" EXIT
+
+################################################################
+# 単価、予算、消費税
+################################################################
+YOSAN=370000
+VAT=10
+
+# ニュース単価|
+NEWSBUNTANKA=3750
+NEWSPICTANKA=200
+NEWSDSKTANKA=500
+
+# レポート単価(画像や編集費は合算で、一括で1本下記金額)
+REPBUNTANKA=15000
+
+# ハウツー単価(画像や編集費は合算で、一括で1本下記金額)
+HOWBUNTANKA=15000
+
+# 予算外記事単価(画像や編集費は合算で、一括で1本下記金額)
+EXTBUNTANKA=15000
+
+################################################################
+# オプションを処理
+################################################################
+# -s		最小化した報告内容を表示
+# -t		期間表示あり
+# -y 予算	期間表示あり
+#
+shortmode='false'
+showterm='false'
+while	getopts sty: OPT
+do
+	case $OPT in
+	s)
+		shortmode='true'
+		;;
+	t)
+		showterm='true'
+		;;
+	y)
+		YOSAN="$OPTARG"
+		;;
+	esac
+done
+shift $((OPTIND - 1))
+
+################################################################
+# 集計対象執筆者
+################################################################
+# 指定がない場合には期間中のすべての記事について算出
+targetuser="$1"
+if	[ 0 = $# ]
+then
+	targetuser='.*'
+fi
+
+################################################################
+# 記事ディレクトリへ移動
+################################################################
+p=$(realpath "${0}")
+cd	${p%/*}/../
+
+################################################################
+# 実行日から計算範囲を計算(毎月25日〆)
+################################################################
+gawk	'
+BEGIN{
+	# 年月日を取得
+	time=systime()
+	year=strftime("%Y",time)
+	month=strftime("%m",time)
+	day=strftime("%d",time)
+
+	# 先月、来月、前年、来年を計算
+	monthpre=month - 1
+	if (monthpre < 1) {
+		monthpre=12
+	}
+	monthnxt=month + 1
+	if (monthnxt > 12) {
+		monthnxt=1
+	}
+        yearpre=year - 1
+        yearnxt=year + 1
+
+	# 開始日	STARTDAY
+	# 終了日	ENDDAY
+	if (day <= 25) {
+		if (month == "01") {
+			printf("STARTDAY=%d%02d26\n", yearpre, monthpre)
+			printf("ENDDAY=%d%02d25\n",year, month)
+
+			printf("STARTY=%d\n", yearpre)
+			printf("STARTM=%d\n", monthpre)
+			printf("STARTD=26\n")
+			printf("ENDY=%d\n", year)
+			printf("ENDM=%d\n", month)
+			printf("ENDD=25\n")
+		}
+		else {
+			printf("STARTDAY=%d%02d26\n", year, monthpre)
+			printf("ENDDAY=%d%02d25\n", year, month)
+
+			printf("STARTY=%d\n", year)
+			printf("STARTM=%d\n", monthpre)
+			printf("STARTD=26\n")
+			printf("ENDY=%d\n", year)
+			printf("ENDM=%d\n", month)
+			printf("ENDD=25\n")
+		}
+	}
+        else {
+		if (month == "12") {
+			printf("STARTDAY=%d%02d26\n", year, month)
+			printf("ENDDAY=%d%02d25\n", yearnxt, monthnxt)
+
+			printf("STARTY=%d\n", year)
+			printf("STARTM=%d\n", month)
+			printf("STARTD=26\n")
+			printf("ENDY=%d\n", yearnxt)
+			printf("ENDM=%d\n", monthnxt)
+			printf("ENDD=25\n")
+		}
+		else {
+			printf("STARTDAY=%d%02d26\n", year, month)
+			printf("ENDDAY=%d%02d25\n", year, monthnxt)
+
+			printf("STARTY=%d\n", year)
+			printf("STARTM=%d\n", month)
+			printf("STARTD=26\n")
+			printf("ENDY=%d\n", year)
+			printf("ENDM=%d\n", monthnxt)
+			printf("ENDD=25\n")
+		}
+	}
+}'						> $tmp/rc
+.	$tmp/rc
+
+################################################################
+# ニュースデータ集計 
+################################################################
+# 記事数、記事費、デスク数、デスク費
+# 
+# 人名で記事を絞り込み
+grep	"<author><p>$targetuser</p></author>" */*xml |
+cut	-f1 -d/					|
+#
+grep	-E '^[0-9]{8}-'				| # 記事ディレクトリ抽出
+grep	-v -- '-REP$'				| # レポートを除外
+grep	-v -- '-HOW$'				| # ハウツーを除外
+grep	-v -- '-EXT$'				| # 予算外記事を除外
+awk	'
+BEGIN{
+	# 掲載記事本数
+	nol=0
+
+	printf("echo \"")
+}
+{
+	# 期限内の記事を抽出
+	d=substr($1,1,8)
+	if (d>='$STARTDAY'&&d<='$ENDDAY') {
+
+		# 記事中に[POST:の表記がない場合には計算対象から外す。
+		# [POST:が削除された記事は掲載拒否された記事。
+		"fgrep -H [POST: "$1"/typescript.xml" | getline res
+		if (length(res) > 0) {	
+			printf("%s/typescript.xml\n",$1)
+			++nol
+	        }
+
+		# 上記fgrepで一致しなかった場合にはresにひとつ前の
+		# 実行結果が代入されたままになってしまうので、毎回
+		# 初期化する。
+		res=""
+	}
+}
+END	{		
+	# 記事数	HONBUNNUM
+	# 執筆料	HONBUNPAY=$(($NEWSBUNTANKA * $HONBUNNUM))
+	# デスク数	DESKNUM
+	# デスク費	DESKPAY=$(($NEWSDSKTANKA * $DESKNUM))
+	print "\""
+	print "HONBUNNUM="nol
+	print "HONBUNPAY="nol*'$NEWSBUNTANKA'
+	print "DESKNUM="nol
+	print "DESKPAY="nol*'$NEWSDSKTANKA'
+}'						> $tmp/rc
+
+################################################################
+# レポートデータ集計 
+################################################################
+# 記事数、記事費
+# 
+# 人名で記事を絞り込み
+grep	"<author><p>$targetuser</p></author>" */*xml |
+cut	-f1 -d/					|
+#
+grep	-E '^[0-9]{8}-'				| # 記事ディレクトリ抽出
+grep	-- '-REP$'				| # レポートを抽出
+awk	'
+BEGIN{
+	# 掲載記事本数
+	nol=0
+
+	printf("echo \"")
+}
+{
+	# 期限内の記事を抽出
+	d=substr($1,1,8)
+	if (d>='$STARTDAY'&&d<='$ENDDAY') {
+
+		# 記事中に[POST:の表記がない場合には計算対象から外す。
+		# [POST:が削除された記事は掲載拒否された記事。
+		"fgrep -H [POST: "$1"/typescript.xml" | getline res
+		if (length(res) > 0) {	
+			printf("%s/typescript.xml\n",$1)
+			++nol
+	        }
+
+		# 上記fgrepで一致しなかった場合にはresにひとつ前の
+		# 実行結果が代入されたままになってしまうので、毎回
+		# 初期化する。
+		res=""
+	}
+}
+END	{		
+	# 記事数	REPHONBUNNUM
+	# 執筆料	REPHONBUNPAY=$(($REPBUNTANKA * $REPHONBUNNUM))
+	print "\""
+	print "REPHONBUNNUM="nol
+	print "REPHONBUNPAY="nol*'$REPBUNTANKA'
+}'						>> $tmp/rc
+
+################################################################
+# ハウツーデータ集計 
+################################################################
+# 記事数、記事費
+# 
+# 人名で記事を絞り込み
+grep	"<author><p>$targetuser</p></author>" */*xml |
+cut	-f1 -d/					|
+#
+grep	-E '^[0-9]{8}-'				| # 記事ディレクトリ抽出
+grep	-- '-HOW$'				| # ハウツーを抽出
+awk	'
+BEGIN{
+	# 掲載記事本数
+	nol=0
+
+	printf("echo \"")
+}
+{
+	# 期限内の記事を抽出
+	d=substr($1,1,8)
+	if (d>='$STARTDAY'&&d<='$ENDDAY') {
+
+		# 記事中に[POST:の表記がない場合には計算対象から外す。
+		# [POST:が削除された記事は掲載拒否された記事。
+		"fgrep -H [POST: "$1"/typescript.xml" | getline res
+		if (length(res) > 0) {	
+			printf("%s/typescript.xml\n",$1)
+			++nol
+	        }
+
+		# 上記fgrepで一致しなかった場合にはresにひとつ前の
+		# 実行結果が代入されたままになってしまうので、毎回
+		# 初期化する。
+		res=""
+	}
+}
+END	{		
+	# 記事数	HOWHONBUNNUM
+	# 執筆料	HOWHONBUNPAY=$(($HOWBUNTANKA * $HOWHONBUNNUM))
+	print "\""
+	print "HOWHONBUNNUM="nol
+	print "HOWHONBUNPAY="nol*'$HOWBUNTANKA'
+}'						>> $tmp/rc
+
+# 該当記事が1本もない場合には、簡易的に予算予測を出力して終了
+if	grep	'^HONBUNNUM=0$' $tmp/rc	> /dev/null 2>&1
+then
+	# ざっくりと予算情報を計算
+	YOSANNOKORI=$YOSAN
+	NOKORIKIJI=$(($YOSAN / ($NEWSBUNTANKA + $NEWSPICTANKA + $NEWSDSKTANKA)))
+	NOKORIDAYS=20 # 営業日数を20日と仮定
+	HEIKIN=$(($YOSAN / $NOKORIDAYS / ($NEWSBUNTANKA + $NEWSPICTANKA + $NEWSDSKTANKA)))
+
+	# 数値をカンマ区切りに変更
+	YOSANNOKORI=$(printf "%'d" $YOSANNOKORI)
+
+	cat<<EOF					| ssv2txt -t
+簡易予算表示
+残り予算 ${YOSANNOKORI}円
+残り記事数 ${NOKORIKIJI}個
+残り営業日 ${NOKORIDAYS}日
+残り平均記事数 ${RED}${HEIKIN}/日${RST}
+EOF
+	exit
+fi
+
+# 作成した変数を反映
+.	$tmp/rc					> /dev/null
+
+# 画像数
+.	$tmp/rc					|
+awk	'
+BEGIN	{
+	# 画像数	PICNUM
+	printf("/bin/echo -n PICNUM=;ls ")
+}
+{
+	printf("%simages/*jpg ",substr($1,1,index($1,"/")))
+}
+END	{
+	print "| gyo"
+}'						> $tmp/rc2
+.	$tmp/rc2				> $tmp/rc
+.	$tmp/rc
+
+# 画像費
+PICPAY=$(($NEWSPICTANKA * $PICNUM))
+
+################################################################
+# 予算外記事データ集計
+################################################################
+ls 						|
+grep	-E '^[0-9]{8}-'				| # 記事ディレクトリ抽出
+grep	-- '-EXT$'				| # 予算枠以外の記事を抽出
+awk	'
+BEGIN	{
+	nol=0
+}
+{
+	# 期限内記事を抽出
+	d=substr($1,1,8)
+	if (d>='$STARTDAY'&&d<='$ENDDAY') {
+		++nol
+	}
+}
+END	{		
+	# レポート数	EXTHONBUNNUM
+	# レポート費	EXTHONBUNPAY
+	print "EXTHONBUNNUM="nol
+	print "EXTHONBUNPAY="nol*'$EXTBUNTANKA'
+}'						> $tmp/rc
+.	$tmp/rc
+
+################################################################
+# レポート関連記事 各種値を計算
+################################################################
+# 消費税込み価格、消費税抜き価格、消費税を計算
+TOTAL=$(($HONBUNPAY + $DESKPAY + $PICPAY + $REPHONBUNPAY + $HOWHONBUNPAY))
+TAX=$(awk 'BEGIN{printf("%.0f",'$TOTAL'*'$VAT'/100)}')
+ALL=$(($TOTAL + $TAX))
+
+# 予算上限から残りの予算および目安記事数を計算
+YOSANNOKORI=$(($YOSAN - $TOTAL))
+NOKORIKIJI=$(($YOSANNOKORI / ($NEWSBUNTANKA + $NEWSDSKTANKA + $NEWSPICTANKA) ))
+
+################################################################
+# 2023年祝日データ
+################################################################
+gawk	'
+BEGIN	{
+	_days=	"20241230 " \
+		"20241231 " \
+		"20250101 " \
+		"20250102 " \
+		"20250103 " \
+		"20250113 " \
+		"20250211 " \
+		"20250223 " \
+		"20250224 " \
+		"20250320 " \
+		"20250429 " \
+		"20250425 " \
+		"20250503 " \
+		"20250504 " \
+		"20250505 " \
+		"20250506 " \
+		"20250721 " \
+		"20250811 " \
+		"20250915 " \
+		"20250923 " \
+		"20251013 " \
+		"20251103 " \
+		"20251123 " \
+		"20251124 " \
+		"20251229 " \
+		"20251230 " \
+		"20251231 "
+
+################################################################
+# 残り作業日日数を計算
+################################################################
+	split(_days, HOLYDAYS, " ")		# 祝日
+	SECPERDAY = 86400			# 1日の秒数
+	CRNTTIME = systime()			# 現在時刻
+	
+	remainingdays = 0
+	time = CRNTTIME
+
+	do {
+		date = strftime("%Y%m%d",time)
+		day = strftime("%d",time)
+		dayofweek = strftime("%u",time) # 1..7 月..日
+
+		if (1 <= dayofweek && dayofweek <= 5) {
+			isholyday = 0;
+			for (i in HOLYDAYS) {
+				if (date == HOLYDAYS[i]) {
+					isholyday = 1
+					break
+				}
+			}
+			if (!isholyday) {
+				++remainingdays
+			}
+		}
+
+		time += SECPERDAY
+	}
+	while (day != 25)
+
+	# NOKORIDAYS	残り作業日数
+	# HEIKIN	残り1日あたりの平均記事数
+	printf("NOKORIDAYS=%s\n", remainingdays)
+	printf("HEIKIN=%.2f\n", '$NOKORIKIJI'/remainingdays)
+}
+'						> $tmp/rc
+.	$tmp/rc
+
+################################################################
+# 予算外記事 各種値を計算
+################################################################
+# 消費税込み価格、消費税抜き価格、消費税を計算
+EXTRATOTAL=$EXTHONBUNPAY
+EXTRATAX=$(awk 'BEGIN{printf("%.0f",'$EXTHONBUNPAY'*'$VAT'/100)}')
+EXTRAALL=$(($EXTRATOTAL + $EXTRATAX))
+
+# 予算内および予算外の合算値
+FULLTOTAL=$(($TOTAL + $EXTRATOTAL))
+FULLALL=$(($ALL + $EXTRAALL))
+
+################################################################
+# 出力する値をカンマフォーマット
+################################################################
+printf "
+YOSAN=%'d
+HONBUNPAY=%'d
+DESKPAY=%'d
+NEWSBUNTANKA=%'d
+PICPAY=%'d
+TOTAL=%'d
+TAX=%'d
+ALL=%'d
+YOSANNOKORI=%'d
+EXTRATAX=%'d
+EXTRAALL=%'d
+FULLTOTAL=%'d
+FULLALL=%'d
+EXTHONBUNPAY=%'d
+EXTBUNTANKA=%'d
+REPHONBUNPAY=%'d
+REPBUNTANKA=%'d
+HOWHONBUNPAY=%'d
+HOWBUNTANKA=%'d"				\
+$YOSAN						\
+$HONBUNPAY					\
+$DESKPAY					\
+$NEWSBUNTANKA					\
+$PICPAY						\
+$TOTAL						\
+$TAX						\
+$ALL						\
+$YOSANNOKORI					\
+$EXTRATAX					\
+$EXTRAALL					\
+$FULLTOTAL					\
+$FULLALL					\
+$EXTHONBUNPAY					\
+$EXTBUNTANKA					\
+$REPHONBUNPAY					\
+$REPBUNTANKA					\
+$HOWHONBUNPAY					\
+$HOWBUNTANKA					>>$tmp/rc
+.	$tmp/rc
+
+################################################################
+# 請求書データ印刷
+################################################################
+#---------------------------------------------------------------
+# 期間表示
+#---------------------------------------------------------------
+case	"$showterm" in
+true)
+cat<<EOF
+期間: ${STARTY}年${STARTM}月${STARTD}日～${ENDY}年${ENDM}月${ENDD}日
+
+EOF
+	;;
+esac
+
+#---------------------------------------------------------------
+# 対象表示
+#---------------------------------------------------------------
+case	"$targetuser" in
+'.*')
+cat<<EOF
+対象[全記事]
+EOF
+	;;
+*)
+cat<<EOF
+対象[$targetuser]
+EOF
+	;;
+esac
+
+#---------------------------------------------------------------
+# 文字の装飾表示設定
+#---------------------------------------------------------------
+RED=$(printf "\e[31m")		# 赤
+BLD=$(printf "\e[1m")		# 太字
+UND=$(printf "\e[4m")		# 下線
+RST=$(printf "\e[m")		# リセット
+
+#RED=""
+#BLD=""
+#UND=""
+#RST=""
+
+#---------------------------------------------------------------
+# 予算表示
+#---------------------------------------------------------------
+cat<<EOF					| ssv2txt -t
+項目 単価 数 小計
+ニュース ${NEWSBUNTANKA}円 ${HONBUNNUM}個 ${HONBUNPAY}円
+デスク ${NEWSDSKTANKA}円 ${DESKNUM}回 ${DESKPAY}円
+写真 ${NEWSPICTANKA}円 ${PICNUM}個 ${PICPAY}円
+レポート ${REPBUNTANKA}円 ${REPHONBUNNUM}個 ${REPHONBUNPAY}円
+ハウツー ${HOWBUNTANKA}円 ${HOWHONBUNNUM}個 ${HOWHONBUNPAY}円
+　 　 　 ${BLD}${UND}${TOTAL}${RST}円
+合計(税込) ${ALL}${RST}円 消費税(${VAT}%) ${TAX}円
+EOF
+
+case	"$shortmode" in
+true)
+	;;
+*)
+cat<<EOF					| ssv2txt -t
+
+　　予算 ${YOSAN}円
+残り予算 ${YOSANNOKORI}円
+残り記事数 ${NOKORIKIJI}個
+残り営業日 ${NOKORIDAYS}日
+残り平均記事数 ${RED}${HEIKIN}/日${RST}
+EOF
+
+# 2025-04-01 後藤
+# これまで予算外記事についても表示してきたものの、今後予算外記事は
+# ほぼなさそうなので、表示しないように上記から取り出した下記に保存
+#----------
+#項目 単価 数 小計
+#予算外記事 ${EXTBUNTANKA}円 ${EXTHONBUNNUM}個 ${EXTHONBUNPAY}円
+#小計 ${EXTHONBUNPAY}円
+#消費税(${VAT}%) ${EXTRATAX}円
+#合計(税込) ${EXTRAALL}円
+#==============
+#予算内外小計 ${FULLTOTAL}円
+#合計(税込) ${FULLALL}円
+
+	;;
+esac

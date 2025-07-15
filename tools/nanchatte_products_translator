@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# 製品一覧の説明をなんとなく日本語に翻訳
+#
+# 空白に見えるが実際には別コードの空白が指定されているので、重複して
+# いると判断して削除しないように。
+cat									|
+sed	's/ and earlier versions/およびこれより前のバージョン/g'	|
+sed	's/ and earlier versions/およびこれより前のバージョン/g'	|
+sed	's/ and earlier versions/およびこれより前のバージョン/g'	|
+sed	's/ and earlier version/およびこれより前のバージョン/g'		|
+sed	's/Windows and macOS/(Windows版、macOS版)/'			|
+sed	's/Windows &amp; macOS/(Windows版、macOS版)/'			|
+cat

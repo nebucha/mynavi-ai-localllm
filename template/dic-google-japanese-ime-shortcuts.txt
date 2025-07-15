@@ -1,0 +1,508 @@
+2FA	二要素認証(2FA: Two-Factor Authentication)	名詞	
+2SV	2段階認証プロセス(2SV: 2-Step verification)	名詞	
+AAGR	平均年間成長率(AAGR: Average Annual Growth Rate)	名詞	
+ACN	イタリア国家サイバーセキュリティ庁(ACN: Agenzia per la Cybersicurezza Nazionale)	組織	
+ACSC	オーストラリアサイバーセキュリティセンター(ACSC: Australian Cyber Security Centre)	組織	
+ADFS	Active Directoryフェデレーションサービス(ADFS: Active Directory Federation Services)	名詞	
+AGV	無人搬送車(AGV: Automated Guided Vehicle)	名詞	
+AI	人工知能(AI: Artificial Intelligence)	名詞	
+AITM	AiTM (Adversary-in-The-Middle)	名詞	
+ALB	アプリケーションロードバランサー(ALB: Application Load Balancer)	名詞	
+AOSP	Androidオープンソースプロジェクト(AOSP: Android Open Source Project)	名詞	
+AP	アクセスポイント(AP: Access Point)	名詞	
+APAC	アジア太平洋(APAC: Asia-Pacific)	名詞	
+APEJ	日本を除くアジア太平洋地域(APEJ: Asia Pacific Except Japan)	名詞	
+API	アプリケーション・プログラミング・インターフェイス(API: Application Programming Interface)	名詞	
+APT	持続的標的型攻撃(APT: Advanced Persistent Threat)	名詞	
+AR	拡張現実(AR: Augmented Reality)	名詞	
+ARP	アドレス解決プロトコル(ARP: Address Resolution Protocol)	名詞	
+ASD	オーストラリア通信電子局(ASD: Australian Signals Directorate)	組織	
+ASM	サイバーセキュリティ脅威の攻撃となりうる資産を把握・管理する取り組み(ASM: Attack Surface Management)	名詞	
+ASN	自律システム番号(ASN: Autonomous System number)	名詞	
+ASRM	アタックサーフェスマネジメント(ASRM: Attack Surface Risk Management)	名詞	
+ATO	アカウント乗っ取り(ATO: Account Takeover)	名詞	
+ATT&CK	ATT&CK (Adversarial Tactics, Techniques, and Common Knowledge: 敵対的な戦術、技術、共通知識)	名詞	
+AWS	Amazon Web Services (AWS)	名詞	
+B2B	企業間取引(B2B: Business to Business)	名詞	
+B2C	企業対消費者間取引(B2C: Business to Consumer)	名詞	
+BAAS	バックアップ・アズ・ア・サービス(BaaS: Backend as a Service)	名詞	
+BAS	侵害および攻撃シミュレーション(BAS: Breach and Attack Simulation)	名詞	
+BCC	ビジネスコミュニケーション侵害(BCC: Business Communication Compromise)	名詞	
+BCM	ボディーコントロールモジュール(BCM: Body Control Module)	名詞	
+BCM	事業継続管理(BCM: Business Continuity Management)	名詞	
+BCP	事業継続計画(BCP: Business Continuity Plan)	名詞	
+BEC	ビジネスメール詐欺(BEC: Business Email Compromise)	名詞	
+BFI	ビートフォーミングフィードバック情報(BFI: Beamforming Feedback Information)	名詞	
+BIS	米国産業安全保障局(BIS: Bureau of Industry and Security)	組織	
+BKA	ドイツ連邦刑事庁(BKA: Bundeskriminalamt)	組織	
+BMC	ベースボード管理コントローラ(BMC: Baseboard Management Controller)	名詞	
+BMS	ビル管理システム(BMS: Building Management System)	名詞	
+BOD	拘束力のある運用指令(BOD: Binding Operational Directive)	名詞	
+BRUTE	総当り攻撃(ブルートフォース攻撃、Brute-force attack)	名詞	
+BSI	ドイツ連邦政府情報セキュリティ庁(BSI: Bundesamt für Sicherheit in der Informationstechnik)	組織	
+BSOD	ブルースクリーン(BSoD: Blue Screen of Death)	名詞	
+BYOD	BYOD (Bring Your Own Device)	名詞	
+C2	コマンド＆コントロール(C2: Command and Control)	名詞	
+C2AAS	C2aaS (C2-as-a-Service)	名詞	
+CA	公開鍵証明書認証局(CA: Certificate Authority)	名詞	
+CAAS	サイバー犯罪・アズ・ア・サービス(CaaS: Cybercrime-as-a-Service)	名詞	
+CAGR	複合年間成長率(CAGR: Compound Annual Growth Rate)	名詞	
+CAIO	最高人工知能責任者(CAIO: Chief Artificial Intelligence Officer)	名詞	
+CAO	最高会計責任者(CAO: Chief Accounting Officer)	名詞	
+CAO	最高総務責任者(CAO: Chief Administrative Officer)	名詞	
+CAPTCHA	キャプチャ(CAPTCHA: Completely Automated Public Turing test to tell Computers and Humans Apart)	名詞	
+CBDC	中央銀行デジタル通貨(CBDC: Central Bank Digital Currency)	名詞	
+CBO	最高業務責任者(CBO: Chief Business Officer)	名詞	
+CCCS	カナダサイバーセキュリティセンター(CCCS: Canadian Centre for Cyber Security)	組織	
+CCO	最高コンプライアンス責任者(CCO: Chief Compliance Officer)	名詞	
+CCP	中国共産党(CCP: Chinese Communist Party)	組織	
+CDC	米国疾病予防管理センター(CDC: Centers for Disease Control and Prevention)	組織	
+CDN	コンテンツデリバリーネットワーク(CDN: Content Delivery Network)	名詞	
+CEO	最高経営責任者(CEO: Chief Executive Officer)	名詞	
+CERT/CC	CERT Coordination Center (CERT/CC)	組織	
+CERTCC	CERT Coordination Center (CERT/CC)	組織	
+CERTFR	CERT-FR (Centre gouvernemental de veille, d’alerte et de réponse aux attaques informatiques)	組織	
+CERTNZ	ニュージーランドコンピューター緊急対応チーム(CERT NZ: Computer Emergency Response Team New Zealand)	組織	
+CERTUA	ウクライナコンピューター緊急対応チーム (CERT-UA: Computer Emergency Response Team of Ukraine)	組織	
+CF	カーボンフットプリント(CF: Carbon footprint)	名詞	
+CFO	最高財務責任者(CFO: Chief Financial Officer)	名詞	
+CFR	制御された機能ロールアウト(CFR: Controlled Feature Rollout)	名詞	
+CGCYBER	米沿岸警備隊サイバー部隊(CGCYBER: United States Coast Guard Cyber Command)	名詞	
+CICD	継続的インテグレーションおよび継続的デリバリーシステム(CI/CD: Continuous Integration/Continuous Delivery)	名詞	
+CIEM	クラウドインフラストラクチャー権限管理(CIEM: Cloud Infrastructure Entitlement Management)	名詞	
+CIO	最高情報責任者(CIO: Chief Information Officer)	名詞	
+CIS	サイバーセキュリティ情報シート(CIS: Cybersecurity Information Sheet)	名詞	
+CIS	独立国家共同体(CIS: Commonwealth of Independent States)	組織	
+CISA	米国土安全保障省サイバーセキュリティ・インフラストラクチャーセキュリティ庁(CISA: Cybersecurity and Infrastructure Security Agency)	組織	
+CISO	最高情報セキュリティ責任者(CISO: Chief Information Security Officer)	名詞	
+CIT	法人所得税(CIT: Corporate Income Tax)	名詞	
+CLO	最高法務責任者(CLO: Chief Legal Officer)	名詞	
+CMDB	構成管理データベース(CMDB: Configuration Management Database)	名詞	
+CMO	最高広報責任者(CMO: Chief Marketing Officer)	名詞	
+CMS	CMS (Content Management System)	名詞	
+CNA	コンピューター・ネットワーク攻撃(CNA: Computer Network Attack)	名詞	
+CNAPP	クラウドネイティブ・アプリケーション・プロテクション・プラットフォーム(CNAPP: Cloud Native Application Protection Platform)	名詞	
+CND	コンピューター・ネットワーク防御(CND: Computer Network Defense)	名詞	
+CNE	コンピューター・ネットワーク工作活動(CNE: Computer Network Exploitation)	名詞	
+CNIL	フランス共和国データ保護機関CNIL(La Commission nationale de l'informatique et des libertés、情報化および自由に関する国家委員会)	組織	
+CNMF	サイバー国家任務部隊(CNMF: Cyber National Mission Force)	組織	
+COO	最高執行責任者(COO: Chief Operating Officer)	名詞	
+CORS	オリジン間リソース共有(CORS: Cross-Origin Resource Sharing)	名詞	
+COVID19	新型コロナウイルス感染症(COVID‑19)	名詞	
+CP	充電ポイント(CP: Charge Point)	名詞	
+CPE	カスタマ構内設備(CPE: Customer Premises Equipment)	名詞	
+CPO	最高製品責任者(CPO: Chief Product Officer)	名詞	
+CPS	サイバーフィジカルシステム(CPS: Cyber-Physical System)	名詞	
+CRM	顧客関係管理(CRM: Customer Relationship Management)	名詞	
+CRO	最高リスク管理責任者(CRO: Chief Risk Officer)	名詞	
+CSA	サイバーセキュリティアドバイザリー(CSA: Cybersecurity Advisory)	名詞	
+CSA	シンガポールサイバーセキュリテイ庁(CSA: Cyber Security Agency of Singapore)	組織	
+CSE	クライアントサイド暗号化(CSE: Client-side encryption)	名詞	
+CSIRT	コンピューターセキュリティインシデント対応チーム(CSIRT: Computer Security Incident Response Team)	組織	
+CSMS	充電システム管理サービス(CSMS: Charging System Management Service)	名詞	
+CSO	最高セキュリティ責任者(CSO: Chief Security Officer)	名詞	
+CSO	最高戦略責任者(CSO: Chief Strategy Officer)	名詞	
+CSPM	クラウドセキュリティポスチャー管理(CSPM: Cloud Security Posture Management)	名詞	
+CSR	証明書署名要求(CSR: Certificate Signing Request)	名詞	
+CSRB	サイバー安全保障審査会(CSRB: Cyber Safety Review Board)	名詞	
+CSRF	クロスサイトリクエストフォージェリー(CSRF: Cross-Site Request Forgery)	名詞	
+CSRO	最高社会的責任担当者(CSRO: Chief Social Responsibility Officer)	名詞	
+CSUITE	最高経営陣(C-Suite)	名詞	
+CSV	カンマ区切り形式(CSV: Comma-Separated Values)	名詞	
+CT	通信技術(CT: Communication Technology)	名詞	
+CTEM	継続的なエクスポージャー管理(CTEM: Continuous Threat Exposure Management)	名詞	
+CTO	最高技術責任者(CTO: Chief Technical Officer)	名詞	
+CVE	脆弱性情報データベース(CVE: Common Vulnerabilities and Exposures)	名詞	
+CVSS	共通脆弱性評価システム(CVSS: Common Vulnerability Scoring System)	名詞	
+CVSS	緊急10-9 重要8.9-7.0 警告6.9-4 注意3.9-0.1	名詞	
+CWE	共通脆弱性タイプ一覧(CWE: Common Weakness Enumeration)	名詞	
+DAAS	ダイアグノスティック・アズ・ア・サービス(DaaS: Diagnostics-as-a-Service)	名詞	
+DCL	ダイナミックコードローディング(DCL: Dynamic Code Loading)	名詞	
+DDoS	分散型サービス拒否攻撃(DDoS: Distributed Denial of Service attack)	名詞	
+DDOS	分散型サービス拒否攻撃(DDoS: Distributed Denial of Service attack)	名詞	
+DELL	Dell Technologies	組織	
+DEM	デジタルエクスペリエンス監視(DEM: Digital Experience Monitoring)	名詞	
+DEVOPS	デブオプス(DevOps)	名詞	
+DEVSECOPS	デブセクオプス(DevSecOps)	名詞	
+DEX	分散型取引所(DEX: Decentralized Exchange)	名詞	
+DFARS	米国防衛連邦調達規則補足(DFARS: Defense Federal Acquisition Regulation Supplement)	名詞	
+DHA	オーストラリア内務省(DHA: Australian Government Department of Home Affairs)	組織	
+DHS	アメリカ合衆国国土安全保障省(DHS: United States Department of Homeland Security)	組織	
+DIB	米国防衛産業基盤(DIB: Defense Industrial Base)	名詞	
+DIVD	オランダ脆弱性情報開示研究所(DIVD: Dutch Institute of Vulnerability Disclosure)	組織	
+DKIM	DKIM (DomainKeys Identified Mail)	名詞	
+DLL	ダイナミックリンクライブラリー(DLL: Dynamic Link Library)	名詞	
+DLP	情報漏えい対策(DLP: Data Loss Prevention)	名詞	
+DMARC	DMARC (Domain-based Message Authentication, Reporting, and Conformance)	名詞	
+DOE	米エネルギー省(DOE: United States Department of Energy)	組織	
+DOJ	米司法省(DOJ: United States Department of Justice)	組織	
+DoS	サービス運用妨害(DoS: Denial of Service)	名詞	
+DOS	サービス運用妨害(DoS: Denial of Service)	名詞	
+DPC	アイルランドデータ保護委員会(DPC: Data Protection Commission Ireland)	組織	
+DPC	データ保護委員会(DPC: Data Protection Commission)	組織	
+DR	ディザスタリカバリ(DR: Disaster Recovery)	名詞	
+DST	夏時間(DST: Daylight Saving Time)	名詞	
+DTP	デスクトップ・パブリッシング(DTP: Desktop publishing)	名詞	
+DTPM	ディスクリートトラステッドプラットフォームモジュール(dTPM: Discrete Trusted Platform Module)	名詞	
+DV	ドメイン認証型証明書(Domain Validation Certificate)	名詞	
+DX	デジタルトランスフォーメーション(DX: Digital Transformation)	名詞	
+E2EE	エンドツーエンド暗号化(E2EE: End-to-end encryption)	名詞	
+EASM	外部アタックサーフェス管理(EASM: External Attack Surface Management)	名詞	
+EC	欧州委員会(EC: European Commission)	組織	
+EDPS	欧州データ保護監察機関(EDPS: European Data Protection Supervisor)	組織	
+EDR	エンドポイント検出応答(EDR: Endpoint Detection and Response)	名詞	
+EDR	緊急開示要求(EDR: Emergency Disclosure Requests)	名詞	
+EEA	欧州経済領域(EEA: European Economic Area)	名詞	
+EEMEA	東ヨーロッパ、中東、アフリカ地域(EEMEA: Eastern Europe, the Middle East and Africa)	名詞	
+EHR	電子医療記録(EHR: Electronic Health Records)	名詞	
+EIA	アメリカ合衆国エネルギー情報局(EIA: U.S. Energy Information Administration)	組織	
+EMEA	ヨーロッパ、中東、アフリカ地域(EMEA: Europe, the Middle East and Africa)	名詞	
+EMR	電子医療情報(EMR: Electronic Medical Records)	名詞	
+EMS	エンドポイント管理ソリューション(EMS: Endpoint Management Solution)	名詞	
+ENISA	欧州ネットワーク・情報セキュリティ機関(ENISA: European Network and Information Security Agency)	組織	
+EOA	販売終了(EOA: End of Availability)	名詞	
+EOL	サポート終了(EOL: End-of-Life)	名詞	
+EOP	アメリカ合衆国大統領行政府(EOP: Executive Office of the President of the United States)	組織	
+EP	エンドポイント保護(EP: Endpoint Protection)	名詞	
+EPC	設計・調達・建設(EPC: Engineering, Procurement and Construction)	名詞	
+EPP	エンドポイント保護プラットフォーム(EPP: Endpoint Protection Platform)	名詞	
+ERP	企業資源計画(ERP: Enterprise Resource Planning)	名詞	
+ESF	官民共同のワーキンググループESF (Enduring Security Framework)	組織	
+ESU	拡張セキュリティ更新プログラム(ESU: Extended Security Update)	名詞	
+EU	欧州連合(EU: European Union)	組織	
+EUROPOL	欧州刑事警察機構(European Union Agency for Law Enforcement Cooperation)	名詞	
+EUROPOL	欧州刑事警察機構(Europol: European Police Office, Europol)	組織	
+EV	EV証明書(Extended Validation Certificate)	名詞	
+EV	電気自動車(EV: Electric Vehicles)	名詞	
+FBI	米国連邦調査局(FBI: Federal Bureau of Investigation)	組織	
+FCC	米連邦通信委員会(FCC: Federal Communications Commission)	組織	
+FCEB	米国連邦民間行政機関(FCEB：Federal Civilian Executive Branch)	組織	
+FDA	米国食品医薬品局(FDA: Food and Drug Administration)	名詞	
+FEMA	アメリカ合衆国連邦緊急事態管理庁(FEMA: Federal Emergency Management Agency)	組織	
+FENIX	fēnix	名詞	
+FIDO	FIDO (Fast IDentity Online)	名詞	
+FINCEN	米国財務省金融犯罪取締ネットワーク(FinCEN: Department of the Treasury’s Financial Crimes Enforcement Network)	組織	
+FIPS	連邦情報処理規格(FIPS: Federal Information Processing Standards)	名詞	
+FIRST	FIRST (Forum of Incident Response and Security Teams)	組織	
+FOMO	取り残されることへの恐れ(FOMO: Fear Of Missing Out)	名詞	
+FSB	ロシア連邦保安庁(FSB: Russian Federal Security Service、ФСБ:Федеральная служба безопасности Российской Федер)	組織	
+FSISAC	金融サービス情報共有分析センター(FS-ISAC: Financial Services Information Sharing and Analysis Center)	組織	
+FTC	米国連邦取引委員会(FTC: Federal Trade Commission)	組織	
+FTPM	ファームウェアトラステッドプラットフォームモジュール(fTPM: Firmware Trusted Platform Module)	名詞	
+GAI	生成AI(Generative Artificial Intelligence)	名詞	
+GANS	敵対的生成ネットワーク(GANs: Generative Adversarial Networks)	名詞	
+GCP	グーグルクラウドプラットフォーム(GCP: Google Cloud Platform)	名詞	
+GDP	国内総生産(GDP: Gross Domestic Product)	名詞	
+GDPR	EU一般データ保護規則(GDPR: General Data Protection Regulation)	固有名詞	
+GMS	流通取引総額(GMS: Gross Merchandise Sales)	名詞	
+GMV	流通取引総額(GMS: Gross Merchandise Value)	組織	
+GPDP	イタリア共和国データ保護機関(GPDP: Garante per la protezione dei dati personali)	名詞	
+GPO	グループポリシーオブジェクト(GPO: Group Policy Object)	名詞	
+GPS	全地球測位システム(GPS: Global Positioning System)	名詞	
+GPT	GPT (Generative Pre-trained Transformer)	名詞	
+GRU	ロシア連邦軍参謀本部情報総局(лавное разведывательное управление)	組織	
+GSOC	グローバルセキュリティオペレーションセンター(GSOC: Global Security Operations Center)	名詞	
+GST	物品サービス税(GST: Goods & Services Tax)	名詞	
+GT	&gt;	名詞	
+GTLD	ジェネリックトップレベルドメイン(gTLD: Generic top-level domain)	名詞	
+HC3	米国保健福祉省(HHS: United States Department of Health and Human Services)の保健医療サイバーセキュリティ調整センター(HC3: Health Sector Cybersecurity Coordination Center)	組織	
+HDD	ハードディスクドライブ(HDD: Hard Disk Drive)	名詞	
+HHS	米国保健福祉省(HHS: United States Department of Health and Human Services)	組織	
+HIIT	高強度インターバルトレーニング(HIIT: High Intensity Interval Training)	名詞	
+HNDL	通信を傍受して保存しておき技術的に解読が可能になってから解読するサイバー攻撃(HNDL: Harvest Now, Decrypt Later)	名詞	
+HOTP	HMACベースワンタイムパスワード(HOPT: HMAC-based One-Time Password)	名詞	
+HRV	心拍変動(HRV: Heart Rate Variability)	名詞	
+HSSEDI	米国国土安全保障システム工学開発研究所(HSSEDI: Homeland Security Systems Engineering and Development Institute)	組織	
+HSTS	HSTS (HTTP Strict Transport Security)	名詞	
+HTTP	HTTP (Hypertext Transfer Protocol)	名詞	
+HTTPS	HTTPS (Hypertext Transfer Protocol Secure)	名詞	
+HVAC	空調制御システム(HVAC: Heating, Ventilation and Air Conditioning)	名詞	
+HVCI	ハイパーバイザーで保護されたコード整合性(HVCI: Hypervisor-protected code integrity)	名詞	
+I2P	不可視インターネットプロジェクト(I2P: Invisible Internet Project)	名詞	
+I4	インダストリー4.0(Industry 4.0: I4.0)	名詞	
+IAAS	インフラストラクチャー・アズ・ア・サービス(IaaS: Infrastructure as a Service)	名詞	
+IAB	初期アクセスブローカー(IAB: Initial Access Brokers)	名詞	
+IAM	IDおよびアクセス管理(IAM: Identity and Access Management)	名詞	
+IC3	米国インターネット犯罪苦情センター(IC3: Internet Crime Complaint Center)	組織	
+ICO	イニシャル・コイン・オファリング(ICO: Initial coin offering)	名詞	
+ICO	英国個人情報保護監督機関(ICO: Information Commissioner's Office)	組織	
+ICPO	国際刑事警察機構(ICPO: International Criminal Police Organization)	組織	
+ICS	産業用制御システム(ICS: Industrial Control System)	名詞	
+ICT	情報通信技術(ICT: Information and Communication Technology)	名詞	
+IETF	インターネット技術特別調査委員会(IETF: Internet Engineering Task Force)	組織	
+IGA	IDガバナンス管理(IGA: Identity Governance and Administration)	名詞	
+IIOT	インダストリアルIoT(IIoT: Industrial Internet of Things)	名詞	
+IME	インプットメソッドエディタ(IME: Input Method Editor)	名詞	
+IMY	スウェーデンで個人情報保護およびデータプライバシーを監督する政府機関であるIMY (Integritetsskyddsmyndigheten, Swedish Authority for Privacy Protection)	組織	
+IoC	セキュリティ侵害インジケーター(IoC: Indicator of Compromise)	名詞	
+IOC	セキュリティ侵害インジケーター(IoC: Indicator of Compromise)	名詞	
+IoT	IoT (Internet of Things)	名詞	
+IOT	モノのインターネット(IoT: Internet of Things)	名詞	
+IPA	情報処理推進機構(IPA: Information-technology Promotion Agency, Japan)	組織	
+IR	インシデント対応(IR: Incident Response)	名詞	
+ISC	Internet Systems Consortium (ISC)	組織	
+ISC2	International Information System Security Certification Consortium ((ISC)²)	組織	
+IT	情報技術(IT: Information Technology)	名詞	
+ITDR	アイデンティティー脅威の検出とレスポンス(ITDR: Identity Threat Detection and Response)	名詞	
+IWA	統合Windows認証(IWA: Integrated Windows Authentication)	名詞	
+JAPAC	日本を含むアジア太平洋地域(JAPAC: Asia, Pacific and Japan)	名詞	
+JCIS	共同サイバーセキュリティ情報シート(JCIS: Joint Cybersecurity Information Sheet)	名詞	
+JIPDEC	日本情報経済社会推進協会(JIPDEC)	組織	
+JNSA	日本ネットワークセキュリティ協会(JNSA: 、Japan Network Security Association)	組織	
+JPCERTCC	JPCERTコーディネーションセンター(JPCERT/CC: Japan Computer Emergency Response Team Coordination Center)	組織	
+JRTF	米国合同ランサムウェアタスクフォース(JRTF: Joint Ransomware Task Force)	組織	
+JUAS	日本情報システム・ユーザー協会(JUAS: Japan Users Association of Information Systems)	組織	
+K12	K-12組織(幼稚園から高校までの教育機関)	名詞	
+KEV	既知の悪用された脆弱性(KEV: Known Exploited Vulnerability)	名詞	
+KIR	既知の問題のロールバック(KIR: Known Issue Rollback)	名詞	
+KMCI	カーネルモードのコード整合性(KMCI: Kernel Mode Code Integrity)	名詞	
+LLM	大規模言語モデル(LLM: Large Language Model)	名詞	
+LOLBAS	環境寄生型攻撃(LOLBAS: Living Off The Land Binaries and Scripts)	名詞	
+LOLBINS	環境寄生バイナリー(LOLBins: Living-Off-the-Land Binaries)	名詞	
+LOTC	クラウド寄生型攻撃(LOTC: Living Off The Cloud)	名詞	
+LOTL	環境寄生型(LOTL: Living Off The Land)	名詞	
+LSA	ローカルセキュリティ機関(LSA: Local Security Authority)	名詞	
+LT	&lt;	名詞	
+LTS	長期サポート版(LTS: Long Term Support)	名詞	
+LTSC	長期サービスチャンネル(LTSC: Long-Term Servicing Channel)	名詞	
+MAAS	マルウェア・アズ・ア・サービス(MaaS: Malware-as-a-Service)	名詞	
+MAAS	マルバタイジング・アズ・ア・サービス(MaaS: Malvertising-as-a-Service)	名詞	
+MDR	検知と対応のマネージドサービス(MDR: Managed Detection and Response)	名詞	
+MFA	多要素認証(MFA: Multi-Factor Authentication)	名詞	
+MFT	マネージド・ファイル転送(MFT: Managed File Transfer)	名詞	
+MIC	軍産複合体(MIC: Military-industrial complex)	名詞	
+MITB	マン・イン・ザ・ブラウザ(MITB: Man-in-the-browser)	名詞	
+MITM	中間者攻撃(MITM: Man-in-the-middle attack)	名詞	
+MITRE	MITRE (The Mitre Corporation)	組織	
+ML	機械学習(ML: Machine learning)	名詞	
+MOTW	MoTWマーク(MoTW: Mark-of-the-Web)	名詞	
+MSI	MicroStar International (MSI)	組織	
+MSISAC	米多州間情報共有・分析センター(MS-ISAC: Multi-State Information Sharing & Analysis Center)	組織	
+MSP	マネージドサービスプロバイダー(MSP: Managed Services Provider)	名詞	
+MSRC	マイクロソフトセキュリティレスポンスセンター(MSRC: Microsoft Security Response Center)	組織	
+MSSP	マネージドセキュリティサービスプロバイダー(MSSP: Managed Security Service Provider)	名詞	
+MSSQL	Microsoft SQL Server	名詞	
+MSTIC	Microsoft脅威インテリジェンスセンター(MSTIC: Microsoft Threat Intelligence Center)	組織	
+MTTD	平均検出時間(MTTD: Mean Time To Detect)	名詞	
+MTTR	平均修復時間(MTTR: Mean Time To Repair)	名詞	
+NAS	ネットワークアタッチトストレージ(NAS: Network Attached Storage)	名詞	
+NATO	北大西洋条約機構(NATO: North Atlantic Treaty Organization)	組織	
+NCA	英国家犯罪対策庁(NCA: National Crime Agency)	組織	
+NCCOE	国立サイバーセキュリティ・センター・オブ・エクセレンス(NCCoE: National Cybersecurity Center of Excellence)	組織	
+NCSC	オランダ国立サイバーセキュリティセンター(NCSC: Nationaal Cyber Security Centrum)	組織	
+NCSC	英国立サイバーセキュリティセンター(NCSC-UK: United Kingdom's National Cyber Security Centre)	組織	
+NCSCCH	スイス国家サイバーセキュリティセンター(NCSC: National Cyber Security Centre Switzerland)	名詞	
+NCSCNZ	ニュージーランド国立サイバーセキュリティセンター(NCSC-NZ: New Zealand National Cyber Security Centre)	組織	
+NCSCUK	英国立サイバーセキュリティセンター(NCSC-UK: United Kingdom's National Cyber Security Centre)	組織	
+NDR	ネットワーク検出応答(NDR: Network Detection and Response)	名詞	
+NEAT	非運動性熱産生(NEAT: Non-Exercise-Activity Thermogenesis)	名詞	
+NEC	日本電気(NEC)	組織	
+NFT	非代替性トークン(NFT: Non-Fungible Token)	名詞	
+NGAV	次世代アンチウイルス(NGAV: Next Generation Anti-Virus)	名詞	
+NGAV	次世代型アンチウイルス(NGAV: Next Generation Anti-Virus)	名詞	
+NGO	非政府組織(NGO: Non-Governmental Organization)	組織	
+NICT	情報通信研究機構(NICT: National Institute of Information and Communications Technology)	組織	
+NISC	内閣官房内閣サイバーセキュリティセンター(NISC：National center of Incident readiness and Strategy for Cybersecurity)	組織	
+NIST	米国国立標準技術研究所(NIST: National Institute of Standards and Technology)	名詞	
+NLP	自然言語処理(NLP: Natural Language Processing)	名詞	
+NPM	ノードパッケージマネージャー(npm: Node Package Manager)	名詞	
+NPU	ニューラルプロセッシングユニット(NPU: Neural Processing Unit)	名詞	
+NSA	米国家安全保障局(NSA: National Security Agency)	組織	
+NTLM	NTLM (NT LAN Manager)	名詞	
+NVD	米国国立標準技術研究所(NIST: National Institute of Standards and Technology)が管理している脆弱性情報データベース(NVD: National Vulnerability Database)	名詞	
+NZNCSC	ニュージーランド国立サイバーセキュリティセンター(NZ NCSC :New Zealand National Cyber Security Centre)	組織	
+OASIS	OASIS (Organization for the Advancement of Structured Information Standards、構造化情報標準促進協会)	組織	
+OAUTH	OAuth (Open Authorization)	名詞	
+OCI	犯罪捜査局(OCI: Office of Criminal Investigations)	組織	
+OCPP	オープンチャージポイントプロトコル(OCPP: Open Charge Point Protocol)	名詞	
+ODM	ODM (Original Design Manufacturing)	名詞	
+ODNI	米国国家情報情報長官室(ODNI: Office of the Director of National Intelligence)	組織	
+OECD	経済協力開発機構(OECD: Organisation for Economic Co-operation and Development)	組織	
+OEM	OEM (Original Equipment Manufacturing)	名詞	
+OLED	有機ELディスプレー(OLED)	名詞	
+OMO	OMO (オンラインとオフラインの融合: Online Merges with Offline)	名詞	
+OOB	定例外(OOB: Out-of-band)	名詞	
+OOO	不在通知(OOO: Out of Office)	名詞	
+OPT	ワンタイムパスワード(OTP: One-time Password)	名詞	
+OSINT	オープン・ソース・インテリジェンス (OSINT: Open Source Intelligence)	名詞	
+OSS	オープンソースソフトウェア(OSS: Open Source Software)	名詞	
+OT	運用・制御技術(OT: Operational Technology)	名詞	
+OTA	無線経由(OTA: Over The Air)	名詞	
+OTP	ワンタイムパスワード(OTP: One Time Password)	名詞	
+OV	組織認証型証明書(Organization Validation Certificate)	名詞	
+OWA	Outlook on the web	名詞	
+OWASP	OWASP (Open Worldwide Application Security)	組織	
+OWASP	オワスプ(OWASP: Open Web Application Security Project)	名詞	
+PAAS	フィッシング・アズ・ア・サービス(PhaaS: Phishing as a Service)	名詞	
+PAAS	プラットフォーム・アズ・ア・サービス(PaaS: Platform as a Service)	名詞	
+PAI	予測AI(Predictive Artificial Intelligence)	名詞	
+PAM	特権アクセス管理(PAM: Privileged Access Management)	名詞	
+PDCA	計画・実行・確認・改善(PDCA: plan–do–check–act)	名詞	
+PDT	太平洋夏時間(PDT: Pacific Daylight Time)	名詞	
+PEDM	特権昇格・委譲管理(PEDM: Privilege Elevation and Delegation Management)	名詞	
+PHA	有害な可能性があるアプリ(PHA: Potentially Harmful Application)	名詞	
+PHAAS	フィッシング・アズ・ア・サービス(PhaaS: Phishing-as-a-Service)	名詞	
+PHAAS	フィッシング・アズ・ア・サービス(PhaaS: Phishing as a Service)	名詞	
+PII	個人識別情報(PII: Personally Identifiable Information)	名詞	
+PIPC	韓国個人情報保護委員会(개인정보보호위원회, Personal Information Protection Commission: PIPC)	組織	
+PKI	公開鍵基盤(PKI: Public Key Infrastructure)	名詞	
+PLM	製品ライフサイクル管理(PLM: Product Lifecycle Management)	名詞	
+POC	概念実証(PoC: Proof of Concept)	名詞	
+POS	販売時点情報管理システム(POS: Point Of Sales)	名詞	
+PPA	電力購入契約(PPA:Power Purchase Agreements)	名詞	
+PQC	ポスト量子暗号(PQC: Post-Quantum Cryptography)	名詞	
+PRC	中華人民共和国(PRC: People's Republic of China)	固有名詞	
+PSA	公共広告(PSA: Public Service Announcement)	名詞	
+PSF	Pythonソフトウェア財団(PSF: Python Software Foundation)	組織	
+PSIRT	製品セキュリティインシデント対応チーム(PSIRT: Product Security Incident Response Team)	組織	
+PST	太平洋標準時(PST: Pacific Standard Time)	名詞	
+PSTI	英製品セキュリティおよび電気通信インフラストラクチャー法規制(PSTI: Product Security and Telecommunications Infrastructure)	名詞	
+PT	太平洋時間(PT)	名詞	
+PTAAS	ペネトレーションテスト提供サービス(PTaaS: Penetration Test as a Service)	名詞	
+PTC	パス・ザ・クッキー(Pass-the-Cookie)	名詞	
+PUK	PINロック解除コード(PUK: Personal Unlocking Key)	名詞	
+PYPI	PyPI (Python Package Index)	名詞	
+PYPL	PyPI (Python Package Index)	名詞	
+Q1	第1四半期	名詞	
+Q2	第2四半期	名詞	
+Q3	第3四半期	名詞	
+Q4	第4四半期	名詞	
+QRC	耐量子暗号(QRC: Quantum-Resistant Cryptographic)	名詞	
+RAAS	ランサムウェア・アズ・ア・サービス(RaaS: Ransomware-as-a-Service)	名詞	
+RAG	検索拡張生成(RAG: Retrieval Augmented Generation)	名詞	
+RAT	遠隔操作ウイルス(RAT: Remote Administration Tool)	名詞	
+RAT	遠隔操作型トロイの木馬(RAT: Remote Administration Trojan)	名詞	
+RCA	根本原因分析(RCA: Root Cause Analysis)	名詞	
+RCE	リモートコード実行(RCE: Remote Code Execution)	名詞	
+RCS	リッチコミュニケーションサービス(RCS: Rich Communication Services)	名詞	
+RDP	リモートデスクトッププロトコル(RDP: Remote Desktop Protocol)	名詞	
+RGB	北朝鮮偵察総局(RGB: Reconnaissance General Bureau)	組織	
+RKE	リモートキーレスエントリー(RKE: Remote Keyless Entry)	名詞	
+RMM	リモート監視および管理(RMM: Remote Monitoring and Management)	名詞	
+ROI	投資収益率(ROI: Return on Investment)	名詞	
+RPA	ロボティック・プロセス・オートメーション(RPA: Robotic Process Automation)	名詞	
+RPC	リモートプロシージャーコール(RPC:  Remote Procedure Call)	名詞	
+RPO	回復ポイント目標(RPO: Recovery Point Objective)	名詞	
+RTL	右横書き(RTL: Right-To-Left)	名詞	
+SA	セキュリティアドバイザリー	名詞	
+SAAS	ソフトウェア・アズ・ア・サービス(SaaS: Software-as-a-Service)	名詞	
+SAML	SAML (Security Assertion Markup Language)	名詞	
+SANS	SANS Internet Storm Center (ISC)	組織	
+SASE	セキュア・アクセス・サービス・エッジ(SASE: Secure Access Service Edge)	名詞	
+SBD	セキュア・バイ・デザイン(SbD: Secure by Design)	名詞	
+SBOM	ソフトウェア部品表(SBOM: Software Bill Of Materials)	名詞	
+SC	「」＋「」	名詞	
+SCA	ソフトウェアコンポジション分析(SCA: Software Composition Analysis)	名詞	
+SCA	戦略的協業契約(SCA: Strategic Collaboration Agreement)	名詞	
+SCC	標準契約条項(SCC: Standard Contractual Clauses)	名詞	
+SCM	ソースコントロール管理(SCM: Source Control Management)	名詞	
+SCP	SCP (Secure Copy Protocol)	名詞	
+SDGS	SDGs (持続可能な開発目標: Sustainable Development Goals)	名詞	
+SDK	ソフトウェア開発キット(SDK: Software Development Kit)	名詞	
+SDLC	システム開発ライフサイクル(SDLC: Systems Development Life Cycle)	名詞	
+SEC	米国証券取引委員会(SEC: U.S. Securities and Exchange Commission)	組織	
+SECOPS	セキュリティ運用(SecOps: Security Operations)	名詞	
+SFX	自己解凍アーカイブ(SFX: Self-Extracting Archive)	名詞	
+SIEM	セキュリティ情報およびイベント管理(SIEM: Security information and event management)	名詞	
+SLA	サービスレベル合意(SLA: Service Level Agreement)	名詞	
+SLO	サービスレベル目標(SLO: Service Level Objective)	名詞	
+SLP	サービスロケーションプロトコル(SLP: Service Location Protocol)	名詞	
+SMB	SMB (Server Message Block)	名詞	
+SME	中小企業(SME: Small and Medium Enterprises)	名詞	
+SMIME	S/MIME (Secure / Multipurpose Internet Mail Extensions)	名詞	
+SMS	ショートメッセージサービス(SMS: Short Message Service)	名詞	
+SNDL	通信を傍受して保存しておき技術的に解読が可能になってから解読するサイバー攻撃(SNDL: Store Now, Decrypt Later)	名詞	
+SNMP	簡易ネットワーク管理プロトコル(SNMP: Simple Network Management Protocol)	名詞	
+SNS	ソーシャルネットワーキングサービス(SNS: Social networking service)	名詞	
+SOAR	セキュリティオーケストレーションと自動化による応答(SOAR: Security Orchestration, Automation and Response)	名詞	
+SOC	セキュリティオペレーションセンター(SOC: Security Operation Center)	名詞	
+SOHO	小規模オフィス・ホームオフィス(SOHO: Small Office/Home Office)	名詞	
+SPF	SPF (Sender Policy Framework)	名詞	
+SPOF	単一障害点(SPOF: Single Point Of Failure)	名詞	
+SRD	SRD (Scalable Reliable Datagram)	名詞	
+SRM	セキュリティおよびリスク管理(SRM: Security Risk Management)	名詞	
+SSD	ソリッドステートドライブ(SSD: Solid State Drive)	名詞	
+SSH	SSH (Secure SHell)	名詞	
+SSL	SSL (Secure Sockets Layer)	名詞	
+SSO	シングルサインオン(SSO: Single Sign On)	名詞	
+SSRF	サーバーサイドリクエストフォージェリー(SSRF: Server-Side Request Forgery)	名詞	
+SSSCIP	ウクライナ国家特別通信・情報保護局(Derzhspetszviazok: Державна служба спеціального зв'язку та захисту інформації України)	組織	
+SV	セキュリティ脆弱性	名詞	
+SVG	スケーラブル・ベクター・グラフィックス(SVG: Scalable Vector Graphics)	名詞	
+SVR	ロシア対外情報庁(SVR: Sluzhba vneshney razvedki Rossiyskoy Federatsii、Служба внешней разведки)	名詞	
+SWG	セキュアWebゲートウェイ(SWG: Secure Web Gateway)	名詞	
+TAG	脅威分析グループ(TAG: Threat Analysis Group)	名詞	
+TCO	総所有コスト(TCO: Total Cost of Ownership)	名詞	
+TCP	トランスミッションコントロールプロトコル(TCP: Transmission Control Protocol)	名詞	
+TFL	ロンドン交通局(TfL: Transport for London)	組織	
+TLD	トップレベルドメイン(TLD: top-level domain)	名詞	
+TLS	TLS (Transport Layer Security)	名詞	
+TOAD	TOAD (Telephone-Oriented Attack Delivery)	名詞	
+TOR	Tor (The Onion Router)	名詞	
+TOTP	タイムベースドワンタイムパスワード(TOTP: Time-based One-time Password)	名詞	
+TPM	トラステッドプラットフォームモジュール(TPM: Trusted Platform Module)	名詞	
+TSA	アメリカ合衆国運輸保安庁(TSA: Transportation Security Administration)	組織	
+TSV	タブ区切り形式(TSV: Tab-Separated Values)	名詞	
+TTP	戦術、技術、手順(TTPs: Tactics, Techniques, and Procedures)	名詞	
+TUI	テキストユーザーインターフェイス(TUI: Text User Interface)	名詞	
+TWCERTCC	台湾におけるコンピューター緊急対応チームおよび調整センターであるTWCERT/CC (Taiwan Computer Emergency Response Team Coordination Center)	組織	
+UAE	アラブ首長国連邦(UAE: United Arab Emirates)	名詞	
+UAF	解放後使用(UAF: use-after-free)	名詞	
+UCSD	カリフォルニア大学サンディエゴ校(UCSD: University of California, San Diego)	組織	
+UDP	ユーザーデータグラムプロトコル(UDP: User Datagram Protocol)	名詞	
+UEFI	ユニファイド・エクステンシブル・ファームウェア・インターフェイス(UEFI: Unified Extensible Firmware Interface)	名詞	
+UEM	統合エンドポイント管理(UEM: Unified Endpoint Management)	名詞	
+UN	国際連合(UN: United Nations)	組織	
+UPS	無停電電源装置(UPS: Uninterruptible Power Supply)	名詞	
+URI	統一資源識別子(URI: Uniform Resource Identifier)	名詞	
+URL	統一資源位置指定子(URL: Uniform Resource Locator)	名詞	
+URN	統一資源名(URN: Uniform Resource Name)	名詞	
+USCERT	米コンピューター緊急事態対策チーム(United States Computer Emergency Readiness Team)	組織	
+USCYBERCOM	米国サイバー軍(USCYBERCOM: United States Cyber Command)	組織	
+USDA	米農務省(USDA: United States Department of Agriculture)	組織	
+USDT	米財務省(USDT: United States Department of the Treasury)	組織	
+USI	ユニバーサルスタイラスイニシアチブ(USI: Universal Stylus Initiative)	組織	
+USSEC	米国証券取引委員会(SEC: U.S. Securities and Exchange Commission)	名詞	
+USSS	アメリカ合衆国シークレットサービス(USSS: United States Secret Service)	組織	
+UTC	協定世界時(UTC: Coordinated Universal Time)	名詞	
+UUP	Unified Update Platform (UUP)	名詞	
+UX	ユーザー体験(UX: User eXperience)	名詞	
+VAT	付加価値税(VAT: Value Added Tax)	名詞	
+VBA	Visual Basic for Applications (VBA)	名詞	
+VBS	仮想化ベースのセキュリティ(VBS: Virtualization-based Security)	名詞	
+VDI	仮想デスクトップ基盤(VDI: Virtual Desktop Infrastructure)	名詞	
+VDP	脆弱性開示プログラム(VDP: Vulnerability Disclosure Program)	名詞	
+VDP	脆弱性開示ポリシー(VDP: Vulnerability Disclosure Policy)	名詞	
+VPM	脆弱性パッチ管理(VPM: Vulnerability and Patch Management)	名詞	
+VPN	仮想プライベートネットワーク(VPN: Virtual Private Network)	名詞	
+VR	仮想現実(VR: Virtual Reality)	名詞	
+VRP	脆弱性報奨プログラム(VRP: Vulnerability Reward Program)	名詞	
+VSCODE	Visual Studio Code	名詞	
+VSOC	仮想セキュリティオペレーションセンター(VSOC: Virtual Security Operations Center)	名詞	
+WAF	Webアプリケーションファイアウォール(WAF: Web Application Firewall)	名詞	
+WHO	世界保健機関(WHO: World Health Organization)	組織	
+WINRE	Windows回復環境(WinRE: Windows Recovery Environment)	名詞	
+WIPO	世界知的所有権機関(WIPO: World Intellectual Property Organization)	組織	
+WPS	Wi-Fi測位システム(WPS: Wi-Fi Positioning Systems)	名詞	
+WSL	WSL (Windows Subsystem for Linux)	名詞	
+WSUS	ウィンドウズサーバーアップデートサービス(WSUS: Windows Server Update Services)	名詞	
+XDR	拡張検出と応答(XDR: eXtended Detection and Response)	名詞	
+XEM	コンバージドエンドポイント管理(XEM: Converged Endpoint Managemen)	名詞	
+XSS	クロスサイトスクリプティング(XSS: Cross-Site Scripting)	名詞	
+XXE	XML外部実体(XXE: XML External Entity)	名詞	
+ZTNA	ゼロトラストネットワークアクセス(ZTNA: Zero Trust Network Access)	名詞	
+おんぐす	206-0802 東京都稲城市東長沼1724番地の5 ビオトーク102 042-316-7945	組織	
+がいせい	概要を生成してください。	名詞	
+しんろしあは	親ロシア派	名詞	
+たいないぷるかく	タイトルと内容を一部変更。pull→diffで確認→ArticleCandidate.mlチェック入れとPushを	名詞	
+たいないぷるかくしー	タイトルと内容を一部変更。pull→diff→CMS入稿→→ArticleCandidate.mlチェック入れとPushを	名詞	
+たいぷるかく	タイトルのみ変更。pull→diffで確認→ArticleCandidate.mlチェック入れとPushを	名詞	
+たいぷるかくしー	タイトルのみ変更。pull→diff→CMS入稿→ArticleCandidate.mlチェック入れとPushを	名詞	
+たようそにんしょう	多要素認証	名詞	
+つぎたい	次の文章のタイトルを10個提案せよ。誤字脱字があれば指摘せよ。	名詞	
+つぎほん	次の文章を翻訳せよ。である調で書け。	名詞	
+つぎまと	次の文章の最後に「まとめ」の節が必要だ。3段落でまとめの節の文章を生成せよ。である調で書け。	名詞	
+ないぷるかく	内容を修正。pull→diffで確認→ArticleCandidate.mlチェック入れとPushを	名詞	
+ないぷるかくしー	内容を修正。pull→diff→CMS入稿→ArticleCandidate.mlチェック入れとPushを	名詞	
+ぱふぇその	パーフェクト。ArticleCandidate.mlチェック入れとPushを	名詞	
+ぱふぇそのしー	パーフェクト。CMS入稿→ArticleCandidate.mlチェック入れとPushを	名詞	

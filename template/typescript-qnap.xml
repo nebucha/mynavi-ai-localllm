@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <docgroup>
+  <docinfo>
+   <title><p>QNAPTLE</p></title>
+   <shorttitle><p></p></shorttitle>
+   <author><p>USER</p></author>
+   <firstedition><p>NOW</p></firstedition>
+   <lastmodified><p>DATE REVISION</p></lastmodified>
+  </docinfo>
+
+  <p>[W:500]</p>
+
+  <p>[LEAD:]</p>
+
+  <p>[TAG:]</p>
+
+  <p>QNAP SystemsはHIDUKE、「<access ref="SRCURL">SRCTITLE</access>」において、QNAPの複数のプロダクトに複数のセキュリティ脆弱性が存在すると伝えた。このセキュリティ脆弱性はSTATUSとされている。該当するプロダクトを使っているかどうか確認するとともに、製品を使っている場合には説明されている内容に従って対処することが望まれる。</p>
+
+  <p><import caption="SRCTITLE" id="images/001raw.jpg" ref="images/001raw.jpg" type="image/jpeg"/></p>
+
+  <p>このセキュリティ脆弱性は、EMBEDDED4TH (△△△ EMBEDDED5TH)</p>
+
+  <docgroup>
+   <docinfo>
+    <title><p>セキュリティ脆弱性が存在するとされるプロダクトおよびバージョン</p></title>
+   </docinfo>
+  
+   <p>セキュリティ脆弱性が存在するとされるプロダクトおよびバージョンは次のとおり。</p>
+
+   <list>
+EMBEDDED1TH
+   </list>
+  </docgroup> 
+
+  <docgroup>
+   <docinfo>
+    <title><p>セキュリティ脆弱性が修正されたプロダクトおよびバージョン</p></title>
+   </docinfo>
+
+   <p>セキュリティ脆弱性が修正されたプロダクトおよびバージョンは次のとおり。</p>
+
+   <list>
+EMBEDDED2TH
+   </list>
+  </docgroup> 
+
+  <docgroup>
+   <docinfo>
+    <title><p>セキュリティ脆弱性に関する情報</p></title>
+   </docinfo>
+
+   <p>修正対象となっているセキュリティ脆弱性に関する情報（CVE）は次のとおり。</p>
+
+   <list>
+EMBEDDED3TH
+   </list>
+  </docgroup> 
+
+  <docgroup>
+   <docinfo>
+    <title><p>推奨される対策</p></title>
+   </docinfo>
+
+   <p>QNAPはこのセキュリティ脆弱性の影響を低減するために、次の対応を取ることを推奨している。</p>
+
+   <list>
+    <item><p>EMBEDDED6TH (△△△ EMBEDDED7TH)</p></item>
+   </list>
+
+   <p>修正対象となっているセキュリティ脆弱性はCVEの特定でNUMOFCVESつで、深刻度はSEVERITYとされていることから注意が必要。提供されている情報に従って迅速に対応するとともに、QNAPから提供されるセキュリティ情報に合わせて対処することが望まれる。</p>
+  </docgroup> 
+
+  <p>[POST:]</p>
+
+<!--LIST-->
+
+  <p>[SRC:SRCURL]</p>
+
+  <p>[URL:][]</p>
+ </docgroup>
+</document>

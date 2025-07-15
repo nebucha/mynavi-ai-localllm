@@ -1,0 +1,74 @@
+#!/bin/sh
+
+tmp=/tmp/$$
+PATH=$(dirname $0):$PATH
+
+# 1:URL 2:ディレクトリ名 3:記事タイトル
+[ $# != "3" ]								&& exit 1
+
+# 元記事を取得する
+netcat	"$1"								> $tmp-src
+
+# トータルサイト数を取得
+cat	$tmp-src							|
+grep	-o '[0-9,]* sites'						|
+head	-1								|
+sed	's/ sites//'							|
+cat									> $tmp-val
+numoftotalsites=$(cat $tmp-val)
+
+# トータルユニークドメイン数を取得
+cat	$tmp-src							|
+grep	-o '[0-9,]* unique domains'					|
+head	-1								|
+sed	's/ unique domains//'						|
+cat									> $tmp-val
+numofuniqdomains=$(cat $tmp-val)
+
+# トータルWebフェーシングコンピュータ数を取得
+cat	$tmp-src							|
+grep	-o '[0-9,]* web-facing computers'				|
+head	-1								|
+sed	's/ web-facing computers//'					|
+cat									> $tmp-val
+numofwebcomputers=$(cat $tmp-val)
+
+# サイト増減数を取得
+cat	$tmp-src							|
+grep	-o '[0-9.]* million sites'					|
+head	-1								|
+sed	's/ million sites//'						|
+awk	'{printf("%d",$1*100)}'						|
+cat									> $tmp-val
+numofsites=$(cat $tmp-val)
+
+# ドメイン増減数を取得
+cat	$tmp-src							|
+grep	-E -o '[0-9,]+ domains'						|
+head	-1								|
+sed	's/ domains//'							|
+cat									> $tmp-val
+numofdomains=$(cat $tmp-val)
+
+# Webフェーシングコンピュータ増減数を取得
+cat	$tmp-src							|
+grep	-E -o '[0-9,]+ computers'					|
+head	-1								|
+sed	's/ computers//'						|
+cat									> $tmp-val
+numofcomputers=$(cat $tmp-val)
+
+# 記事の原型を作成
+MAKE_TYPESCRIPT 							\
+ 	"$@"								|
+sed	"s|NUMOFTOTALSITES|$numoftotalsites|g"				|
+sed	"s|NUMOFUNIQDOMAINS|$numofuniqdomains|g"			|
+sed	"s|NUMOFWEBCOMPUTERS|$numofwebcomputers|g"			|
+sed	"s|NUMOFSITES|$numofsites|g"					|
+sed	"s|NUMOFDOMAINS|$numofdomains|g"				|
+sed	"s|NUMOFCOMPUTERS|$numofcomputers|g"				|
+cat									> $tmp-typescript
+
+cat $tmp-typescript
+
+rm -f $tmp-*

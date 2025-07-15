@@ -1,0 +1,24 @@
+#!/bin/sh
+
+# セキュリティ脆弱性の説明をなんとなく日本語に翻訳
+cat									|
+sed	's/Use after free in \(.*\)/\1解放後の使用による問題/'		|
+sed	's/Inappropriate implementation in \(.*\)/\1における不適切な実装/' |
+sed	's/Heap buffer overflow in \(.*\)/\1におけるヒープバッファーオーバーフロー/' |
+sed	's/Insufficient policy enforcement in \(.*\)/\1におけるポリシー適用不備の問題/' |
+sed	's/Insufficient validation of untrusted input in \(.*\)/\1における信頼できない入力の不十分な検証の問題/' |
+sed	's/Out of bounds read in compositing/コンポジットにおける範囲外読み取りの問題/' |
+sed	's/Out of bounds read in \(.*\)/\1における範囲外読み取りの問題/' |
+sed	's/Out of bounds memory access in \(.*\)/\1における範囲外メモリアクセスの問題/' |
+sed	's/Type Confusion in \(.*\)/\1における型混乱の問題/' |
+sed	's/Insufficient validation of untrusted input in \(.*\)/\1における信頼できない入力の検証が不十分である問題/' |
+sed	's/Cross Site Scripting/クロスサイトスクリプティングのセキュリティ脆弱性/' |
+sed	's/Cross-Site Scripting/クロスサイトスクリプティングのセキュリティ脆弱性/' |
+sed	's/Broken Access Control/不適切なアクセス制御によるセキュリティ脆弱性/' |
+sed	's/Arbitrary File Upload/任意ファイルアップデートのセキュリティ脆弱性/' |
+sed	's/Directory Traversal/ディレクトリトラバーサルのセキュリティ脆弱性/' |
+sed	's/Path Traversal/パストラバーサルのセキュリティ脆弱性/' |
+sed	's/Sensitive Data Exposure/機密情報漏えいのセキュリティ脆弱性/' |
+sed	's/Injection/インジェクションセキュリティ脆弱性/' |
+sed	's/Missing Authorization/チェック欠落によるセキュリティ脆弱性/' |
+cat

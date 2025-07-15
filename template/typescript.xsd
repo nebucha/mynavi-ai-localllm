@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:group name="in_p">
+        <xs:choice>
+            <xs:element name="access" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:string">
+                            <xs:attribute name="ref" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="import" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                    <xs:attribute name="caption" use="required" />
+                    <xs:attribute name="id" use="required" />
+                    <xs:attribute name="ref" use="required" />
+                    <xs:attribute name="type" use="required" />
+                    <xs:attribute name="encoding" />
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+    </xs:group>
+   
+    <xs:group name="in_docinfo">
+        <xs:choice>
+            <xs:element name="title">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="p" type="xs:string" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="shorttitle">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="p" type="xs:string" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="author">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="p" type="xs:string" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="firstedition">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="p" type="xs:string" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="lastmodified">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="p" type="xs:string" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+    </xs:group>
+
+    <xs:group name="in_docgroup">
+        <xs:choice>
+            <xs:element name="docinfo" minOccurs="1" maxOccurs="1">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:group ref="in_docinfo" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="p" minOccurs="0">
+                <xs:complexType mixed="true">
+                    <xs:sequence>
+                        <xs:group ref="in_p" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="list"  minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="item" maxOccurs="unbounded">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="p">
+                                        <xs:complexType mixed="true">
+                                            <xs:sequence>
+                                                <xs:element name="access">
+                                                    <xs:complexType>
+                                                        <xs:simpleContent>
+                                                            <xs:extension
+                                                                base="xs:string">
+                                                                <xs:attribute
+                                                                    name="ref"
+                                                                    use="required"
+                                                                    fixed="https://www.example.org/" />
+                                                            </xs:extension>
+                                                        </xs:simpleContent>
+                                                    </xs:complexType>
+                                                </xs:element>
+                                            </xs:sequence>
+                                        </xs:complexType>
+                                    </xs:element>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                    <xs:attribute name="type" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="quote" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="p" maxOccurs="unbounded" type="xs:string" />
+                    </xs:sequence>
+                    <xs:attribute name="ref" use="required" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="note" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="p" maxOccurs="unbounded" type="xs:string" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="docgroup" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:group ref="in_docgroup" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+    </xs:group>
+
+    <xs:element name="document">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="docgroup">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:group ref="in_docgroup" minOccurs="0" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

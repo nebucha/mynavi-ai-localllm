@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <docgroup>
+  <docinfo>
+   <title><p>TITLE</p></title>
+   <shorttitle><p>TITLE</p></shorttitle>
+   <author><p>USER</p></author>
+   <firstedition><p>NOW</p></firstedition>
+   <lastmodified><p>DATE REVISION</p></lastmodified>
+  </docinfo>
+
+  <p>[W:500]</p>
+
+  <p>[LEAD:]</p>
+
+  <p>[TAG:]</p>
+
+  <p>情報処理推進機構(IPA: Information-technology Promotion Agency, Japan)はHIDUKE、「<access ref="SRCURL">SRCTITLE</access>」において、にセキュリティ脆弱性が存在すると伝えた。これらセキュリティ脆弱性を利用されると、攻撃者によって影響を受けたシステムの制御権が乗っ取られる危険性があるとされており注意が必要。</p>
+
+  <docgroup>
+   <docinfo>
+    <title><p>セキュリティ脆弱性に関する情報</p></title>
+   </docinfo>
+
+   <p>セキュリティ脆弱性に関する情報は次のページにまとまっている。</p>
+
+   <list>
+    <item><p></p></item>
+   </list>
+
+   <p><import caption="SRCTITLE" id="images/001raw.jpg" ref="images/001raw.jpg" type="image/jpeg"/></p>
+  </docgroup> 
+
+  <docgroup>
+   <docinfo>
+    <title><p>セキュリティ脆弱性が存在するとされるプロダクトおよびバージョン</p></title>
+   </docinfo>
+
+   <p>セキュリティ脆弱性が存在するとされるプロダクトおよびバージョンは次のとおり。</p>
+
+   <list>
+    <item><p></p></item>
+    <item><p></p></item>
+    <item><p></p></item>
+    <item><p></p></item>
+    <item><p></p></item>
+   </list>
+  </docgroup> 
+
+  <docgroup>
+   <docinfo>
+    <title><p>セキュリティ脆弱性が修正されたプロダクトおよびバージョン</p></title>
+   </docinfo>
+
+   <p>セキュリティ脆弱性が修正されたプロダクトおよびバージョンは次のとおり。</p>
+
+   <list>
+    <item><p></p></item>
+    <item><p></p></item>
+    <item><p></p></item>
+    <item><p></p></item>
+    <item><p></p></item>
+   </list>
+  </docgroup> 
+
+  <p>セキュリティ脆弱性のいくつかは深刻度が緊急（Critical）に分類されており注意が必要。情報処理推進機構はユーザーおよび管理者に対して上記セキュリティ情報をチェックするとともに、必要に応じてアップデートを適用することを推奨している。</p>
+
+  <p>[POST:]</p>
+
+<!--LIST-->
+
+  <p>[SRC:SRCURL]</p>
+
+  <p>[URL:][]</p>
+ </docgroup>
+</document>

@@ -1,0 +1,41 @@
+# Copyright (c) 2005-2014,2020,2021-2024 ONGS Inc.
+# All rights reserved.
+#
+# This software may be used, modified, copied, and distributed, in
+# both source and binary form provided that the above copyright and
+# these terms are retained. Under no circumstances is the author
+# responsible for the proper functioning of this software, nor does
+# the author assume any responsibility for damages incurred with its
+# use.
+
+# author: Daichi GOTO (daichi@ongs.co.jp)
+
+#=========================================================================
+# 新規記事作成
+#=========================================================================
+addhontai2:
+	@cd     ${name} ;						 \
+	 	${MAKE} build;						 \
+	 	${MAKE} edit;						 \
+	 	${MAKE} clean
+	${MAKE} money
+
+#=========================================================================
+# 操作系ターゲット
+#=========================================================================
+post:	pull
+	${HTMLBROWSER} https://news.mynavi.jp/techplus/list/headline/enterprise/
+	${VIM}	-c 'normal! gg=G'					 \
+		-c '/POST:]' 						 \
+		-c 'normal! 11l'					 \
+		-c 'startinsert'					 \
+		$$(ls 							|\
+		   tail	-200 						|\
+		   grep	'^[0-9]'					|\
+		   while read dir; 					 \
+		   do 							 \
+		   	grep	-H 'ST:\]' $${dir}/typescript.xml; 	 \
+		   done 						|\
+		   cut	-f1 -d:						 \
+		)
+	${MAKE}	push-after-post

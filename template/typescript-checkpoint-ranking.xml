@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <docgroup>
+  <docinfo>
+   <title><p></p></title>
+   <shorttitle><p></p></shorttitle>
+   <author><p>後藤大地</p></author>
+   <firstedition><p>Wed Mar 14 16:46:40 JST 2018</p></firstedition>
+   <lastmodified><p>$Date$ $Revision$</p></lastmodified>
+  </docinfo>
+
+  <p>[W:500]</p>
+
+  <p>[LEAD:]</p>
+
+  <p>[TAG:Security,Malware]</p>
+
+  <p>ORGANIZATIONはHIDUKE、「<access ref="SRCURL">SRCTITLE</access>」において、SENGETU_YEAR年SENGETU月のマルウェアランキングを発表した。</p>
+
+  <p><import caption="SRCTITLE" id="images/001raw.jpg" ref="images/001raw.jpg" type="image/jpeg"/></p>
+
+  <docgroup>
+   <docinfo>
+    <title><p>SENGETU_YEAR年SENGETU月のマルウェアランキング</p></title>
+   </docinfo>
+
+   <p>Check Point Software Technologiesより発表されたSENGETU_YEAR年SENGETU月のマルウェアランキングは次のとおり。</p>
+
+   <p><import caption="" id="tables/001.tsv" ref="tables/001.tsv" type="text/tsv" encoding="UTF-8" /></p>
+
+   <p><import caption="" id="tables/002.tsv" ref="tables/002.tsv" type="text/tsv" encoding="UTF-8" /></p>
+
+   <p><import caption="" id="tables/003.tsv" ref="tables/003.tsv" type="text/tsv" encoding="UTF-8" /></p>
+  </docgroup> 
+
+  <docgroup>
+   <docinfo>
+    <title><p></p></title>
+   </docinfo>
+
+   <p></p>
+
+   <p></p>
+  </docgroup> 
+
+  <p>[POST:]</p>
+
+<!--LIST-->
+
+  <p>[SRC:SRCURL]</p>
+
+  <p>[URL:https://www.checkpoint.com/][Check Point Software Technologies]</p>
+ </docgroup>
+</document>

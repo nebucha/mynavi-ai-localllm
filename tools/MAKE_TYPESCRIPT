@@ -1,0 +1,133 @@
+#!/bin/sh -exv
+#
+# Copyright (c) 2014,2021-2024 Daichi GOTO <daichi@ongs.co.jp>
+#
+# This software is proprietary and not allowed to use for commercial
+# purpose without a license.  Please contact daichi@ongs.co.jp
+# for the details.
+
+PATH=$(dirname $0):$PATH
+
+#=========================================================================
+# 引数をチェック
+#=========================================================================
+[ $# -lt "3" ]							&& exit 1
+# 1:URL 2:ディレクトリ名 3:記事タイトル
+# 4:組込ファイル1 5:組込ファイル2 6:組込ファイル3...
+# 
+# 引数4つ目以降は任意。それぞれEMBEDDED1、EMBEDDED2、EMBEDDED3といった
+# 感じでテンプレートファイルに書いておくことができ、指定されたファイルの
+# 中身に置き換えられる。
+
+#=========================================================================
+# 作業用ディレクトリの作成と削除トラップの設定
+#=========================================================================
+tmp=/tmp/$(basename "$0" | tr ' ' '_' | tr '.' '_')_$$; mkdir $tmp
+trap	"rm -rf \"$tmp\"" EXIT
+
+#=========================================================================
+# 専用のMAKE_TYPESCRIPTがある場合にはそちらに処理を委譲する
+#=========================================================================
+# すでにMAKE_TYPESCRIPTから呼ばれている場合には処理の移譲は行わない
+if	[ "$CALLED_FROM_MAKE_TYPESCRIPT" != "true" ]
+then
+	scriptdir=$(dirname $0)
+	script=MAKE_$(echo $2 | sed 's/[^-]*-//' | tr '-' '_' | tr '[a-z]' '[A-Z]')
+	prescript=""
+	while	[ "$script" != "$prescript" ]
+	do
+		if	[ -e ${scriptdir}/${script} ]
+		then
+			export	CALLED_FROM_MAKE_TYPESCRIPT=true
+			${scriptdir}/${script} "${@}"
+			exit
+		else
+			prescript=$script
+			script=$(echo $script | sed 's/_[^_]*$//')
+		fi
+	done
+fi
+
+#=========================================================================
+# 組織データベースパス設定とデータアップデート
+#=========================================================================
+dbdir=$(dirname $0)/../../database-orgs
+dbtooldir=${dbdir}/tools
+
+# データベースをアップデート
+(
+	cd	${dbdir}
+ 	git	pull						> /dev/null 2>&1
+)
+
+#=========================================================================
+# ベースとなる発表テキストを取得
+#=========================================================================
+netcat	"$1"							> $tmp/report
+
+#=========================================================================
+# 記事生成に必要となるデータを生成
+#=========================================================================
+
+# 記事が公開された日付を取得(推定値)
+cat	$tmp/report						|
+nanchatte_hiduke_getter	$1					> $tmp/hiduke
+
+# 組織名を取得
+entry=$(echo $2 | cut -f2 -d-)
+${dbtooldir}/get_name ${entry}					> $tmp/org
+
+# 報告書のタイトルを生成
+cat	$tmp/report						|
+nanchatte_title_getter 						> $tmp/srctitle
+
+#=========================================================================
+# 記事を生成
+#=========================================================================
+# 値のはめ込み。名前に一致するテンプレートがあればそちらを、なければ
+# デフォルトのテンプレートをベースに作成する。
+{
+# パターン: name1-name2-name3 : typescripe-name1-name2-name3.xml
+platefile=$(dirname $0)/../template/typescript-$(echo $2 | cut -f2-4 -d-).xml
+if	[ ! -f $platefile ]
+then
+# パターン: name1-name2 : typescripe-name1-name2.xml
+	platefile=$(dirname $0)/../template/typescript-$(echo $2 | cut -f2-3 -d-).xml
+	if	[ ! -f $platefile ]
+	then
+# パターン: name1* : typescripe-name1.xml
+		platefile=$(dirname $0)/../template/typescript-$(echo $2 | cut -f2 -d-).xml
+		if	[ ! -f $platefile ]
+		then
+# パターン: name1* : 該当なし
+			platefile=$(dirname $0)/../template/typescript.xml
+		fi
+	fi
+fi
+cat	$platefile
+}								|
+sed	"s|SRCURL|$(echo $1 | sed 's/&/\\\&amp;/g')|g"		|
+sed	"s|ORGANIZATION|$(cat $tmp/org | sed 's/&/\\\&amp;/g')|g" |
+sed	"s|SRCTITLE|$(cat $tmp/srctitle | sed 's/&/\\\&/g')|g"	|
+sed	"s|TITLE|$(echo "$3" | sed 's/&/\\\&/g')|g"		|
+sed	"s|HIDUKE|$(cat $tmp/hiduke)|g"				|
+sed	"s|SENGETU_YEAR|$(date -v-1m +%Y)|g"			|
+sed	"s|SENGETU|$(date -v-1m +%m | sed 's/^0*//')|g"		|
+sed	"s|YEAR|$(date +%Y)|g"					|
+sed	"s|MONTH|$(date +%m | sed 's/^0*//')|g"			> $tmp/typescript
+
+# 組込ファイルをはめ込む
+for	i in $(seq $#)
+do
+	[ $i -lt 4 ] && continue
+
+	cp	$tmp/typescript					\
+		$tmp/typescript.pre
+	txt1txt	-n						\
+		1,EMBEDDED$((i-3)),$4				\
+		$tmp/typescript.pre 				> $tmp/typescript
+
+	shift
+done
+
+cat	$tmp/typescript

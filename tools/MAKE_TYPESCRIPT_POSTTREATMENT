@@ -1,0 +1,122 @@
+#!/bin/sh -exv
+#
+# Copyright (c) 2014,2021-2025 Daichi GOTO <daichi@ongs.co.jp>
+#
+# This software is proprietary and not allowed to use for commercial
+# purpose without a license.  Please contact daichi@ongs.co.jp
+# for the details.
+
+PATH=$(dirname $0):$PATH
+
+#=========================================================================
+# 作業用ディレクトリの作成と削除トラップの設定
+#=========================================================================
+tmp=/tmp/$(basename "$0" | tr ' ' '_' | tr '.' '_')_$$; mkdir $tmp
+trap	"rm -rf \"$tmp\"" EXIT
+
+#=========================================================================
+# 使用する企業データを変数に設定
+#=========================================================================
+dbdir=$(dirname $0)/../../database-orgs
+dbtooldir=${dbdir}/tools
+
+entry=$(echo $1 | cut -f2 -d-)
+dbtags=$(${dbtooldir}/get_tags ${entry})
+dbname=$(${dbtooldir}/get_name ${entry})
+dburl=$(${dbtooldir}/get_url ${entry})
+dbimg=$(${dbtooldir}/get_imagefile_path ${entry})
+
+#=======================================================================
+# 執筆者のフルネームを取得
+#=======================================================================
+case "$(uname)" in
+MSYS*)
+	make	-f "$(dirname "$0")/../mk/win.vars.mk" 		\
+		--no-print-directory				\
+		USER_FULLNAME_KANJI 				> $tmp/fullname
+	;;
+*)
+	make	-f "$(dirname "$0")/../mk/vars.mk"		\
+		-V USER_FULLNAME_KANJI 				> $tmp/fullname
+	;;
+esac
+
+#=======================================================================
+# はめ込むデータを抽出
+#=======================================================================
+WORDS="W:500"
+case	"$1" in
+*-REP)
+	WORDS="W:2000"
+	;;
+*-HOW)
+	WORDS="W:2000"
+	;;
+*-EXT)
+	WORDS="W:2000"
+	;;
+esac
+
+# 各種値のはめ込み
+cat	$(dirname $0)/../$1/typescript.xml			|
+sed	"s|USER|$(cat $tmp/fullname)|g"				|
+sed	's|DATE|$Date$|g'					|
+sed	's|REVISION|$Revision$|g'				|
+sed	"s|NOW|$(LANG=C date)|g"				|
+sed	"s|W:500|$WORDS|g"					|
+sed	"s|\[TAG:]|[TAG:${dbtags}]|"				|
+sed	"s|\[URL:]\[]|[URL:][${dbname}]|"			|
+sed	"s|\[URL:]|[URL:${dburl}]|"				> $tmp/t.xml
+
+#=======================================================================
+# Webページのスクリーンショットを取得
+#=======================================================================
+if	[ ! -e $1/images/001raw.jpg ]
+then
+	getss	-w 1200						\
+		-h 800						\
+		-f $tmp/ss.png					\
+		$2
+	gm	convert 					\
+		-resize 1200x800				\
+		$tmp/ss.png 					\
+		$1/images/001raw.jpg
+fi
+
+#=======================================================================
+# 関連記事リストを作成
+#=======================================================================
+( 
+cd	$(dirname $0)/../
+ls 								|
+grep	-E "($(echo $1 | cut -f2 -d -)$)|($(echo $1 | cut -f2 -d -)-)" 	|
+sortcmd	-r							|
+# リストに自分自身が含まれているので排除
+tail	+2							|
+xargs	-I% grep '\[POST:' %/typescript.xml			|
+# タグや空白など使わない文字列を削除や変換
+sed	's/[ 	]//g'						|
+sed	's/<[^>]*>//g'						|
+sed	's/\[POST:/\[MJ:/'					|
+# 記事一覧へ加工
+gsed	-e 's/^/  <p>/' 					\
+	-e 's|$|</p>\n|'					|
+awk	'BEGIN{l=$0}{print l;l=$0}END{}'			|
+tail	+2							> $tmp/list
+
+# 関連記事リストをはめ込み
+txt1txt	-n							\
+	1.'<!--LIST-->'.$tmp/list $tmp/t.xml			> $tmp/out
+)
+
+#=======================================================================
+# 許容ワードを設定
+#=======================================================================
+cat<<EOF							>>$tmp/out
+EOF
+
+#=======================================================================
+# 記事ファイルをアップデート
+#=======================================================================
+cp	$tmp/out 						\
+	$(dirname $0)/../$1/typescript.xml

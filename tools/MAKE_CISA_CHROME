@@ -1,0 +1,134 @@
+#!/bin/sh
+
+tmp=/tmp/$$
+PATH=$(dirname $0):$PATH
+
+# 1:URL 2:ディレクトリ名 3:記事タイトル
+[ $# != "3" ]								&& exit 1
+
+# 元記事を取得する
+netcat	"$1"								> $tmp-src
+
+# Google Chromeの修正されたバージョン番号を取得
+cat	$tmp-src							|
+grep	"Chrome version"						|
+grep	-o '[0-9][0-9.]*'						|
+head -1									|
+cat									> $tmp-ver
+chromever=$(cat $tmp-ver)
+
+# GoogleのアナウンスページのURLを取得
+cat	$tmp-src							|
+grep	"Release Note"							|
+grep	-o '<a href=".*">.*</a>'					|
+grep	-o '"[^"]*"'							|
+tr	-d '"'								|
+head	-1								|
+cat									> $tmp-chromeurl
+chromeurl=$(cat $tmp-chromeurl)
+
+# Googleのアナウンスページのスクリーンショットを取得
+getss   -w 1200                                                         \
+        -h 800                                                          \
+        -f $tmp-ss.png                                                  \
+        $chromeurl
+gm      convert                                                         \
+        -resize 1200x800                                                \
+        $tmp-ss.png                                                     \
+        $2/images/001raw.jpg
+
+# Googleのアナウンスページを取得
+netcat	$(cat $tmp-chromeurl)						> $tmp-chromepage
+
+# Googleのアナウンスページのタイトルを取得
+cat	$tmp-chromepage							|
+tr	-d '\n'								|
+grep	-o '<title>.*</title>'						|
+sed	's/<[^>]*>//g'							> $tmp-chrometitle
+chrometit=$(cat $tmp-chrometitle)
+
+# セキュリティ脆弱性の個数を取得
+cat	$tmp-chromepage							|
+grep	-E -o '>[0-9]+<.*security fixes'				|
+grep	-E -o '>[0-9]+<'						|
+tr	-d '>'								|
+tr	-d '<'								|
+head	-1								|
+cat									> $tmp-numofvuls
+numofvuls=$(cat $tmp-numofvuls)
+
+# Googleのアカウントページからタグを削除したテキストデータを生成
+cat	$tmp-chromepage							|
+sed	's/<[^>]*>//g'							|
+cat									> $tmp-txtpage
+
+# セキュリティ脆弱性 緊急 個数を取得
+numofcri=$(( $(cat $tmp-txtpage | grep -o 'Critical CVE' | wc -l) / 1 ))
+# セキュリティ脆弱性 重要 個数を取得
+numofhigh=$(( $(cat $tmp-txtpage | grep -o 'High CVE' | wc -l) / 1 ))
+
+# セキュリティ脆弱性 緊急・重要の文言を作成
+if	[ $numofcri != "0" -a $numofhigh != "0" ]
+then
+	criticalhigh="このうち$numofcriつは深刻度が緊急（Critical）、$numofhighつは深刻度が重要（High）に分類されており"
+elif	[ $numofcri != "0" -a $numofhigh = "0" ]
+then
+	criticalhigh="このうち$numofcriつは深刻度が緊急（Critical）に分類されており"
+elif	[ $numofcri = "0" -a $numofhigh != "0" ]
+then
+	criticalhigh="このうち$numofhighつは深刻度が重要（High）に分類されており"
+else
+	criticalhigh="緊急（Critical）や重要（High）に分類された脆弱性はないもののリクスは存在しており"
+fi
+
+# セキュリティ脆弱性一覧を作成
+cat	$tmp-txtpage							|
+# 深刻度が緊急および重要な脆弱性を抽出
+sed	's/Critical CVE-/\nCritical CVE-/g'				|
+sed	's/High CVE-/\nHigh CVE-/g'					|
+sed	's/Medium CVE-/\nMedium CVE-/g'					|
+grep	-E '^(Critical)|(High)'						|
+# 報告者情報を削除
+sed	's/. Reported by.*//'						|
+# 重複するデータを削除
+sort									|
+uniq									|
+# 英語を日本語へ翻訳
+nanchatte_vuls_translator						|
+# sed	's/Use after free in \(.*\)/\1解放後の使用による問題/'		|
+# sed	's/Inappropriate implementation in \(.*\)/\1における不適切な実装/' |
+# sed	's/Heap buffer overflow in \(.*\)/\1におけるヒープバッファーオーバーフロー/' |
+# sed	's/Insufficient policy enforcement in \(.*\)/\1におけるポリシー適用不備の問題/' |
+# sed	's/Out of bounds read in \(.*\)/\1における範囲外読み取りの問題/' |
+# 深刻度の表記を日本語へ翻訳
+sed	's/^Critical \(.*\)/【深刻】\1/'				|
+sed	's/^High \(.*\)/［重要］\1/'					|
+awk	'{print "   <item><p>"$0"</p></item>"}'				|
+cat									> $tmp-vulslist
+
+# タイトルを選択
+if	[ $numofcri != "0" ]
+then
+	title="Chromeに緊急のセキュリティ脆弱性、ただちにアップデートを"
+elif	[ $numofhigh != "0" ]
+then
+	title="Chromeに重要なセキュリティ脆弱性、アップデートを"
+else
+	title="Chromeにセキュリティ脆弱性、更新を"
+fi
+
+# 記事の原型を作成
+MAKE_TYPESCRIPT 							\
+ 	"$@"								\
+	$tmp-vulslist							|
+sed	"s|CHROMETLE|$title|g"						|
+sed	"s|CHROMEVER|$chromever|g"					|
+sed	"s|CHROMEURL|$chromeurl|g"					|
+sed	"s|CHROMETIT|$chrometit|g"					|
+sed	"s|NUMOFVULS|$numofvuls|g"					|
+sed	"s|CRITICALHIGH|$criticalhigh|g"				|
+cat									> $tmp-typescript
+
+cat $tmp-typescript
+
+rm -f $tmp-*
