@@ -1,0 +1,20 @@
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# ビルドによって生成されるファイル
+typescript.html
+typescript.gpt
+typescript.yd
+typescript.txt
+images.zip
+
+# 操作によって生成されるファイル
+.cms-done
+.timestamp
+.update-done
+.sendmail-done
